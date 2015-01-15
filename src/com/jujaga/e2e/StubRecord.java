@@ -5,31 +5,31 @@ import java.util.UUID;
 
 // A temporary stub object holding data values necessary to populate a demographic only portion of E2E
 public class StubRecord {
-	Integer demographicNo = 1;
-	String randomDocGUID = UUID.randomUUID().toString();
-	String firstName = "John";
-	String lastName = "Cleese";
-	Date docCreated = new Date();
-	String hin = "448000001";
-	String address = "";
-	String city = "";
-	String province = "";
-	String postal = "";
-	String phoneHome = "";
-	String phoneWork = "";
-	String email = "";
-	String gender = "M";
-	String genderDesc = "Male";
-	String birthDate = "19400925"; // not using date object for brevity
-	String language = "EN";
+	public static Integer demographicNo = 1;
+	public static String randomDocGUID = UUID.randomUUID().toString();
+	public static String firstName = "John";
+	public static String lastName = "Cleese";
+	public static Date docCreated = new Date();
+	public static String hin = "448000001";
+	public static String address = "";
+	public static String city = "";
+	public static String province = "";
+	public static String postal = "";
+	public static String phoneHome = "";
+	public static String phoneWork = "";
+	public static String email = "";
+	public static String gender = "M";
+	public static String genderDesc = "Male";
+	public static String birthDate = "19400925"; // not using date object for brevity
+	public static String language = "EN";
 	
-	String providerId = "999998";
-	String providerHomePhone = "";
-	String providerWorkPhone = "";
-	String providerEmail = "";
-	String providerLastName = "oscardoc";
-	String providerFirstName = "doctor";
+	public static String providerId = "999998";
+	public static String providerHomePhone = "";
+	public static String providerWorkPhone = "";
+	public static String providerEmail = "";
+	public static String providerLastName = "oscardoc";
+	public static String providerFirstName = "doctor";
 	
-	String custodianId = "123456";
-	String cusstodianClinicName = "McMaster Hospital";
+	public static String custodianId = "123456";
+	public static String cusstodianClinicName = "McMaster Hospital";
 }
