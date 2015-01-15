@@ -31,17 +31,19 @@ public class EverestUtils {
 			XMLOutputFactory fact = XMLOutputFactory.newInstance();
 			xssw = new XMLStateStreamWriter(fact.createXMLStreamWriter(sw));
 
-			//xssw.writeStartElement("hl7", "ClinicalDocument", "urn:hl7-org:v3");
-			/*xssw.writeAttribute("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
-			xssw.writeAttribute("schemaLocation", "http://www.w3.org/2001/XMLSchema-instance", "urn:hl7-org:v3 Schemas/CDA-PITO-E2E.xsd");
-			xssw.writeAttribute("xmlns", null, null, "urn:hl7-org:v3");
-			xssw.writeAttribute("xmlns", "hl7", null, "urn:hl7-org:v3");
-			xssw.writeAttribute("xmlns", "e2e", null, "http://standards.pito.bc.ca/E2E-DTC/cda");
-			xssw.writeAttribute("xmlns", "xs", null, "http://www.w3.org/2001/XMLSchema");*/
+			xssw.writeStartDocument("UTF-8", "1.0");
+			xssw.writeStartElement("hl7", "ClinicalDocument", "urn:hl7-org:v3");
+			xssw.writeDefaultNamespace("urn:hl7-org:v3"); // Default hl7 namespace
+			xssw.writeAttribute("xmlns", "xs", "xs", "http://www.w3.org/2001/XMLSchema");
+			xssw.writeAttribute("xmlns", "xsi", "xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			xssw.writeAttribute("xmlns", "hl7", "hl7", "urn:hl7-org:v3");
+			xssw.writeAttribute("xmlns", "e2e", "e2e", "http://standards.pito.bc.ca/E2E-DTC/cda");
+			xssw.writeAttribute("xsi", "schemaLocation", "schemaLocation", "urn:hl7-org:v3 Schemas/CDA-PITO-E2E.xsd");
 
 			IFormatterGraphResult details = fmtr.graph(xssw, clinicalDocument);
-			//System.out.println(xssw.getCurrentElementXPath());
-			//xssw.writeEndElement();
+
+			xssw.writeEndElement();
+			xssw.writeEndDocument();
 			xssw.close();
 			
 			if(validation) {
