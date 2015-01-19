@@ -1,9 +1,16 @@
 package com.jujaga.e2e.util;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.marc.everest.formatters.interfaces.IFormatterGraphResult;
 import org.marc.everest.formatters.xml.datatypes.r1.DatatypeFormatter;
@@ -12,11 +19,14 @@ import org.marc.everest.interfaces.IResultDetail;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.xml.XMLStateStreamWriter;
 
+import com.jujaga.e2e.constant.Constants;
+
+
 @SuppressWarnings("restriction")
 public class EverestUtils {
 	// General Everest Utility Functions go here
-	// Generate Document Function
 
+	// Generate Document Function
 	public static String GenerateDocumentToString(ClinicalDocument clinicalDocument, Boolean validation) {
 		StringWriter sw = new StringWriter();
 
@@ -25,13 +35,11 @@ public class EverestUtils {
 		fmtr.getGraphAides().add(new DatatypeFormatter());
 		//fmtr.registerXSITypeName("POCD_MT000040UV.Observation", null);
 
-		XMLStateStreamWriter xssw = null;
-		
 		try {
 			XMLOutputFactory fact = XMLOutputFactory.newInstance();
-			xssw = new XMLStateStreamWriter(fact.createXMLStreamWriter(sw));
+			XMLStateStreamWriter xssw = new XMLStateStreamWriter(fact.createXMLStreamWriter(sw));
 
-			xssw.writeStartDocument("UTF-8", "1.0");
+			xssw.writeStartDocument(Constants.XML.ENCODING, Constants.XML.VERSION);
 			xssw.writeStartElement("hl7", "ClinicalDocument", "urn:hl7-org:v3");
 			xssw.writeDefaultNamespace("urn:hl7-org:v3"); // Default hl7 namespace
 			xssw.writeAttribute("xmlns", "xs", "xs", "http://www.w3.org/2001/XMLSchema");
@@ -45,16 +53,35 @@ public class EverestUtils {
 			xssw.writeEndElement();
 			xssw.writeEndDocument();
 			xssw.close();
-			
+
 			if(validation) {
 				for(IResultDetail dtl : details.getDetails()) {
 					System.out.printf("%s : %s\r\n", dtl.getType(), dtl.getMessage());
 				}
 			}
+
+			return prettyFormatXML(sw.toString(), Constants.XML.INDENT).replaceFirst("<Clin", "\n<Clin");
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
+			return null;
 		}
+	}
 
-		return sw.toString();
+	public static String prettyFormatXML(String input, int indent) {
+		try {
+			Source xmlInput = new StreamSource(new StringReader(input));
+			StreamResult xmlOutput = new StreamResult(new StringWriter());
+
+			Transformer tf = TransformerFactory.newInstance().newTransformer();
+			tf.setOutputProperty(OutputKeys.ENCODING, Constants.XML.ENCODING);
+			tf.setOutputProperty(OutputKeys.INDENT, "yes");
+			tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indent));
+			tf.transform(xmlInput, xmlOutput);
+
+			return xmlOutput.getWriter().toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

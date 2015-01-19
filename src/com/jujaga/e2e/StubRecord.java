@@ -22,14 +22,14 @@ public class StubRecord {
 	public static String genderDesc = "Male";
 	public static String birthDate = "19400925"; // not using date object for brevity
 	public static String language = "EN";
-	
+
 	public static String providerId = "999998";
 	public static String providerHomePhone = "";
 	public static String providerWorkPhone = "";
 	public static String providerEmail = "";
 	public static String providerLastName = "oscardoc";
 	public static String providerFirstName = "doctor";
-	
+
 	public static String custodianId = "123456";
 	public static String cusstodianClinicName = "McMaster Hospital";
 }
