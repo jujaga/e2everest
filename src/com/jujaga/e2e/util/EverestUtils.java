@@ -21,11 +21,9 @@ import org.marc.everest.xml.XMLStateStreamWriter;
 
 import com.jujaga.e2e.constant.Constants;
 
-
+// General Everest Utility Functions
 @SuppressWarnings("restriction")
 public class EverestUtils {
-	// General Everest Utility Functions go here
-
 	// Generate Document Function
 	public static String GenerateDocumentToString(ClinicalDocument clinicalDocument, Boolean validation) {
 		StringWriter sw = new StringWriter();
