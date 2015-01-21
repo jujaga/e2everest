@@ -5,21 +5,20 @@ import java.util.List;
 
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 
-public abstract class Populator implements IPopulator {
-	public List<Populator> populators;
-	public ClinicalDocument clinicalDocument;
-	// TODO Reconsider public/protected status
+public abstract class Populator {
+	protected List<Populator> populators;
+	protected ClinicalDocument clinicalDocument;
 
-	public Populator() {
+	protected Populator() {
 		populators = new ArrayList<Populator>();
 	}
 
-	public abstract void Populate();
+	public abstract void populate();
 
-	public static void DoPopulate(Populator populator) {
+	protected static void doPopulate(Populator populator) {
 		for(Populator subPopulator : populator.populators) {
-			subPopulator.Populate();
-			Populator.DoPopulate(subPopulator);
+			subPopulator.populate();
+			Populator.doPopulate(subPopulator);
 		}
 	}
 
@@ -27,14 +26,10 @@ public abstract class Populator implements IPopulator {
 		return clinicalDocument;
 	}
 
-	public void setClinicalDocument(ClinicalDocument clinicalDocument) {
-		this.clinicalDocument = clinicalDocument;
-	}
-
-	public static void SetClinicalDocument(ClinicalDocument clinicalDocument, List<Populator> populators) {
+	public static void setClinicalDocument(ClinicalDocument clinicalDocument, List<Populator> populators) {
 		for(Populator populator : populators) {
 			populator.clinicalDocument = clinicalDocument;
-			SetClinicalDocument(clinicalDocument, populator.populators);
+			setClinicalDocument(clinicalDocument, populator.populators);
 		}
 	}
 }

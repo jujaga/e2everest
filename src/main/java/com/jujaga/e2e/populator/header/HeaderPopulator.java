@@ -32,26 +32,19 @@ public class HeaderPopulator extends Populator {
 		// Author
 		// Custodian
 		// Information Recipient
-
-		/*II id = new II();
-		id.setAssigningAuthorityName("BC-PHN");
-		id.setExtension(StubRecord.demographicNo.toString());
-
-		patientRole.setId(new SET<II>(id));
-
-		ArrayList<RecordTarget> recordTargets = new ArrayList<RecordTarget>();
-		clinicalDocument.setRecordTarget(recordTargets);*/
 	}
 
 	@Override
-	public void Populate() {
+	public void populate() {
 		// realmCode
 		CS<BindingRealm> binding = new CS<BindingRealm>();
 		binding.setCodeEx(new BindingRealm(Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE, null));
 		clinicalDocument.setRealmCode(new SET<CS<BindingRealm>>(binding));
 
 		// typeId
-		clinicalDocument.setTypeId(new II(Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID, Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION));
+		clinicalDocument.setTypeId(new II(
+				Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID,
+				Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION));
 
 		// templateId
 		LIST<II> templateIds = new LIST<II>();
@@ -66,10 +59,10 @@ public class HeaderPopulator extends Populator {
 		clinicalDocument.setCode(code);
 
 		// title
-		clinicalDocument.setTitle("PITO E2E-DTC Record of " + StubRecord.firstName + " " + StubRecord.lastName);
+		clinicalDocument.setTitle("PITO E2E-DTC Record of " + StubRecord.Demographic.firstName + " " + StubRecord.Demographic.lastName);
 
 		// effectiveTime
-		clinicalDocument.setEffectiveTime(StubRecord.docCreated, TS.MINUTE);
+		clinicalDocument.setEffectiveTime(StubRecord.Demographic.docCreated, TS.MINUTE);
 
 		// confidentialityCode
 		clinicalDocument.setConfidentialityCode(x_BasicConfidentialityKind.Normal);

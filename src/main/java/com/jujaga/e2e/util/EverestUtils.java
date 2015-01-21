@@ -24,8 +24,13 @@ import com.jujaga.e2e.constant.Constants;
 // General Everest Utility Functions
 @SuppressWarnings("restriction")
 public class EverestUtils {
+	// Check String for Null, Empty or Whitespace
+	public static boolean isNullorEmptyorWhitespace(final String obj) {
+		return obj == null || obj.isEmpty() || obj.trim().isEmpty();
+	}
+
 	// Generate Document Function
-	public static String GenerateDocumentToString(ClinicalDocument clinicalDocument, Boolean validation) {
+	public static String generateDocumentToString(ClinicalDocument clinicalDocument, Boolean validation) {
 		StringWriter sw = new StringWriter();
 
 		XmlIts1Formatter fmtr = new XmlIts1Formatter();
@@ -65,6 +70,7 @@ public class EverestUtils {
 		}
 	}
 
+	// Pretty Print XML
 	public static String prettyFormatXML(String input, int indent) {
 		try {
 			Source xmlInput = new StreamSource(new StringReader(input));

@@ -13,11 +13,11 @@ public class EmrExportPopulator extends Populator {
 		// TODO Add body populator here
 
 		this.clinicalDocument = new ClinicalDocument();
-		Populator.SetClinicalDocument(clinicalDocument, this.populators);
+		Populator.setClinicalDocument(clinicalDocument, this.populators);
 	}
 
 	@Override
-	public void Populate() {
-		Populator.DoPopulate(this);
+	public void populate() {
+		Populator.doPopulate(this);
 	}
 }

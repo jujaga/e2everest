@@ -21,6 +21,9 @@ public class Constants {
 		public static final String PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION = "POCD_HD000040";
 		public static final String PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE = "CA-BC";
 		public static final String LANGUAGE_ENGLISH_CANADIAN = "en-CA";
+
+		public static final String BC_PHN_OID_ASSIGNING_AUTHORITY_NAME = "BC-PHN";
+		public static final String BC_PHN_OID = "2.16.840.1.113883.4.50";
 	}
 
 	public static class CodeSystems {
