@@ -10,7 +10,7 @@ public class EmrExportPopulator extends Populator {
 	public EmrExportPopulator(int demographicNo, CE<String> code, II templateId) {
 		HeaderPopulator emrExportHeaderPopulator = new HeaderPopulator(demographicNo, code, templateId);
 		this.populators.add(emrExportHeaderPopulator);
-		//TODO: Add body populator here
+		// TODO Add body populator here
 
 		this.clinicalDocument = new ClinicalDocument();
 		Populator.SetClinicalDocument(clinicalDocument, this.populators);

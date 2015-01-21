@@ -8,6 +8,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 public abstract class Populator implements IPopulator {
 	public List<Populator> populators;
 	public ClinicalDocument clinicalDocument;
+	// TODO Reconsider public/protected status
 
 	public Populator() {
 		populators = new ArrayList<Populator>();
