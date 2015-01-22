@@ -22,7 +22,6 @@ import org.marc.everest.xml.XMLStateStreamWriter;
 import com.jujaga.e2e.constant.Constants;
 
 // General Everest Utility Functions
-@SuppressWarnings("restriction")
 public class EverestUtils {
 	// Check String for Null, Empty or Whitespace
 	public static boolean isNullorEmptyorWhitespace(final String obj) {

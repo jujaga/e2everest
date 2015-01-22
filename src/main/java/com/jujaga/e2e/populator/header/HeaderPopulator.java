@@ -30,6 +30,9 @@ public class HeaderPopulator extends Populator {
 		populators.add(recordTargetPopulator);
 
 		// Author
+		AuthorPopulator authorPopulator = new AuthorPopulator(demographicNo);
+		populators.add(authorPopulator);
+		
 		// Custodian
 		// Information Recipient
 	}

@@ -31,9 +31,10 @@ public class RecordTargetPopulator extends Populator {
 		recordTarget.setPatientRole(patientRole);
 
 		// id
-		II id = new II(Constants.DocumentHeader.BC_PHN_OID);
-		id.setAssigningAuthorityName(Constants.DocumentHeader.BC_PHN_OID_ASSIGNING_AUTHORITY_NAME);
+		II id = new II();
 		if(!EverestUtils.isNullorEmptyorWhitespace(StubRecord.Demographic.hin)) {
+			id.setRoot(Constants.DocumentHeader.BC_PHN_OID);
+			id.setAssigningAuthorityName(Constants.DocumentHeader.BC_PHN_OID_ASSIGNING_AUTHORITY_NAME);
 			id.setExtension(StubRecord.Demographic.hin);
 		} else {
 			id.setNullFlavor(NullFlavor.NoInformation);
