@@ -24,7 +24,7 @@ import com.jujaga.e2e.constant.Constants;
 // General Everest Utility Functions
 public class EverestUtils {
 	// Check String for Null, Empty or Whitespace
-	public static boolean isNullorEmptyorWhitespace(final String obj) {
+	public static boolean isNullorEmptyorWhitespace(String obj) {
 		return obj == null || obj.isEmpty() || obj.trim().isEmpty();
 	}
 
@@ -35,7 +35,6 @@ public class EverestUtils {
 		XmlIts1Formatter fmtr = new XmlIts1Formatter();
 		fmtr.setValidateConformance(validation);
 		fmtr.getGraphAides().add(new DatatypeFormatter());
-		//fmtr.registerXSITypeName("POCD_MT000040UV.Observation", null);
 
 		try {
 			XMLOutputFactory fact = XMLOutputFactory.newInstance();
@@ -56,13 +55,21 @@ public class EverestUtils {
 			xssw.writeEndDocument();
 			xssw.close();
 
+			String output = prettyFormatXML(sw.toString(), Constants.XML.INDENT).replaceFirst("<Clin", "\n<Clin");
+
 			if(validation) {
+				// CDA Validation
 				for(IResultDetail dtl : details.getDetails()) {
 					System.out.printf("%s : %s\r\n\n", dtl.getType(), dtl.getMessage());
 				}
+
+				// XSD Validation
+				if(E2EXSDValidator.isValidXML(output)) {
+					System.out.println("VALIDATION PASSED");
+				}
 			}
 
-			return prettyFormatXML(sw.toString(), Constants.XML.INDENT).replaceFirst("<Clin", "\n<Clin");
+			return output;
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 			return null;
@@ -71,6 +78,10 @@ public class EverestUtils {
 
 	// Pretty Print XML
 	public static String prettyFormatXML(String input, int indent) {
+		if(isNullorEmptyorWhitespace(input)) {
+			return null;
+		}
+
 		try {
 			Source xmlInput = new StreamSource(new StringReader(input));
 			StreamResult xmlOutput = new StreamResult(new StringWriter());
