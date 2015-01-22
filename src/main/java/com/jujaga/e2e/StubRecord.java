@@ -13,10 +13,10 @@ public final class StubRecord {
 		public static String lastName = "Cleese";
 		public static Calendar docCreated = new GregorianCalendar();
 		public static String hin = "448000001";
-		public static String address = "";
-		public static String city = "";
-		public static String province = "";
-		public static String postal = "";
+		public static String address = "1234 Street";
+		public static String city = "city";
+		public static String province = "BC";
+		public static String postal = "V8T1D6";
 		public static String phoneHome = "";
 		public static String phoneWork = "";
 		public static String email = "";

@@ -57,6 +57,9 @@ public class EverestUtils {
 
 			String output = prettyFormatXML(sw.toString(), Constants.XML.INDENT).replaceFirst("<Clin", "\n<Clin");
 
+			// Temporary Everest Bugfixes
+			output = everestBugFixes(output);
+
 			if(validation) {
 				// CDA Validation
 				for(IResultDetail dtl : details.getDetails()) {
@@ -74,6 +77,12 @@ public class EverestUtils {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	// Temporary Everest Bugfixes
+	private static String everestBugFixes(String output) {
+		// TODO Notify MARC-HI of delimeter/delimiter typo
+		return output.replaceAll("delimeter", "delimiter");
 	}
 
 	// Pretty Print XML
