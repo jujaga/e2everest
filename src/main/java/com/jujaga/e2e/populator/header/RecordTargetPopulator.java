@@ -9,8 +9,11 @@ import org.marc.everest.datatypes.AddressPartType;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.PostalAddressUse;
+import org.marc.everest.datatypes.TEL;
+import org.marc.everest.datatypes.TelecommunicationsAddressUse;
 import org.marc.everest.datatypes.generic.CS;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Patient;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PatientRole;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RecordTarget;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
@@ -22,6 +25,9 @@ import com.jujaga.e2e.util.EverestUtils;
 
 public class RecordTargetPopulator extends Populator {
 	//private final Integer demographicNo;
+	private static enum TelecomType {
+		EMAIL, TELEPHONE
+	}
 
 	public RecordTargetPopulator(Integer demographicNo) {
 		//this.demographicNo = demographicNo;
@@ -59,7 +65,18 @@ public class RecordTargetPopulator extends Populator {
 		}
 
 		// telecom
+		SET<TEL> telecoms = new SET<TEL>();
+		addTelecomPart(telecoms, StubRecord.Demographic.phoneHome, TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
+		addTelecomPart(telecoms, StubRecord.Demographic.phoneWork, TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
+		addTelecomPart(telecoms, StubRecord.Demographic.email, TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
+		if(!telecoms.isEmpty()) {
+			patientRole.setTelecom(telecoms);
+		}
+
 		// patient
+		Patient patient = new Patient();
+		patientRole.setPatient(patient);
+
 		// name
 		// administrativeGenderCode
 		// birthTime
@@ -72,6 +89,21 @@ public class RecordTargetPopulator extends Populator {
 		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
 			ADXP addrPart = new ADXP(value, addressPartType);
 			addrParts.add(addrPart);
+		}
+	}
+
+	private void addTelecomPart(SET<TEL> telecoms, String value, TelecommunicationsAddressUse telecomAddressUse, TelecomType telecomType) {
+		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
+			switch(telecomType) {
+			case TELEPHONE:
+				telecoms.add(new TEL("tel:" + value.replaceAll("-", ""), telecomAddressUse));
+				break;
+			case EMAIL:
+				telecoms.add(new TEL("mailto:" + value, telecomAddressUse));
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }

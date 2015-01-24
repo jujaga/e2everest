@@ -16,9 +16,11 @@ import org.marc.everest.datatypes.ADXP;
 import org.marc.everest.datatypes.AddressPartType;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.PostalAddressUse;
+import org.marc.everest.datatypes.TEL;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Patient;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PatientRole;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RecordTarget;
 
@@ -98,5 +100,40 @@ public class RecordTargetPopulatorTest {
 	public void addressNullTest() {
 		SET<AD> addrSet = patientRole.getAddr();
 		assertNull(addrSet);
+	}
+
+	@Test
+	public void telecomFullTest() {
+		SET<TEL> telecoms = patientRole.getTelecom();
+		assertNotNull(telecoms);
+		assertEquals(3, telecoms.size());
+
+		TEL tel0 = telecoms.get(0);
+		assertNotNull(tel0);
+		assertTrue(TEL.isValidPhoneFlavor(tel0));
+		assertEquals("tel:" + StubRecord.Demographic.phoneHome.replaceAll("-", ""), tel0.getValue());
+
+		TEL tel1 = telecoms.get(1);
+		assertNotNull(tel1);
+		assertTrue(TEL.isValidPhoneFlavor(tel1));
+		assertEquals("tel:" + StubRecord.Demographic.phoneWork.replaceAll("-", ""), tel1.getValue());
+
+		TEL tel2 = telecoms.get(2);
+		assertNotNull(tel2);
+		assertTrue(TEL.isValidEMailFlavor(tel2));
+		assertEquals("mailto:" + StubRecord.Demographic.email, tel2.getValue());
+	}
+
+	@Ignore
+	@Test
+	public void telecomNullTest() {
+		SET<TEL> telecoms = patientRole.getTelecom();
+		assertNull(telecoms);
+	}
+
+	@Test
+	public void patientTest() {
+		Patient patient = patientRole.getPatient();
+		assertNotNull(patient);
 	}
 }

@@ -67,9 +67,7 @@ public class EverestUtils {
 				}
 
 				// XSD Validation
-				if(E2EXSDValidator.isValidXML(output)) {
-					System.out.println("VALIDATION PASSED");
-				}
+				E2EXSDValidator.isValidXML(output);
 			}
 
 			return output;

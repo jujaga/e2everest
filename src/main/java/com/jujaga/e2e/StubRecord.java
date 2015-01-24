@@ -17,9 +17,9 @@ public final class StubRecord {
 		public static String city = "city";
 		public static String province = "BC";
 		public static String postal = "V8T1D6";
-		public static String phoneHome = "";
-		public static String phoneWork = "";
-		public static String email = "";
+		public static String phoneHome = "1234567";
+		public static String phoneWork = "765-4321";
+		public static String email = "test@test.com";
 		public static String gender = "M";
 		public static String genderDesc = "Male";
 		public static String birthDate = "19400925"; // not using date object for brevity
@@ -28,9 +28,9 @@ public final class StubRecord {
 
 	public static final class Provider {
 		public static String providerId = "999998";
-		public static String providerHomePhone = "";
-		public static String providerWorkPhone = "";
-		public static String providerEmail = "";
+		public static String providerHomePhone = "3456789";
+		public static String providerWorkPhone = "987-6543";
+		public static String providerEmail = "test2@test2.com";
 		public static String providerLastName = "oscardoc";
 		public static String providerFirstName = "doctor";
 	}
