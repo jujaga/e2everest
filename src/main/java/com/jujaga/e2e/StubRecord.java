@@ -20,10 +20,11 @@ public final class StubRecord {
 		public static String phoneHome = "1234567";
 		public static String phoneWork = "765-4321";
 		public static String email = "test@test.com";
-		public static String gender = "M";
-		public static String genderDesc = "Male";
-		public static String birthDate = "19400925"; // not using date object for brevity
-		public static String language = "EN";
+		public static String sex = "M";
+		public static String yearOfBirth = "1940";
+		public static String monthOfBirth = "09";
+		public static String dateOfBirth = "25";
+		public static String officialLanguage = "English";
 	}
 
 	public static final class Provider {

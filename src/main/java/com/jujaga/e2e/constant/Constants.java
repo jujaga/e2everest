@@ -22,11 +22,24 @@ public class Constants {
 		public static final String PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE = "CA-BC";
 		public static final String LANGUAGE_ENGLISH_CANADIAN = "en-CA";
 
+		public static final String MALE_ADMINISTRATIVE_GENDER_CODE = "M";
+		public static final String FEMALE_ADMINISTRATIVE_GENDER_CODE = "F";
+		public static final String UNDIFFERENTIATED_ADMINISTRATIVE_GENDER_CODE = "UN";
+		public static final String MALE_ADMINISTRATIVE_GENDER_DESCRIPTION = "Male";
+		public static final String FEMALE_ADMINISTRATIVE_GENDER_DESCRIPTION = "Female";
+		public static final String UNDIFFERENTIATED_ADMINISTRATIVE_GENDER_DESCRIPTION = "Undifferentiated";
+
 		public static final String BC_PHN_OID_ASSIGNING_AUTHORITY_NAME = "BC-PHN";
 		public static final String BC_PHN_OID = "2.16.840.1.113883.4.50";
+
+		public static final String HUMANLANGUAGE_ENGLISH_CODE = "EN";
+		public static final String HUMANLANGUAGE_FRENCH_CODE = "FR";
+		public static final String HUMANLANGUAGE_ENGLISH_DESCRIPTION = "English";
+		public static final String HUMANLANGUAGE_FRENCH_DESCRIPTION = "French";
 	}
 
 	public static class CodeSystems {
+		public static final String GENDER_CODE_SYSTEM = "2.16.840.1.113883.5.1";
 		public static final String LOINC_OID = "2.16.840.1.113883.6.1";
 		public static final String LOINC_DISPLAY_NAME = "LOINC";
 		public static final String LOINC_VERSION = "2.44";
