@@ -1,4 +1,4 @@
-package com.jujaga.e2e.populator.header;
+package com.jujaga.e2e.model.export.header;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -41,7 +41,7 @@ import com.jujaga.e2e.populator.Populator;
 import com.jujaga.e2e.util.EverestUtils;
 
 // TODO Handle Ignored Null Value Test Cases
-public class RecordTargetPopulatorTest {
+public class RecordTargetModelTest {
 	private static ClinicalDocument clinicalDocument;
 	private static PatientRole patientRole;
 

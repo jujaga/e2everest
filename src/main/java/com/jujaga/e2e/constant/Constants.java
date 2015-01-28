@@ -4,6 +4,10 @@ import org.marc.everest.datatypes.generic.CE;
 
 // E2E constants and other hard-coded numbers/string will go here
 public class Constants {
+	public static enum TelecomType {
+		EMAIL, TELEPHONE
+	}
+
 	public static class EMRConversionDocument {
 		public static final String TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.1.1";
 		public static final String CODE_DISPLAY_NAME_LOINC = "Medical Records";
