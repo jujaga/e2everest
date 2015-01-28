@@ -63,7 +63,7 @@ public class EverestUtils {
 			if(validation) {
 				// CDA Validation
 				for(IResultDetail dtl : details.getDetails()) {
-					System.out.printf("%s : %s\r\n\n", dtl.getType(), dtl.getMessage());
+					System.out.printf("%s : %s\r\n", dtl.getType(), dtl.getMessage());
 				}
 
 				// XSD Validation

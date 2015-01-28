@@ -26,52 +26,30 @@ import org.marc.everest.datatypes.TEL;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.SET;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.LanguageCommunication;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Patient;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PatientRole;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RecordTarget;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.AdministrativeGender;
 
 import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Mappings;
-import com.jujaga.e2e.populator.EmrExportPopulator;
-import com.jujaga.e2e.populator.Populator;
 import com.jujaga.e2e.util.EverestUtils;
 
-// TODO Handle Ignored Null Value Test Cases
+// TODO Handle ignored null test cases
 public class RecordTargetModelTest {
-	private static ClinicalDocument clinicalDocument;
-	private static PatientRole patientRole;
+	private static RecordTargetModel recordTargetModel;
 
 	@BeforeClass
 	public static void beforeClass() {
 		Integer demographicNo = StubRecord.Demographic.demographicNo;
-		CE<String> code = Constants.EMRConversionDocument.CODE;
-		II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
-
-		Populator populator = new EmrExportPopulator(demographicNo, code, templateId);
-		populator.populate();
-		clinicalDocument = populator.getClinicalDocument();
-		patientRole = clinicalDocument.getRecordTarget().get(0).getPatientRole();
-	}
-
-	@Test
-	public void recordTargetTest() {
-		ArrayList<RecordTarget> recordTargets = clinicalDocument.getRecordTarget();
-		assertNotNull(recordTargets);
-		assertEquals(1, recordTargets.size());
-
-		RecordTarget recordTarget = recordTargets.get(0);
-		assertNotNull(recordTarget);
-
-		assertNotNull(patientRole);
+		recordTargetModel = new RecordTargetModel(demographicNo);
 	}
 
 	@Test
 	public void idTest() {
-		II id = patientRole.getId().get(0);
+		SET<II> ids = recordTargetModel.getIds();
+		assertNotNull(ids);
+
+		II id = ids.get(0);
 		assertNotNull(id);
 		assertEquals(Constants.DocumentHeader.BC_PHN_OID, id.getRoot());
 		assertEquals(Constants.DocumentHeader.BC_PHN_OID_ASSIGNING_AUTHORITY_NAME, id.getAssigningAuthorityName());
@@ -82,14 +60,17 @@ public class RecordTargetModelTest {
 	@Ignore
 	@Test
 	public void idNullTest() {
-		II id = patientRole.getId().get(0);
+		SET<II> ids = recordTargetModel.getIds();
+		assertNotNull(ids);
+
+		II id = ids.get(0);
 		assertNotNull(id);
 		assertTrue(id.isNull());
 	}
 
 	@Test
 	public void addressFullTest() {
-		SET<AD> addrSet = patientRole.getAddr();
+		SET<AD> addrSet = recordTargetModel.getAddresses();
 		assertNotNull(addrSet);
 		assertEquals(1, addrSet.size());
 
@@ -108,13 +89,13 @@ public class RecordTargetModelTest {
 	@Ignore
 	@Test
 	public void addressNullTest() {
-		SET<AD> addrSet = patientRole.getAddr();
+		SET<AD> addrSet = recordTargetModel.getAddresses();
 		assertNull(addrSet);
 	}
 
 	@Test
 	public void telecomFullTest() {
-		SET<TEL> telecoms = patientRole.getTelecom();
+		SET<TEL> telecoms = recordTargetModel.getTelecoms();
 		assertNotNull(telecoms);
 		assertEquals(3, telecoms.size());
 
@@ -137,19 +118,13 @@ public class RecordTargetModelTest {
 	@Ignore
 	@Test
 	public void telecomNullTest() {
-		SET<TEL> telecoms = patientRole.getTelecom();
+		SET<TEL> telecoms = recordTargetModel.getTelecoms();
 		assertNull(telecoms);
 	}
 
 	@Test
-	public void patientTest() {
-		Patient patient = patientRole.getPatient();
-		assertNotNull(patient);
-	}
-
-	@Test
 	public void nameFullTest() {
-		SET<PN> names = patientRole.getPatient().getName();
+		SET<PN> names = recordTargetModel.getNames();
 		assertNotNull(names);
 		assertEquals(1, names.size());
 
@@ -167,13 +142,13 @@ public class RecordTargetModelTest {
 	@Ignore
 	@Test
 	public void nameNullTest() {
-		SET<PN> names = patientRole.getPatient().getName();
+		SET<PN> names = recordTargetModel.getNames();
 		assertNull(names);
 	}
 
 	@Test
 	public void genderTest() {
-		CE<AdministrativeGender> gender = patientRole.getPatient().getAdministrativeGenderCode();
+		CE<AdministrativeGender> gender = recordTargetModel.getGender();
 		assertNotNull(gender);
 		String sexCode = StubRecord.Demographic.sex.toUpperCase().replace("U", "UN");
 		assertEquals(Mappings.genderCode.get(sexCode), gender.getCode());
@@ -183,14 +158,14 @@ public class RecordTargetModelTest {
 	@Ignore
 	@Test
 	public void genderNullTest() {
-		CE<AdministrativeGender> gender = patientRole.getPatient().getAdministrativeGenderCode();
+		CE<AdministrativeGender> gender = recordTargetModel.getGender();
 		assertNotNull(gender);
 		assertTrue(gender.isNull());
 	}
 
 	@Test
 	public void birthDateTest() {
-		TS birthDate = patientRole.getPatient().getBirthTime();
+		TS birthDate = recordTargetModel.getBirthDate();
 		assertNotNull(birthDate);
 
 		Calendar cal = birthDate.getDateValue();
@@ -204,14 +179,14 @@ public class RecordTargetModelTest {
 	@Ignore
 	@Test
 	public void birthDateNullTest() {
-		TS birthDate = patientRole.getPatient().getBirthTime();
+		TS birthDate = recordTargetModel.getBirthDate();
 		assertNotNull(birthDate);
 		assertTrue(birthDate.isNull());
 	}
 
 	@Test
 	public void languageCommunicationTest() {
-		ArrayList<LanguageCommunication> languages = patientRole.getPatient().getLanguageCommunication();
+		ArrayList<LanguageCommunication> languages = recordTargetModel.getLanguages();
 		assertNotNull(languages);
 
 		LanguageCommunication language = languages.get(0);
@@ -222,7 +197,7 @@ public class RecordTargetModelTest {
 	@Ignore
 	@Test
 	public void languageCommunicationNullTest() {
-		ArrayList<LanguageCommunication> languages = patientRole.getPatient().getLanguageCommunication();
+		ArrayList<LanguageCommunication> languages = recordTargetModel.getLanguages();
 		assertNull(languages);
 	}
 }

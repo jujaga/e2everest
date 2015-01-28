@@ -32,7 +32,7 @@ public class E2EXSDValidator {
 			return true;
 		} catch (Exception e) {
 			if (!testSuppress) {
-				System.out.println("VALIDATION ERROR: " + e.getMessage());
+				System.out.println("XSD ERROR: " + e.getMessage());
 			}
 			return false;
 		}
@@ -57,7 +57,7 @@ public class E2EXSDValidator {
 			return true;
 		} catch (Exception e) {
 			if (!testSuppress) {
-				System.out.println("VALIDATION ERROR: " + e.getMessage());
+				System.out.println("XSD ERROR: " + e.getMessage());
 			}
 			return false;
 		}

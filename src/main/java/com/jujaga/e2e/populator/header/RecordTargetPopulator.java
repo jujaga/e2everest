@@ -12,16 +12,14 @@ import com.jujaga.e2e.model.export.header.RecordTargetModel;
 import com.jujaga.e2e.populator.Populator;
 
 public class RecordTargetPopulator extends Populator {
-	private final Integer demographicNo;
+	private final RecordTargetModel recordTargetModel;
 
 	public RecordTargetPopulator(Integer demographicNo) {
-		this.demographicNo = demographicNo;
+		recordTargetModel = new RecordTargetModel(demographicNo);
 	}
 
 	@Override
 	public void populate() {
-		RecordTargetModel recordTargetModel = new RecordTargetModel(demographicNo);
-
 		RecordTarget recordTarget = new RecordTarget();
 		PatientRole patientRole = new PatientRole();
 		Patient patient = new Patient();

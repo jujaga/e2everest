@@ -8,8 +8,6 @@ import java.util.Calendar;
 import org.marc.everest.datatypes.AD;
 import org.marc.everest.datatypes.ADXP;
 import org.marc.everest.datatypes.AddressPartType;
-import org.marc.everest.datatypes.ENXP;
-import org.marc.everest.datatypes.EntityNamePartType;
 import org.marc.everest.datatypes.EntityNameUse;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
@@ -75,10 +73,10 @@ public class RecordTargetModel {
 
 	private void setAddresses() {
 		ArrayList<ADXP> addrParts = new ArrayList<ADXP>();
-		addAddressPart(addrParts, StubRecord.Demographic.address, AddressPartType.Delimiter);
-		addAddressPart(addrParts, StubRecord.Demographic.city, AddressPartType.City);
-		addAddressPart(addrParts, StubRecord.Demographic.province, AddressPartType.State);
-		addAddressPart(addrParts, StubRecord.Demographic.postal, AddressPartType.PostalCode);
+		HeaderUtil.addAddressPart(addrParts, StubRecord.Demographic.address, AddressPartType.Delimiter);
+		HeaderUtil.addAddressPart(addrParts, StubRecord.Demographic.city, AddressPartType.City);
+		HeaderUtil.addAddressPart(addrParts, StubRecord.Demographic.province, AddressPartType.State);
+		HeaderUtil.addAddressPart(addrParts, StubRecord.Demographic.postal, AddressPartType.PostalCode);
 		if(!addrParts.isEmpty()) {
 			CS<PostalAddressUse> use = new CS<PostalAddressUse>(PostalAddressUse.HomeAddress);
 			AD addr = new AD(use, addrParts);
@@ -95,9 +93,9 @@ public class RecordTargetModel {
 
 	private void setTelecoms() {
 		SET<TEL> telecoms = new SET<TEL>();
-		addTelecomPart(telecoms, StubRecord.Demographic.phoneHome, TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
-		addTelecomPart(telecoms, StubRecord.Demographic.phoneWork, TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
-		addTelecomPart(telecoms, StubRecord.Demographic.email, TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
+		HeaderUtil.addTelecomPart(telecoms, StubRecord.Demographic.phoneHome, TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
+		HeaderUtil.addTelecomPart(telecoms, StubRecord.Demographic.phoneWork, TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
+		HeaderUtil.addTelecomPart(telecoms, StubRecord.Demographic.email, TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
 		if(!telecoms.isEmpty()) {
 			this.telecoms = telecoms;
 		}
@@ -112,7 +110,7 @@ public class RecordTargetModel {
 
 	private void setNames() {
 		SET<PN> names = new SET<PN>();
-		addNamePart(names, StubRecord.Demographic.firstName, StubRecord.Demographic.lastName, EntityNameUse.OfficialRecord);
+		HeaderUtil.addNamePart(names, StubRecord.Demographic.firstName, StubRecord.Demographic.lastName, EntityNameUse.OfficialRecord);
 		if(!names.isEmpty()) {
 			this.names = names;
 		}
@@ -164,58 +162,12 @@ public class RecordTargetModel {
 
 	private void setLanguages() {
 		ArrayList<LanguageCommunication> languages = new ArrayList<LanguageCommunication>();
-		addLanguagePart(languages, StubRecord.Demographic.officialLanguage);
+		HeaderUtil.addLanguagePart(languages, StubRecord.Demographic.officialLanguage);
 		if(!languages.isEmpty()) {
 			this.languages = languages;
 		}
 		else {
 			this.languages = null;
-		}
-
-	}
-
-	private void addAddressPart(ArrayList<ADXP> addrParts, String value, AddressPartType addressPartType) {
-		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
-			ADXP addrPart = new ADXP(value, addressPartType);
-			addrParts.add(addrPart);
-		}
-	}
-
-	private void addTelecomPart(SET<TEL> telecoms, String value, TelecommunicationsAddressUse telecomAddressUse, TelecomType telecomType) {
-		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
-			switch(telecomType) {
-			case TELEPHONE:
-				telecoms.add(new TEL("tel:" + value.replaceAll("-", ""), telecomAddressUse));
-				break;
-			case EMAIL:
-				telecoms.add(new TEL("mailto:" + value, telecomAddressUse));
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	private void addNamePart(SET<PN> names, String firstName, String lastName, EntityNameUse entityNameUse) {
-		ArrayList<ENXP> name = new ArrayList<ENXP>();
-		if(!EverestUtils.isNullorEmptyorWhitespace(firstName)) {
-			name.add(new ENXP(firstName, EntityNamePartType.Given));
-		}
-		if(!EverestUtils.isNullorEmptyorWhitespace(lastName)) {
-			name.add(new ENXP(lastName, EntityNamePartType.Family));
-		}
-		if(!name.isEmpty()) {
-			names.add(new PN(entityNameUse, name));
-		}
-	}
-
-	private void addLanguagePart(ArrayList<LanguageCommunication> languages, String value) {
-		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
-			if(Mappings.languageCode.containsKey(value)) {
-				LanguageCommunication language = new LanguageCommunication();
-				language.setLanguageCode(Mappings.languageCode.get(value));
-				languages.add(language);
-			}
 		}
 	}
 }
