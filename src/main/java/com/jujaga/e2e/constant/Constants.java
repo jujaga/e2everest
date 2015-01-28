@@ -9,6 +9,7 @@ public class Constants {
 	}
 
 	public static final class EMR {
+		public static final String EMR_OID = "2.16.840.1.113883.3.3331";
 		public static final String EMR_VERSION = "OSCAR EMR";
 	}
 

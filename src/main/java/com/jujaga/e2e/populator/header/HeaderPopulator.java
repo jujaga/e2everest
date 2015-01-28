@@ -34,7 +34,12 @@ public class HeaderPopulator extends Populator {
 		populators.add(authorPopulator);
 
 		// Custodian
+		CustodianPopulator custodianPopulator = new CustodianPopulator(demographicNo);
+		populators.add(custodianPopulator);
+
 		// Information Recipient
+		InformationRecipientPopulator informationRecipientPopulator = new InformationRecipientPopulator(demographicNo);
+		populators.add(informationRecipientPopulator);
 	}
 
 	@Override
