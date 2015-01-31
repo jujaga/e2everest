@@ -4,19 +4,23 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Entity implementation class for Entity: Provider
  *
  */
 @Entity
+@Table(name="provider")
 public class Provider implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final String SYSTEM_PROVIDER_NO = "-1";
 
 	@Id
-	private String providerNo;
+	@GeneratedValue
+	private Integer providerNo;
 	private String lastName;
 	private String firstName;
 	private String providerType;
@@ -47,11 +51,11 @@ public class Provider implements Serializable {
 		super();
 	}
 
-	public String getProviderNo() {
+	public Integer getProviderNo() {
 		return providerNo;
 	}
 
-	public void setProviderNo(String providerNo) {
+	public void setProviderNo(Integer providerNo) {
 		this.providerNo = providerNo;
 	}
 

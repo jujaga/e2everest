@@ -4,17 +4,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Entity implementation class for Entity: Demographic
  *
  */
 @Entity
+@Table(name="demographic")
 public class Demographic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue
 	private Integer demographicNo;
 	private String title;
 	private String lastName;
