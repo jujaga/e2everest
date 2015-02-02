@@ -15,7 +15,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.marc.everest.formatters.interfaces.IFormatterGraphResult;
 import org.marc.everest.formatters.xml.datatypes.r1.DatatypeFormatter;
 import org.marc.everest.formatters.xml.its1.XmlIts1Formatter;
-import org.marc.everest.interfaces.IResultDetail;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.xml.XMLStateStreamWriter;
 
@@ -62,9 +61,7 @@ public class EverestUtils {
 
 			if(validation) {
 				// CDA Validation
-				for(IResultDetail dtl : details.getDetails()) {
-					System.out.printf("%s : %s\r\n", dtl.getType(), dtl.getMessage());
-				}
+				E2EEverestValidator.isValidCDA(details);
 
 				// XSD Validation
 				E2EXSDValidator.isValidXML(output);

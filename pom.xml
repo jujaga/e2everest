@@ -1,15 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>e2everest</groupId>
+	<groupId>com.jujaga.e2e</groupId>
 	<artifactId>e2everest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>e2everest</name>
+	<description>A Proof of Concept E2E Everest Implementation
+Data model emulates an OSCAR EMR database</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
 	</properties>
 	<repositories>
-		<!-- MARC-HI (Everest & SHIC) -->
+		<!-- MARC-HI Everest Framework -->
 		<repository>
 			<id>marc-te-main</id>
 			<name>MARC-HI Technology Exchange Private Maven Repository</name>
@@ -17,14 +20,13 @@
 		</repository>
 	</repositories>
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.2</version>
 				<configuration>
-					<source />
-					<target />
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -42,6 +44,7 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<!-- MARC-HI Everest Framework -->
 		<dependency>
 			<groupId>org.marc.everest</groupId>
 			<artifactId>everest-core</artifactId>
@@ -67,20 +70,34 @@
 			<artifactId>everest-formatters-xml-dt-r1</artifactId>
 			<version>1.1.0</version>
 		</dependency>
+		<!-- Hibernate & JPA -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.3.8.Final</version>
+		</dependency>
+		<!-- SQLite database JDBC -->
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.8.7</version>
+		</dependency>
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.10</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
-		</dependency>
-	  <dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>4.3.8.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>2.3.2</version>
 		</dependency>
 	</dependencies>
 </project>
