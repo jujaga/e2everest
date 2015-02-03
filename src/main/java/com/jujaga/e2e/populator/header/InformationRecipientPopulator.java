@@ -11,7 +11,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_InformationRecipientRole;
 import com.jujaga.e2e.populator.Populator;
 
 public class InformationRecipientPopulator extends Populator {
-	public InformationRecipientPopulator(Integer demographicNo) {
+	public InformationRecipientPopulator() {
 	}
 
 	@Override

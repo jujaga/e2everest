@@ -17,7 +17,7 @@ import org.xml.sax.XMLReader;
 
 public class E2EXSDValidator {
 	private static Logger log = Logger.getLogger(E2EXSDValidator.class.getName());
-	
+
 	public static boolean isWellFormedXML(String xmlstring) {
 		return isWellFormedXML(xmlstring, false);
 	}
@@ -34,7 +34,7 @@ public class E2EXSDValidator {
 			reader.parse(new InputSource(new StringReader(xmlstring)));
 			return true;
 		} catch (Exception e) {
-			if (!testSuppress) {
+			if(!testSuppress) {
 				log.warn(e.getMessage());
 			}
 			return false;
@@ -59,7 +59,7 @@ public class E2EXSDValidator {
 			reader.parse(new InputSource(new StringReader(xmlstring)));
 			return true;
 		} catch (Exception e) {
-			if (!testSuppress) {
+			if(!testSuppress) {
 				log.warn(e.getMessage());
 			}
 			return false;

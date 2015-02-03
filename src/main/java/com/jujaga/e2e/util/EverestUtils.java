@@ -60,10 +60,7 @@ public class EverestUtils {
 			output = everestBugFixes(output);
 
 			if(validation) {
-				// CDA Validation
 				E2EEverestValidator.isValidCDA(details);
-
-				// XSD Validation
 				E2EXSDValidator.isValidXML(output);
 			}
 

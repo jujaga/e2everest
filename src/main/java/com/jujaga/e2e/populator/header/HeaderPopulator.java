@@ -38,7 +38,7 @@ public class HeaderPopulator extends Populator {
 		populators.add(custodianPopulator);
 
 		// Information Recipient
-		InformationRecipientPopulator informationRecipientPopulator = new InformationRecipientPopulator(demographicNo);
+		InformationRecipientPopulator informationRecipientPopulator = new InformationRecipientPopulator();
 		populators.add(informationRecipientPopulator);
 	}
 
