@@ -9,9 +9,9 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RecordTarget;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
 import com.jujaga.e2e.model.export.header.RecordTargetModel;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
 
-public class RecordTargetPopulator extends Populator {
+public class RecordTargetPopulator extends AbstractPopulator {
 	private final RecordTargetModel recordTargetModel;
 
 	public RecordTargetPopulator(Integer demographicNo) {

@@ -13,9 +13,9 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
 
-public class HeaderPopulator extends Populator {
+public class HeaderPopulator extends AbstractPopulator {
 	private final Integer demographicNo;
 	private final CE<String> code;
 	private final II templateId;

@@ -5,9 +5,9 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Custodian;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.CustodianOrganization;
 
 import com.jujaga.e2e.model.export.header.CustodianModel;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
 
-public class CustodianPopulator extends Populator {
+public class CustodianPopulator extends AbstractPopulator {
 	private final CustodianModel custodianModel;
 
 	public CustodianPopulator(Integer demographicNo) {

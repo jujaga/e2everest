@@ -16,7 +16,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.IntendedRecipient;
 import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.populator.EmrExportPopulator;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
 
 public class InformationRecipientPopulatorTest {
 	private static ClinicalDocument clinicalDocument;
@@ -27,7 +27,7 @@ public class InformationRecipientPopulatorTest {
 		CE<String> code = Constants.EMRConversionDocument.CODE;
 		II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
 
-		Populator populator = new EmrExportPopulator(demographicNo, code, templateId);
+		AbstractPopulator populator = new EmrExportPopulator(demographicNo, code, templateId);
 		populator.populate();
 		clinicalDocument = populator.getClinicalDocument();
 	}

@@ -9,9 +9,9 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
 import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.model.export.header.AuthorModel;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
 
-public class AuthorPopulator extends Populator {
+public class AuthorPopulator extends AbstractPopulator {
 	private final AuthorModel authorModel;
 
 	public AuthorPopulator(Integer demographicNo) {

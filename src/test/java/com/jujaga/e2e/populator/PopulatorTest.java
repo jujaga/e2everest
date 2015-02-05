@@ -12,7 +12,7 @@ import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 
 public class PopulatorTest {
-	private static Populator populator;
+	private static AbstractPopulator populator;
 	private static ClinicalDocument clinicalDocument;
 
 	@BeforeClass

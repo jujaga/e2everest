@@ -7,7 +7,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import com.jujaga.e2e.populator.body.DocumentBodyPopulator;
 import com.jujaga.e2e.populator.header.HeaderPopulator;
 
-public class EmrExportPopulator extends Populator {
+public class EmrExportPopulator extends AbstractPopulator {
 	public EmrExportPopulator(int demographicNo, CE<String> code, II templateId) {
 		HeaderPopulator emrExportHeaderPopulator = new HeaderPopulator(demographicNo, code, templateId);
 		this.populators.add(emrExportHeaderPopulator);
@@ -16,11 +16,11 @@ public class EmrExportPopulator extends Populator {
 		this.populators.add(bodyPopulator);
 
 		this.clinicalDocument = new ClinicalDocument();
-		Populator.setClinicalDocument(clinicalDocument, this.populators);
+		AbstractPopulator.setClinicalDocument(clinicalDocument, this.populators);
 	}
 
 	@Override
 	public void populate() {
-		Populator.doPopulate(this);
+		AbstractPopulator.doPopulate(this);
 	}
 }

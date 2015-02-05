@@ -8,9 +8,9 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.IntendedRecipient;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_InformationRecipient;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_InformationRecipientRole;
 
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
 
-public class InformationRecipientPopulator extends Populator {
+public class InformationRecipientPopulator extends AbstractPopulator {
 	public InformationRecipientPopulator() {
 	}
 

@@ -8,9 +8,9 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.StructuredBody;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
 
-public class DocumentBodyPopulator extends Populator {
+public class DocumentBodyPopulator extends AbstractPopulator {
 	@SuppressWarnings("unused")
 	private final Integer demographicNo;
 
