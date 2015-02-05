@@ -10,6 +10,9 @@ Data model emulates an OSCAR EMR database</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+		<everest.version>1.1.0</everest.version>
+		<spring.version>3.1.0.RELEASE</spring.version>
+		<hibernate.version>4.3.8.Final</hibernate.version>
 	</properties>
 	<repositories>
 		<!-- MARC-HI Everest Framework -->
@@ -71,33 +74,53 @@ Data model emulates an OSCAR EMR database</description>
 		<dependency>
 			<groupId>org.marc.everest</groupId>
 			<artifactId>everest-core</artifactId>
-			<version>1.1.0</version>
+			<version>${everest.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.marc.everest</groupId>
 			<artifactId>everest-rmim-ca-r02-04-03</artifactId>
-			<version>1.1.0</version>
+			<version>${everest.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.marc.everest</groupId>
 			<artifactId>everest-rmim-uv-cdar2</artifactId>
-			<version>1.1.0</version>
+			<version>${everest.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.marc.everest</groupId>
 			<artifactId>everest-formatters-xml-its1</artifactId>
-			<version>1.1.0</version>
+			<version>${everest.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.marc.everest</groupId>
 			<artifactId>everest-formatters-xml-dt-r1</artifactId>
-			<version>1.1.0</version>
+			<version>${everest.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<!-- Hibernate & JPA -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.8.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<!-- SQLite database JDBC -->
 		<dependency>

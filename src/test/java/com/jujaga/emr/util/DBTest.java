@@ -36,7 +36,7 @@ public class DBTest {
 			public void clearCachedProviders() {
 			}
 		});*/
-		factory = Persistence.createEntityManagerFactory("sqlite-jpa");
+		factory = Persistence.createEntityManagerFactory("emr");
 	}
 
 	@Before

@@ -1,8 +1,7 @@
 package com.jujaga.emr;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
 import com.jujaga.emr.model.Demographic;
 
@@ -12,18 +11,19 @@ import com.jujaga.emr.model.Demographic;
  * 
  */
 public class GeneralDao {
-	private static EntityManagerFactory factory = null;
+	@PersistenceContext(unitName="emr")
 	private EntityManager manager;
 
 	public GeneralDao() {
-		if(factory == null) {
-			factory = Persistence.createEntityManagerFactory("sqlite-jpa");
+		/*if(factory == null) {
+			factory = Persistence.createEntityManagerFactory("emr");
 		}
-		manager = factory.createEntityManager();
+		manager = factory.createEntityManager();*/
 		manager.getTransaction().begin();
 	}
 
 	public Demographic getDemographic(Integer demographicNo) {
-		return manager.find(Demographic.class, demographicNo);
+		Demographic demographic = manager.find(Demographic.class, demographicNo);
+		return demographic;
 	}
 }

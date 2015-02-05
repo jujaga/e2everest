@@ -14,8 +14,13 @@ public class Main {
 		// TODO Setup Database
 
 		// Setup Patient
-		PatientExport patient = new PatientExport(demographicNo);
-		patient.isLoaded();
+		try {
+			PatientExport patient = new PatientExport(demographicNo);
+			patient.isLoaded();
+		}
+		catch (Exception E) {
+			E.printStackTrace();
+		}
 
 		// Populate Clinical Document
 		ClinicalDocument clinicalDocument = new E2ECreator().createEmrConversionDocument(StubRecord.Demographic.demographicNo);
