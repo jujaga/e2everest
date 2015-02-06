@@ -13,22 +13,28 @@ public abstract class AbstractDao<T> {
 	protected EntityManager entityManager;
 
 	protected AbstractDao(Class<T> modelClass) {
-		setModelClass(modelClass);
+		this.modelClass = modelClass;
 	}
 
-	public void merge(T o) {
-		entityManager.merge(o);
-	}
-
-	public void persist(T o) {
+	// Create
+	public T persist(T o) {
 		entityManager.persist(o);
+		return o;
 	}
 
+	// Read
 	public T find(Object id) {
 		return entityManager.find(modelClass, id);
 	}
 
-	private void setModelClass(Class<T> modelClass) {
-		this.modelClass = modelClass;
+	// Update
+	public T merge(T o) {
+		return entityManager.merge(o);
+	}
+
+	// Delete
+	public void remove(T o) {
+		o = entityManager.merge(o);
+		entityManager.remove(o);
 	}
 }
