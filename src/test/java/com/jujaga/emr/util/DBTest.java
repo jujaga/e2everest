@@ -16,7 +16,8 @@ import org.junit.Test;
 
 import com.jujaga.emr.model.Demographic;
 
-// TODO Add import.sql for populating test patient 
+// TODO Add import.sql for populating test patient
+@Ignore
 public class DBTest {
 	static private EntityManagerFactory factory;
 	private EntityManager manager;
@@ -36,7 +37,7 @@ public class DBTest {
 			public void clearCachedProviders() {
 			}
 		});*/
-		factory = Persistence.createEntityManagerFactory("emr");
+		factory = Persistence.createEntityManagerFactory("com.jujaga.emr");
 	}
 
 	@Before

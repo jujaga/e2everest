@@ -1,5 +1,6 @@
 package com.jujaga.e2e.populator.header;
 
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import org.marc.everest.datatypes.II;
@@ -70,7 +71,7 @@ public class HeaderPopulator extends AbstractPopulator {
 		clinicalDocument.setTitle("PITO E2E-DTC Record of " + StubRecord.Demographic.firstName + " " + StubRecord.Demographic.lastName);
 
 		// effectiveTime
-		clinicalDocument.setEffectiveTime(StubRecord.Demographic.docCreated, TS.MINUTE);
+		clinicalDocument.setEffectiveTime(new GregorianCalendar(), TS.MINUTE);
 
 		// confidentialityCode
 		clinicalDocument.setConfidentialityCode(x_BasicConfidentialityKind.Normal);

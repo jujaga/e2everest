@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- Managed Beans -->
+	<context:component-scan base-package="com.jujaga.emr.dao" />
+	<!-- Hibernate? -->
+	<!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"> 
+		<property name="dataSource" ref="dataSource" /> <property name="hibernateProperties"> 
+		<props> <prop key="hibernate.dialect">com.jujaga.emr.util.SQLiteDialect</prop> 
+		<prop key="hibernate.show_sql">true</prop> <prop key="hibernate.format_sql">true</prop> 
+		<prop key="hibernate.hbm2ddl.auto">create</prop> <prop key="hibernate.hbm2ddl.import_files">import.sql</prop> 
+		</props> </property> </bean> -->
+	<!-- DataSource -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.sqlite.JDBC" />
+		<property name="url" value="jdbc:sqlite:e2everestDB.sqlite" />
+		<property name="username" value="e2everest" />
+		<property name="password" value="" />
+	</bean>
+	<!-- JPA -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="e2everestDB" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- TransactionManager -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+		autowire="byName">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

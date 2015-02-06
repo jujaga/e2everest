@@ -1,13 +1,13 @@
 package com.jujaga.e2e.populator.header;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedAuthor;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.model.export.header.AuthorModel;
 import com.jujaga.e2e.populator.AbstractPopulator;
 
@@ -25,7 +25,7 @@ public class AuthorPopulator extends AbstractPopulator {
 		AssignedAuthor assignedAuthor = new AssignedAuthor();
 
 		provider.setContextControlCode(ContextControl.OverridingPropagating);
-		provider.setTime(StubRecord.Demographic.docCreated, TS.DAY);
+		provider.setTime(new GregorianCalendar(), TS.DAY);
 		provider.setAssignedAuthor(assignedAuthor);
 
 		assignedAuthor.setId(authorModel.getIds());
@@ -37,7 +37,7 @@ public class AuthorPopulator extends AbstractPopulator {
 		AssignedAuthor assignedSystem = new AssignedAuthor();
 
 		system.setContextControlCode(ContextControl.OverridingPropagating);
-		system.setTime(StubRecord.Demographic.docCreated, TS.DAY);
+		system.setTime(new GregorianCalendar(), TS.DAY);
 		system.setAssignedAuthor(assignedSystem);
 
 		assignedSystem.setId(authorModel.getIds());

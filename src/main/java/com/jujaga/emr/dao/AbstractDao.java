@@ -3,11 +3,14 @@ package com.jujaga.emr.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public abstract class AbstractDao<T> {
 	protected Class<T> modelClass;
 
 	@PersistenceContext
-	protected EntityManager entityManager = null;
+	protected EntityManager entityManager;
 
 	protected AbstractDao(Class<T> modelClass) {
 		setModelClass(modelClass);

@@ -1,7 +1,9 @@
 package com.jujaga.e2e.populator.header;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -16,8 +18,8 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 
 import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.populator.EmrExportPopulator;
 import com.jujaga.e2e.populator.AbstractPopulator;
+import com.jujaga.e2e.populator.EmrExportPopulator;
 
 public class AuthorPopulatorTest {
 	private static ClinicalDocument clinicalDocument;
@@ -44,7 +46,11 @@ public class AuthorPopulatorTest {
 	public void authorProviderTest() {
 		Author author = clinicalDocument.getAuthor().get(0);
 		assertNotNull(author);
-		assertEquals(new TS(StubRecord.Demographic.docCreated, TS.DAY), author.getTime());
+		assertFalse(author.getTime().isInvalidDate());
+
+		TS now = TS.now();
+		now.setDateValuePrecision(TS.DAY);
+		assertTrue(author.getTime().toString().contains(now.toString()));
 
 		AssignedAuthor assignedAuthor = author.getAssignedAuthor();
 		assertNotNull(assignedAuthor);
@@ -55,7 +61,11 @@ public class AuthorPopulatorTest {
 	public void authorSystemTest() {
 		Author author = clinicalDocument.getAuthor().get(1);
 		assertNotNull(author);
-		assertEquals(new TS(StubRecord.Demographic.docCreated, TS.DAY), author.getTime());
+		assertFalse(author.getTime().isInvalidDate());
+
+		TS now = TS.now();
+		now.setDateValuePrecision(TS.DAY);
+		assertTrue(author.getTime().toString().contains(now.toString()));
 
 		AssignedAuthor assignedAuthor = author.getAssignedAuthor();
 		assertNotNull(assignedAuthor);

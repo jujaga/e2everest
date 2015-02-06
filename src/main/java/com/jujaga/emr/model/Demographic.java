@@ -71,7 +71,7 @@ public class Demographic implements Serializable {
 	private String anonymous = null;
 
 	private String lastUpdateUser = null;
-	private Date lastUpdateDate = new Date();
+	private Date lastUpdateDate = null;
 
 	public Demographic() {
 		super();

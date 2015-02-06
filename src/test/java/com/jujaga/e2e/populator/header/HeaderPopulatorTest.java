@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,8 +21,8 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.populator.EmrExportPopulator;
 import com.jujaga.e2e.populator.AbstractPopulator;
+import com.jujaga.e2e.populator.EmrExportPopulator;
 import com.jujaga.e2e.util.EverestUtils;
 
 public class HeaderPopulatorTest {
@@ -97,7 +98,11 @@ public class HeaderPopulatorTest {
 	public void effectiveTimeTest() {
 		TS effectiveTime = clinicalDocument.getEffectiveTime();
 		assertNotNull(effectiveTime);
-		assertEquals(StubRecord.Demographic.docCreated, effectiveTime.getDateValue());
+		assertFalse(effectiveTime.isInvalidDate());
+
+		TS now = TS.now();
+		now.setDateValuePrecision(TS.DAY);
+		assertTrue(effectiveTime.toString().contains(now.toString()));
 	}
 
 	@Test

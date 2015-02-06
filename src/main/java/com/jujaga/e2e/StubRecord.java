@@ -1,7 +1,5 @@
 package com.jujaga.e2e;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.UUID;
 
 // A temporary stub object holding data values necessary to populate a demographic only portion of E2E
@@ -11,7 +9,6 @@ public final class StubRecord {
 		public static String randomDocGUID = UUID.randomUUID().toString();
 		public static String firstName = "John";
 		public static String lastName = "Cleese";
-		public static Calendar docCreated = new GregorianCalendar();
 		public static String hin = "448000001";
 		public static String address = "1234 Street";
 		public static String city = "city";
