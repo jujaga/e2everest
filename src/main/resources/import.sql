@@ -1,2 +1,1 @@
-/* INSERT INTO demographic VALUES ("1","1234 Street",null,null,null,null,null,"city",null,null,"25","","test@test.com",null,null,"John",null,null,"448000001","Cleese",null,null,"09",null,null,"English","AC",null,null,"1234567","765-4321","V8T1D6",null,"999998","BC",null,null,null,null,"M",null,null,null,null,null,"1940");
-*/
+INSERT INTO DEMOGRAPHIC VALUES(1,'1234 Street',NULL,NULL,NULL,NULL,NULL,'city',NULL,NULL,'25',NULL,'test@test.com',NULL,NULL,'John',NULL,NULL,'448000001','Cleese',NULL,NULL,'09',NULL,NULL,'English',NULL,NULL,NULL,'1234567','765-4321','V8T1D6',NULL,NULL,'BC',NULL,NULL,NULL,NULL,'M',NULL,NULL,NULL,NULL,NULL,'1940');

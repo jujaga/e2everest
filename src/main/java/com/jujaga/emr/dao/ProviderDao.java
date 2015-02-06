@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 import com.jujaga.emr.model.Demographic;
 
 @Repository
-public class DemographicDao extends AbstractDao<Demographic> {
-	public DemographicDao() {
+public class ProviderDao extends AbstractDao<Demographic> {
+	public ProviderDao() {
 		super(Demographic.class);
 	}
 }

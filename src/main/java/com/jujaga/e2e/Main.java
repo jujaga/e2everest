@@ -16,7 +16,9 @@ public class Main {
 		// Setup Patient
 		try {
 			PatientExport patient = new PatientExport(demographicNo);
-			patient.isLoaded();
+			if(patient.isLoaded()) {
+				System.out.println("Demographic ".concat(demographicNo.toString()).concat(" loaded"));
+			}
 		}
 		catch (Exception E) {
 			E.printStackTrace();
