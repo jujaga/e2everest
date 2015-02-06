@@ -35,6 +35,10 @@ public class EverestUtils {
 		fmtr.setValidateConformance(validation);
 		fmtr.getGraphAides().add(new DatatypeFormatter());
 
+		if(clinicalDocument == null) {
+			return null;
+		}
+
 		try {
 			XMLOutputFactory fact = XMLOutputFactory.newInstance();
 			XMLStateStreamWriter xssw = new XMLStateStreamWriter(fact.createXMLStreamWriter(sw));

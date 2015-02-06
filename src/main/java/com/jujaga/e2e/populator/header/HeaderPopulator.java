@@ -12,7 +12,6 @@ import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.BindingRealm;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.populator.AbstractPopulator;
 
@@ -68,7 +67,7 @@ public class HeaderPopulator extends AbstractPopulator {
 		clinicalDocument.setCode(code);
 
 		// title
-		clinicalDocument.setTitle("PITO E2E-DTC Record of " + StubRecord.Demographic.firstName + " " + StubRecord.Demographic.lastName);
+		clinicalDocument.setTitle("PITO E2E-DTC Record from ".concat(Constants.EMR.EMR_VERSION));
 
 		// effectiveTime
 		clinicalDocument.setEffectiveTime(new GregorianCalendar(), TS.MINUTE);

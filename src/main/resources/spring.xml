@@ -14,7 +14,8 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url" value="jdbc:hsqldb:mem:db/e2everestDB;sql.syntax_mys=true" />
+		<property name="url"
+			value="jdbc:hsqldb:mem:db/e2everestDB;sql.syntax_mys=true" />
 		<property name="username" value="e2everest" />
 		<property name="password" value="" />
 	</bean>
@@ -23,6 +24,15 @@
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="e2everestDB" />
 		<property name="dataSource" ref="dataSource" />
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.import_files">import.sql</prop>
+			</props>
+		</property>
 	</bean>
 	<!-- TransactionManager -->
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
@@ -30,10 +40,4 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	<!-- Hibernate <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"> 
-		<property name="dataSource" ref="dataSource" /> <property name="hibernateProperties"> 
-		<props> <prop key="hibernate.dialect">com.jujaga.emr.util.SQLiteDialect</prop> 
-		<prop key="hibernate.show_sql">true</prop> <prop key="hibernate.format_sql">true</prop> 
-		<prop key="hibernate.hbm2ddl.auto">create</prop> <prop key="hibernate.hbm2ddl.import_files">import.sql</prop> 
-		</props> </property> </bean> -->
 </beans>

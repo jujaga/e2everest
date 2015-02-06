@@ -8,7 +8,7 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.populator.EmrExportPopulator;
 
 public class E2ECreator {
-	public ClinicalDocument createEmrConversionDocument(Integer demographicNo) {
+	public static ClinicalDocument createEmrConversionDocument(Integer demographicNo) {
 		CE<String> code = Constants.EMRConversionDocument.CODE;
 		II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
 

@@ -7,12 +7,5 @@
 		<class>com.jujaga.emr.model.Demographic</class>
 		<class>com.jujaga.emr.model.Provider</class>
 		<class>com.jujaga.emr.model.Clinic</class>
-		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
-			<property name="hibernate.show_sql" value="false" />
-			<property name="hibernate.format_sql" value="false" />
-			<property name="hibernate.hbm2ddl.auto" value="create" />
-			<property name="hibernate.hbm2ddl.import_files" value="import.sql" />
-		</properties>
 	</persistence-unit>
 </persistence>
