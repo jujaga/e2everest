@@ -11,7 +11,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.marc.everest.datatypes.AD;
 import org.marc.everest.datatypes.ADXP;
@@ -28,20 +27,34 @@ import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.LanguageCommunication;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.AdministrativeGender;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.dao.DemographicDao;
+import com.jujaga.emr.model.Demographic;
 
-// TODO Handle ignored null test cases
 public class RecordTargetModelTest {
+	private static ApplicationContext context;
+	private static DemographicDao dao;
+	private static Demographic demographic;
 	private static RecordTargetModel recordTargetModel;
+
+	private static Demographic nullDemographic;
+	private static RecordTargetModel nullRecordTargetModel;
 
 	@BeforeClass
 	public static void beforeClass() {
-		Integer demographicNo = StubRecord.Demographic.demographicNo;
-		recordTargetModel = new RecordTargetModel(demographicNo);
+		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
+		dao = context.getBean(DemographicDao.class);
+		demographic = dao.find(Constants.Runtime.VALID_DEMOGRAPHIC);
+		recordTargetModel = new RecordTargetModel(demographic);
+
+		nullDemographic = new Demographic();
+		dao.persist(nullDemographic);
+		nullRecordTargetModel = new RecordTargetModel(nullDemographic);
 	}
 
 	@Test
@@ -54,13 +67,12 @@ public class RecordTargetModelTest {
 		assertEquals(Constants.DocumentHeader.BC_PHN_OID, id.getRoot());
 		assertEquals(Constants.DocumentHeader.BC_PHN_OID_ASSIGNING_AUTHORITY_NAME, id.getAssigningAuthorityName());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
-		assertEquals(StubRecord.Demographic.hin, id.getExtension());
+		assertEquals(demographic.getHin(), id.getExtension());
 	}
 
-	@Ignore
 	@Test
 	public void idNullTest() {
-		SET<II> ids = recordTargetModel.getIds();
+		SET<II> ids = nullRecordTargetModel.getIds();
 		assertNotNull(ids);
 
 		II id = ids.get(0);
@@ -80,16 +92,15 @@ public class RecordTargetModelTest {
 		assertEquals(PostalAddressUse.HomeAddress, addr.getUse().get(0).getCode());
 
 		assertEquals(4, addr.getPart().size());
-		assertTrue(addr.getPart().contains(new ADXP(StubRecord.Demographic.address, AddressPartType.Delimiter)));
-		assertTrue(addr.getPart().contains(new ADXP(StubRecord.Demographic.city, AddressPartType.City)));
-		assertTrue(addr.getPart().contains(new ADXP(StubRecord.Demographic.province, AddressPartType.State)));
-		assertTrue(addr.getPart().contains(new ADXP(StubRecord.Demographic.postal, AddressPartType.PostalCode)));
+		assertTrue(addr.getPart().contains(new ADXP(demographic.getAddress(), AddressPartType.Delimiter)));
+		assertTrue(addr.getPart().contains(new ADXP(demographic.getCity(), AddressPartType.City)));
+		assertTrue(addr.getPart().contains(new ADXP(demographic.getProvince(), AddressPartType.State)));
+		assertTrue(addr.getPart().contains(new ADXP(demographic.getPostal(), AddressPartType.PostalCode)));
 	}
 
-	@Ignore
 	@Test
 	public void addressNullTest() {
-		SET<AD> addrSet = recordTargetModel.getAddresses();
+		SET<AD> addrSet = nullRecordTargetModel.getAddresses();
 		assertNull(addrSet);
 	}
 
@@ -102,23 +113,22 @@ public class RecordTargetModelTest {
 		TEL tel0 = telecoms.get(0);
 		assertNotNull(tel0);
 		assertTrue(TEL.isValidPhoneFlavor(tel0));
-		assertEquals("tel:" + StubRecord.Demographic.phoneHome.replaceAll("-", ""), tel0.getValue());
+		assertEquals("tel:" + demographic.getPhone().replaceAll("-", ""), tel0.getValue());
 
 		TEL tel1 = telecoms.get(1);
 		assertNotNull(tel1);
 		assertTrue(TEL.isValidPhoneFlavor(tel1));
-		assertEquals("tel:" + StubRecord.Demographic.phoneWork.replaceAll("-", ""), tel1.getValue());
+		assertEquals("tel:" + demographic.getPhone2().replaceAll("-", ""), tel1.getValue());
 
 		TEL tel2 = telecoms.get(2);
 		assertNotNull(tel2);
 		assertTrue(TEL.isValidEMailFlavor(tel2));
-		assertEquals("mailto:" + StubRecord.Demographic.email, tel2.getValue());
+		assertEquals("mailto:" + demographic.getEmail(), tel2.getValue());
 	}
 
-	@Ignore
 	@Test
 	public void telecomNullTest() {
-		SET<TEL> telecoms = recordTargetModel.getTelecoms();
+		SET<TEL> telecoms = nullRecordTargetModel.getTelecoms();
 		assertNull(telecoms);
 	}
 
@@ -135,14 +145,13 @@ public class RecordTargetModelTest {
 		List<ENXP> nameParts = name.getParts();
 		assertNotNull(nameParts);
 		assertEquals(2, nameParts.size());
-		assertTrue(nameParts.contains(new ENXP(StubRecord.Demographic.firstName, EntityNamePartType.Given)));
-		assertTrue(nameParts.contains(new ENXP(StubRecord.Demographic.lastName, EntityNamePartType.Family)));
+		assertTrue(nameParts.contains(new ENXP(demographic.getFirstName(), EntityNamePartType.Given)));
+		assertTrue(nameParts.contains(new ENXP(demographic.getLastName(), EntityNamePartType.Family)));
 	}
 
-	@Ignore
 	@Test
 	public void nameNullTest() {
-		SET<PN> names = recordTargetModel.getNames();
+		SET<PN> names = nullRecordTargetModel.getNames();
 		assertNull(names);
 	}
 
@@ -150,15 +159,14 @@ public class RecordTargetModelTest {
 	public void genderTest() {
 		CE<AdministrativeGender> gender = recordTargetModel.getGender();
 		assertNotNull(gender);
-		String sexCode = StubRecord.Demographic.sex.toUpperCase().replace("U", "UN");
+		String sexCode = demographic.getSex().toUpperCase().replace("U", "UN");
 		assertEquals(Mappings.genderCode.get(sexCode), gender.getCode());
 		assertEquals(Mappings.genderDescription.get(sexCode), gender.getDisplayName());
 	}
 
-	@Ignore
 	@Test
 	public void genderNullTest() {
-		CE<AdministrativeGender> gender = recordTargetModel.getGender();
+		CE<AdministrativeGender> gender = nullRecordTargetModel.getGender();
 		assertNotNull(gender);
 		assertTrue(gender.isNull());
 	}
@@ -170,16 +178,15 @@ public class RecordTargetModelTest {
 
 		Calendar cal = birthDate.getDateValue();
 		assertNotNull(cal);
-		assertEquals(Integer.parseInt(StubRecord.Demographic.yearOfBirth), cal.get(Calendar.YEAR));
+		assertEquals(Integer.parseInt(demographic.getYearOfBirth()), cal.get(Calendar.YEAR));
 		// Month starts counting from 0, not 1
-		assertEquals(Integer.parseInt(StubRecord.Demographic.monthOfBirth)-1, cal.get(Calendar.MONTH));
-		assertEquals(Integer.parseInt(StubRecord.Demographic.dateOfBirth), cal.get(Calendar.DATE));
+		assertEquals(Integer.parseInt(demographic.getMonthOfBirth())-1, cal.get(Calendar.MONTH));
+		assertEquals(Integer.parseInt(demographic.getDateOfBirth()), cal.get(Calendar.DATE));
 	}
 
-	@Ignore
 	@Test
 	public void birthDateNullTest() {
-		TS birthDate = recordTargetModel.getBirthDate();
+		TS birthDate = nullRecordTargetModel.getBirthDate();
 		assertNotNull(birthDate);
 		assertTrue(birthDate.isNull());
 	}
@@ -191,13 +198,12 @@ public class RecordTargetModelTest {
 
 		LanguageCommunication language = languages.get(0);
 		assertNotNull(language);
-		assertEquals(Mappings.languageCode.get(StubRecord.Demographic.officialLanguage), language.getLanguageCode().getCode());
+		assertEquals(Mappings.languageCode.get(demographic.getOfficialLanguage()), language.getLanguageCode().getCode());
 	}
 
-	@Ignore
 	@Test
 	public void languageCommunicationNullTest() {
-		ArrayList<LanguageCommunication> languages = recordTargetModel.getLanguages();
+		ArrayList<LanguageCommunication> languages = nullRecordTargetModel.getLanguages();
 		assertNull(languages);
 	}
 }

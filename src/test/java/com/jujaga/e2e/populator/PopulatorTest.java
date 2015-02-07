@@ -2,37 +2,26 @@ package com.jujaga.e2e.populator;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.generic.CE;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.emr.PatientExport;
 
 public class PopulatorTest {
-	private static AbstractPopulator populator;
-	private static ClinicalDocument clinicalDocument;
+	private static CE<String> code = Constants.EMRConversionDocument.CODE;
+	private static II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
 
-	@BeforeClass
-	public static void beforeClass() {
-		Integer demographicNo = StubRecord.Demographic.demographicNo;
-		CE<String> code = Constants.EMRConversionDocument.CODE;
-		II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
+	private static final Integer VALID_DEMOGRAPHIC = 1;
 
-		populator = new EmrExportPopulator(demographicNo, code, templateId);
+	@Test
+	public void validPopulatorTest() {
+		PatientExport patientExport = new PatientExport(VALID_DEMOGRAPHIC);
+
+		AbstractPopulator populator = new EmrExportPopulator(patientExport, code, templateId);
 		populator.populate();
-		clinicalDocument = populator.getClinicalDocument();
-	}
-
-	@Test
-	public void populatorTest() {
 		assertNotNull(populator);
-	}
-
-	@Test
-	public void clinicalDocumentTest() {
-		assertNotNull(clinicalDocument);
+		assertNotNull(populator.getClinicalDocument());
 	}
 }

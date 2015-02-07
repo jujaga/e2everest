@@ -19,27 +19,16 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.BindingRealm;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.populator.AbstractPopulator;
-import com.jujaga.e2e.populator.EmrExportPopulator;
+import com.jujaga.e2e.director.E2ECreator;
 import com.jujaga.e2e.util.EverestUtils;
 
 public class HeaderPopulatorTest {
-	private static Integer demographicNo;
-	private static CE<String> code;
-	private static II templateId;
 	private static ClinicalDocument clinicalDocument;
 
 	@BeforeClass
 	public static void beforeClass() {
-		demographicNo = StubRecord.Demographic.demographicNo;
-		code = Constants.EMRConversionDocument.CODE;
-		templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
-
-		AbstractPopulator populator = new EmrExportPopulator(demographicNo, code, templateId);
-		populator.populate();
-		clinicalDocument = populator.getClinicalDocument();
+		clinicalDocument = E2ECreator.createEmrConversionDocument(Constants.Runtime.VALID_DEMOGRAPHIC);
 	}
 
 	@Test
@@ -69,14 +58,14 @@ public class HeaderPopulatorTest {
 		assertNotNull(templateIds);
 		assertEquals(2, templateIds.size());
 		assertEquals(Constants.DocumentHeader.TEMPLATE_ID, templateIds.get(0).getRoot());
-		assertEquals(templateId, templateIds.get(1));
+		assertEquals(new II(Constants.EMRConversionDocument.TEMPLATE_ID), templateIds.get(1));
 	}
 
 	@Test
 	public void idTest() {
 		II id = clinicalDocument.getId();
 		assertNotNull(id);
-		assertEquals(demographicNo.toString(), id.getRoot());
+		assertEquals(Constants.Runtime.VALID_DEMOGRAPHIC.toString(), id.getRoot());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
 	}
 
@@ -84,7 +73,7 @@ public class HeaderPopulatorTest {
 	public void codeTest() {
 		CE<String> code = clinicalDocument.getCode();
 		assertNotNull(code);
-		assertEquals(HeaderPopulatorTest.code, code);
+		assertEquals(Constants.EMRConversionDocument.CODE, code);
 	}
 
 	@Test

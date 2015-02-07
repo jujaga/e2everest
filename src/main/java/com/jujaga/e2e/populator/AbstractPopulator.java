@@ -5,12 +5,9 @@ import java.util.List;
 
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 
-import com.jujaga.emr.PatientExport;
-
 public abstract class AbstractPopulator {
 	protected List<AbstractPopulator> populators;
-	protected ClinicalDocument clinicalDocument = null;
-	protected PatientExport patientExport;
+	protected ClinicalDocument clinicalDocument;
 
 	protected AbstractPopulator() {
 		populators = new ArrayList<AbstractPopulator>();
@@ -34,13 +31,5 @@ public abstract class AbstractPopulator {
 			populator.clinicalDocument = clinicalDocument;
 			setClinicalDocument(clinicalDocument, populator.populators);
 		}
-	}
-
-	public PatientExport getPatientExport() {
-		return patientExport;
-	}
-
-	public void setPatientExport(PatientExport patientExport) {
-		this.patientExport = patientExport;
 	}
 }

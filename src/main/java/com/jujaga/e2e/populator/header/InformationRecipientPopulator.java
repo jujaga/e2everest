@@ -10,8 +10,8 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_InformationRecipientRole;
 
 import com.jujaga.e2e.populator.AbstractPopulator;
 
-public class InformationRecipientPopulator extends AbstractPopulator {
-	public InformationRecipientPopulator() {
+class InformationRecipientPopulator extends AbstractPopulator {
+	InformationRecipientPopulator() {
 	}
 
 	@Override

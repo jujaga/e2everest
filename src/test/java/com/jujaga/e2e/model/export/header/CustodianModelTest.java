@@ -4,28 +4,40 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.marc.everest.datatypes.ENXP;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.ON;
 import org.marc.everest.datatypes.generic.SET;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.dao.ClinicDao;
+import com.jujaga.emr.model.Clinic;
 
-// TODO Handle ignored null test cases
 public class CustodianModelTest {
+	private static ApplicationContext context;
+	private static ClinicDao dao;
+	private static Clinic clinic;
 	private static CustodianModel custodianModel;
+
+	private static Clinic nullClinic;
+	private static CustodianModel nullCustodianModel;
 
 	@BeforeClass
 	public static void beforeClass() {
-		Integer demographicNo = StubRecord.Demographic.demographicNo;
-		custodianModel = new CustodianModel(demographicNo);
+		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
+		dao = context.getBean(ClinicDao.class);
+		clinic = dao.find(Constants.Runtime.VALID_CLINIC);
+		custodianModel = new CustodianModel(clinic);
+
+		nullClinic = new Clinic();
+		dao.persist(nullClinic);
+		nullCustodianModel = new CustodianModel(nullClinic);
 	}
 
 	@Test
@@ -38,18 +50,17 @@ public class CustodianModelTest {
 		assertEquals(Constants.EMR.EMR_OID, id.getRoot());
 		assertEquals(Constants.EMR.EMR_VERSION, id.getAssigningAuthorityName());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
-		assertEquals(StubRecord.Custodian.custodianId, id.getExtension());
+		assertEquals(clinic.getId().toString(), id.getExtension());
 	}
 
-	@Ignore
 	@Test
 	public void idNullTest() {
-		SET<II> ids = custodianModel.getIds();
+		SET<II> ids = nullCustodianModel.getIds();
 		assertNotNull(ids);
 
 		II id = ids.get(0);
 		assertNotNull(id);
-		assertTrue(id.isNull());
+		assertFalse(id.isNull());
 	}
 
 	@Test
@@ -59,14 +70,13 @@ public class CustodianModelTest {
 
 		ENXP name = on.getPart(0);
 		assertNotNull(name);
-		assertFalse(EverestUtils.isNullorEmptyorWhitespace(StubRecord.Custodian.cusstodianClinicName));
-		assertEquals(StubRecord.Custodian.cusstodianClinicName, name.getValue());
+		assertFalse(EverestUtils.isNullorEmptyorWhitespace(clinic.getClinicName()));
+		assertEquals(clinic.getClinicName(), name.getValue());
 	}
 
-	@Ignore
 	@Test
 	public void nameNullTest() {
-		ON on = custodianModel.getName();
+		ON on = nullCustodianModel.getName();
 		assertNull(on);
 	}
 }

@@ -9,13 +9,11 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.populator.AbstractPopulator;
+import com.jujaga.emr.PatientExport;
 
 public class DocumentBodyPopulator extends AbstractPopulator {
-	@SuppressWarnings("unused")
-	private final Integer demographicNo;
-
-	public DocumentBodyPopulator(int demographicNo) {
-		this.demographicNo = demographicNo;
+	public DocumentBodyPopulator(PatientExport patientExport) {
+		patientExport.isLoaded();
 	}
 
 	@Override

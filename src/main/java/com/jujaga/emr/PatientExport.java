@@ -4,12 +4,12 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.jujaga.e2e.constant.Constants;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.model.Demographic;
 
 public class PatientExport {
 	private static Logger log = Logger.getLogger(PatientExport.class.getName());
-	private static final String SPRING_APPLICATION_CONTEXT = "spring.xml";
 	private static ApplicationContext context = null;
 
 	private DemographicDao demographicDao = null;
@@ -19,7 +19,7 @@ public class PatientExport {
 
 	public PatientExport(Integer demographicNo) {
 		if(context == null) {
-			context = new ClassPathXmlApplicationContext(SPRING_APPLICATION_CONTEXT);
+			context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
 		}
 		demographicDao = context.getBean(DemographicDao.class);
 		loaded = loadPatient(demographicNo);
@@ -42,6 +42,10 @@ public class PatientExport {
 
 	public boolean isLoaded() {
 		return loaded;
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return context;
 	}
 
 	public Demographic getDemographic() {

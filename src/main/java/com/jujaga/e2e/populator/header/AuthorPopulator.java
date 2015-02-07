@@ -8,14 +8,20 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedAuthor;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
+import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.header.AuthorModel;
 import com.jujaga.e2e.populator.AbstractPopulator;
+import com.jujaga.emr.PatientExport;
+import com.jujaga.emr.dao.ProviderDao;
+import com.jujaga.emr.model.Provider;
 
-public class AuthorPopulator extends AbstractPopulator {
+class AuthorPopulator extends AbstractPopulator {
 	private final AuthorModel authorModel;
 
-	public AuthorPopulator(Integer demographicNo) {
-		authorModel = new AuthorModel(demographicNo);
+	AuthorPopulator(PatientExport patientExport) {
+		ProviderDao providerDao = patientExport.getApplicationContext().getBean(ProviderDao.class);
+		Provider provider = providerDao.find(Constants.Runtime.VALID_PROVIDER);
+		authorModel = new AuthorModel(provider);
 	}
 
 	@Override

@@ -14,27 +14,29 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.populator.AbstractPopulator;
+import com.jujaga.emr.PatientExport;
+import com.jujaga.emr.model.Demographic;
 
 public class HeaderPopulator extends AbstractPopulator {
-	private final Integer demographicNo;
+	private final Demographic demographic;
 	private final CE<String> code;
 	private final II templateId;
 
-	public HeaderPopulator(Integer demographicNo, CE<String> code, II templateId) {
-		this.demographicNo = demographicNo;
+	public HeaderPopulator(PatientExport patientExport, CE<String> code, II templateId) {
+		this.demographic = patientExport.getDemographic();
 		this.code = code;
 		this.templateId = templateId;
 
 		// Record Target
-		RecordTargetPopulator recordTargetPopulator = new RecordTargetPopulator(demographicNo);
+		RecordTargetPopulator recordTargetPopulator = new RecordTargetPopulator(patientExport);
 		populators.add(recordTargetPopulator);
 
 		// Author
-		AuthorPopulator authorPopulator = new AuthorPopulator(demographicNo);
+		AuthorPopulator authorPopulator = new AuthorPopulator(patientExport);
 		populators.add(authorPopulator);
 
 		// Custodian
-		CustodianPopulator custodianPopulator = new CustodianPopulator(demographicNo);
+		CustodianPopulator custodianPopulator = new CustodianPopulator(patientExport);
 		populators.add(custodianPopulator);
 
 		// Information Recipient
@@ -61,13 +63,13 @@ public class HeaderPopulator extends AbstractPopulator {
 		clinicalDocument.setTemplateId(templateIds);
 
 		// id
-		clinicalDocument.setId(demographicNo.toString(), UUID.randomUUID().toString().toUpperCase());
+		clinicalDocument.setId(demographic.getDemographicNo().toString(), UUID.randomUUID().toString().toUpperCase());
 
 		// code
 		clinicalDocument.setCode(code);
 
 		// title
-		clinicalDocument.setTitle("PITO E2E-DTC Record from ".concat(Constants.EMR.EMR_VERSION));
+		clinicalDocument.setTitle("PITO E2E-DTC Record of ".concat(demographic.getFirstName()).concat(" ").concat(demographic.getLastName()));
 
 		// effectiveTime
 		clinicalDocument.setEffectiveTime(new GregorianCalendar(), TS.MINUTE);
