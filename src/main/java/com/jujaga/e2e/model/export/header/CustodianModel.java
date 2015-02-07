@@ -8,18 +8,18 @@ import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.ON;
 import org.marc.everest.datatypes.generic.SET;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.model.Clinic;
 
 public class CustodianModel {
+	private final Clinic clinic;
+
 	private SET<II> ids;
 	private ON name;
 
-	public CustodianModel(Integer demographicNo) {
-		if(demographicNo <= 0) {
-			System.out.println("demographicNo should be greater than 0");
-		}
+	public CustodianModel(Clinic clinic) {
+		this.clinic = clinic;
 
 		setIds();
 		setName();
@@ -31,10 +31,10 @@ public class CustodianModel {
 
 	private void setIds() {
 		II id = new II();
-		if(!EverestUtils.isNullorEmptyorWhitespace(StubRecord.Custodian.custodianId)) {
+		if(!EverestUtils.isNullorEmptyorWhitespace(clinic.getId().toString())) {
 			id.setRoot(Constants.EMR.EMR_OID);
 			id.setAssigningAuthorityName(Constants.EMR.EMR_VERSION);
-			id.setExtension(StubRecord.Custodian.custodianId);
+			id.setExtension(clinic.getId().toString());
 		} else {
 			id.setNullFlavor(NullFlavor.NoInformation);
 		}
@@ -47,8 +47,8 @@ public class CustodianModel {
 
 	private void setName() {
 		ArrayList<ENXP> name = new ArrayList<ENXP>();
-		if(!EverestUtils.isNullorEmptyorWhitespace(StubRecord.Custodian.cusstodianClinicName)) {
-			name.add(new ENXP(StubRecord.Custodian.cusstodianClinicName));
+		if(!EverestUtils.isNullorEmptyorWhitespace(clinic.getClinicName())) {
+			name.add(new ENXP(clinic.getClinicName()));
 		}
 		if(!name.isEmpty()) {
 			ON on = new ON();

@@ -3,6 +3,7 @@
 .metadata
 .gradle
 bin/
+db/
 target/
 tmp/
 *.tmp
@@ -32,3 +33,4 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+/target/

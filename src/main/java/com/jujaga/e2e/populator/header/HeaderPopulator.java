@@ -1,5 +1,6 @@
 package com.jujaga.e2e.populator.header;
 
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import org.marc.everest.datatypes.II;
@@ -11,34 +12,35 @@ import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.BindingRealm;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
+import com.jujaga.emr.PatientExport;
+import com.jujaga.emr.model.Demographic;
 
-public class HeaderPopulator extends Populator {
-	private final Integer demographicNo;
+public class HeaderPopulator extends AbstractPopulator {
+	private final Demographic demographic;
 	private final CE<String> code;
 	private final II templateId;
 
-	public HeaderPopulator(Integer demographicNo, CE<String> code, II templateId) {
-		this.demographicNo = demographicNo;
+	public HeaderPopulator(PatientExport patientExport, CE<String> code, II templateId) {
+		this.demographic = patientExport.getDemographic();
 		this.code = code;
 		this.templateId = templateId;
 
 		// Record Target
-		RecordTargetPopulator recordTargetPopulator = new RecordTargetPopulator(demographicNo);
+		RecordTargetPopulator recordTargetPopulator = new RecordTargetPopulator(patientExport);
 		populators.add(recordTargetPopulator);
 
 		// Author
-		AuthorPopulator authorPopulator = new AuthorPopulator(demographicNo);
+		AuthorPopulator authorPopulator = new AuthorPopulator(patientExport);
 		populators.add(authorPopulator);
 
 		// Custodian
-		CustodianPopulator custodianPopulator = new CustodianPopulator(demographicNo);
+		CustodianPopulator custodianPopulator = new CustodianPopulator(patientExport);
 		populators.add(custodianPopulator);
 
 		// Information Recipient
-		InformationRecipientPopulator informationRecipientPopulator = new InformationRecipientPopulator(demographicNo);
+		InformationRecipientPopulator informationRecipientPopulator = new InformationRecipientPopulator();
 		populators.add(informationRecipientPopulator);
 	}
 
@@ -61,16 +63,16 @@ public class HeaderPopulator extends Populator {
 		clinicalDocument.setTemplateId(templateIds);
 
 		// id
-		clinicalDocument.setId(demographicNo.toString(), UUID.randomUUID().toString().toUpperCase());
+		clinicalDocument.setId(demographic.getDemographicNo().toString(), UUID.randomUUID().toString().toUpperCase());
 
 		// code
 		clinicalDocument.setCode(code);
 
 		// title
-		clinicalDocument.setTitle("PITO E2E-DTC Record of " + StubRecord.Demographic.firstName + " " + StubRecord.Demographic.lastName);
+		clinicalDocument.setTitle("PITO E2E-DTC Record of ".concat(demographic.getFirstName()).concat(" ").concat(demographic.getLastName()));
 
 		// effectiveTime
-		clinicalDocument.setEffectiveTime(StubRecord.Demographic.docCreated, TS.MINUTE);
+		clinicalDocument.setEffectiveTime(new GregorianCalendar(), TS.MINUTE);
 
 		// confidentialityCode
 		clinicalDocument.setConfidentialityCode(x_BasicConfidentialityKind.Normal);

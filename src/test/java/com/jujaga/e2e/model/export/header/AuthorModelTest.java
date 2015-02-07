@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.marc.everest.datatypes.ENXP;
 import org.marc.everest.datatypes.EntityNamePartType;
@@ -20,19 +19,33 @@ import org.marc.everest.datatypes.TEL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AuthoringDevice;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Person;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.dao.ProviderDao;
+import com.jujaga.emr.model.Provider;
 
-// TODO Handle ignored null test cases
 public class AuthorModelTest {
+	private static ApplicationContext context;
+	private static ProviderDao dao;
+	private static Provider provider;
 	private static AuthorModel authorModel;
+
+	private static Provider nullProvider;
+	private static AuthorModel nullAuthorModel;
 
 	@BeforeClass
 	public static void beforeClass() {
-		Integer demographicNo = StubRecord.Demographic.demographicNo;
-		authorModel = new AuthorModel(demographicNo);
+		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
+		dao = context.getBean(ProviderDao.class);
+		provider = dao.find(Constants.Runtime.VALID_PROVIDER);
+		authorModel = new AuthorModel(provider);
+
+		nullProvider = new Provider();
+		dao.persist(nullProvider);
+		nullAuthorModel = new AuthorModel(nullProvider);
 	}
 
 	@Test
@@ -45,18 +58,17 @@ public class AuthorModelTest {
 		assertEquals(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_ID_OID, id.getRoot());
 		assertEquals(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME, id.getAssigningAuthorityName());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
-		assertEquals(StubRecord.Provider.providerId, id.getExtension());
+		assertEquals(provider.getProviderNo().toString(), id.getExtension());
 	}
 
-	@Ignore
 	@Test
 	public void idNullTest() {
-		SET<II> ids = authorModel.getIds();
+		SET<II> ids = nullAuthorModel.getIds();
 		assertNotNull(ids);
 
 		II id = ids.get(0);
 		assertNotNull(id);
-		assertTrue(id.isNull());
+		assertFalse(id.isNull());
 	}
 
 	@Test
@@ -68,23 +80,22 @@ public class AuthorModelTest {
 		TEL tel0 = telecoms.get(0);
 		assertNotNull(tel0);
 		assertTrue(TEL.isValidPhoneFlavor(tel0));
-		assertEquals("tel:" + StubRecord.Provider.providerHomePhone.replaceAll("-", ""), tel0.getValue());
+		assertEquals("tel:" + provider.getPhone().replaceAll("-", ""), tel0.getValue());
 
 		TEL tel1 = telecoms.get(1);
 		assertNotNull(tel1);
 		assertTrue(TEL.isValidPhoneFlavor(tel1));
-		assertEquals("tel:" + StubRecord.Provider.providerWorkPhone.replaceAll("-", ""), tel1.getValue());
+		assertEquals("tel:" + provider.getWorkPhone().replaceAll("-", ""), tel1.getValue());
 
 		TEL tel2 = telecoms.get(2);
 		assertNotNull(tel2);
 		assertTrue(TEL.isValidEMailFlavor(tel2));
-		assertEquals("mailto:" + StubRecord.Provider.providerEmail, tel2.getValue());
+		assertEquals("mailto:" + provider.getEmail(), tel2.getValue());
 	}
 
-	@Ignore
 	@Test
 	public void telecomNullTest() {
-		SET<TEL> telecoms = authorModel.getTelecoms();
+		SET<TEL> telecoms = nullAuthorModel.getTelecoms();
 		assertNull(telecoms);
 	}
 
@@ -104,18 +115,14 @@ public class AuthorModelTest {
 		List<ENXP> nameParts = name.getParts();
 		assertNotNull(nameParts);
 		assertEquals(2, nameParts.size());
-		assertTrue(nameParts.contains(new ENXP(StubRecord.Provider.providerFirstName, EntityNamePartType.Given)));
-		assertTrue(nameParts.contains(new ENXP(StubRecord.Provider.providerLastName, EntityNamePartType.Family)));
+		assertTrue(nameParts.contains(new ENXP(provider.getFirstName(), EntityNamePartType.Given)));
+		assertTrue(nameParts.contains(new ENXP(provider.getLastName(), EntityNamePartType.Family)));
 	}
 
-	@Ignore
 	@Test
 	public void personNullTest() {
-		Person person = authorModel.getPerson();
-		assertNotNull(person);
-
-		SET<PN> names = person.getName();
-		assertNull(names);
+		Person person = nullAuthorModel.getPerson();
+		assertNull(person);
 	}
 
 	@Test

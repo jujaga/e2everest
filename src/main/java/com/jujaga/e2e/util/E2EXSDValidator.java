@@ -7,6 +7,7 @@ import java.io.StringReader;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -15,6 +16,8 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 public class E2EXSDValidator {
+	private static Logger log = Logger.getLogger(E2EXSDValidator.class.getName());
+
 	public static boolean isWellFormedXML(String xmlstring) {
 		return isWellFormedXML(xmlstring, false);
 	}
@@ -31,8 +34,8 @@ public class E2EXSDValidator {
 			reader.parse(new InputSource(new StringReader(xmlstring)));
 			return true;
 		} catch (Exception e) {
-			if (!testSuppress) {
-				System.out.println("XSD ERROR: " + e.getMessage());
+			if(!testSuppress) {
+				log.warn(e.getMessage());
 			}
 			return false;
 		}
@@ -56,8 +59,8 @@ public class E2EXSDValidator {
 			reader.parse(new InputSource(new StringReader(xmlstring)));
 			return true;
 		} catch (Exception e) {
-			if (!testSuppress) {
-				System.out.println("XSD ERROR: " + e.getMessage());
+			if(!testSuppress) {
+				log.warn(e.getMessage());
 			}
 			return false;
 		}

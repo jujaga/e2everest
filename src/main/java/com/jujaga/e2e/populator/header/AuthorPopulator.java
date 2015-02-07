@@ -1,21 +1,27 @@
 package com.jujaga.e2e.populator.header;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedAuthor;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
-import com.jujaga.e2e.StubRecord;
+import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.header.AuthorModel;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.populator.AbstractPopulator;
+import com.jujaga.emr.PatientExport;
+import com.jujaga.emr.dao.ProviderDao;
+import com.jujaga.emr.model.Provider;
 
-public class AuthorPopulator extends Populator {
+class AuthorPopulator extends AbstractPopulator {
 	private final AuthorModel authorModel;
 
-	public AuthorPopulator(Integer demographicNo) {
-		authorModel = new AuthorModel(demographicNo);
+	AuthorPopulator(PatientExport patientExport) {
+		ProviderDao providerDao = patientExport.getApplicationContext().getBean(ProviderDao.class);
+		Provider provider = providerDao.find(Constants.Runtime.VALID_PROVIDER);
+		authorModel = new AuthorModel(provider);
 	}
 
 	@Override
@@ -25,7 +31,7 @@ public class AuthorPopulator extends Populator {
 		AssignedAuthor assignedAuthor = new AssignedAuthor();
 
 		provider.setContextControlCode(ContextControl.OverridingPropagating);
-		provider.setTime(StubRecord.Demographic.docCreated, TS.DAY);
+		provider.setTime(new GregorianCalendar(), TS.DAY);
 		provider.setAssignedAuthor(assignedAuthor);
 
 		assignedAuthor.setId(authorModel.getIds());
@@ -37,7 +43,7 @@ public class AuthorPopulator extends Populator {
 		AssignedAuthor assignedSystem = new AssignedAuthor();
 
 		system.setContextControlCode(ContextControl.OverridingPropagating);
-		system.setTime(StubRecord.Demographic.docCreated, TS.DAY);
+		system.setTime(new GregorianCalendar(), TS.DAY);
 		system.setAssignedAuthor(assignedSystem);
 
 		assignedSystem.setId(authorModel.getIds());

@@ -2,6 +2,7 @@ package com.jujaga.e2e.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -22,6 +23,7 @@ public class EverestUtilsTest {
 	public void generateDocumentToStringTest() {
 		ClinicalDocument clinicalDocument = new ClinicalDocument();
 		assertNotNull(EverestUtils.generateDocumentToString(clinicalDocument, false));
+		assertNull(EverestUtils.generateDocumentToString(null, false));
 	}
 
 	@Test

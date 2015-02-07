@@ -7,29 +7,19 @@ import java.util.ArrayList;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.marc.everest.datatypes.II;
-import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.InformationRecipient;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.IntendedRecipient;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.populator.EmrExportPopulator;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.director.E2ECreator;
 
 public class InformationRecipientPopulatorTest {
 	private static ClinicalDocument clinicalDocument;
 
 	@BeforeClass
 	public static void beforeClass() {
-		Integer demographicNo = StubRecord.Demographic.demographicNo;
-		CE<String> code = Constants.EMRConversionDocument.CODE;
-		II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
-
-		Populator populator = new EmrExportPopulator(demographicNo, code, templateId);
-		populator.populate();
-		clinicalDocument = populator.getClinicalDocument();
+		clinicalDocument = E2ECreator.createEmrConversionDocument(Constants.Runtime.VALID_DEMOGRAPHIC);
 	}
 
 	@Test

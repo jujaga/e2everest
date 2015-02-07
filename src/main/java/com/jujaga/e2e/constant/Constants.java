@@ -58,8 +58,15 @@ public class Constants {
 	}
 
 	public static class XML {
-		public static final int INDENT = 2;
+		public static final Integer INDENT = 2;
 		public static final String ENCODING = "UTF-8";
 		public static final String VERSION = "1.0";
+	}
+
+	public static class Runtime {
+		public static final String SPRING_APPLICATION_CONTEXT = "spring-config.xml";
+		public static final Integer VALID_CLINIC = 123456;
+		public static final Integer VALID_DEMOGRAPHIC = 1;
+		public static final Integer VALID_PROVIDER = 999998;
 	}
 }

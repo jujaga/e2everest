@@ -11,21 +11,21 @@ import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AuthoringDevice;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Person;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Constants.TelecomType;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.model.Provider;
 
 public class AuthorModel {
+	private final Provider provider;
+
 	private SET<II> ids;
 	private SET<TEL> telecoms;
 	private Person person;
 	private AuthoringDevice device;
 
-	public AuthorModel(Integer demographicNo) {
-		if(demographicNo <= 0) {
-			System.out.println("demographicNo should be greater than 0");
-		}
+	public AuthorModel(Provider provider) {
+		this.provider = provider;
 
 		setIds();
 		setTelecoms();
@@ -37,13 +37,13 @@ public class AuthorModel {
 		return ids;
 	}
 
+	// TODO Set extension to cpsid or other "official" number
 	private void setIds() {
 		II id = new II();
-		if(!EverestUtils.isNullorEmptyorWhitespace(StubRecord.Demographic.hin)) {
+		if(!EverestUtils.isNullorEmptyorWhitespace(provider.getProviderNo().toString())) {
 			id.setRoot(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_ID_OID);
 			id.setAssigningAuthorityName(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME);
-			// TODO Set extension to cpsid or other "official" number
-			id.setExtension(StubRecord.Provider.providerId);
+			id.setExtension(provider.getProviderNo().toString());
 		} else {
 			id.setNullFlavor(NullFlavor.NoInformation);
 		}
@@ -56,9 +56,9 @@ public class AuthorModel {
 
 	private void setTelecoms() {
 		SET<TEL> telecoms = new SET<TEL>();
-		HeaderUtil.addTelecomPart(telecoms, StubRecord.Provider.providerHomePhone, TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
-		HeaderUtil.addTelecomPart(telecoms, StubRecord.Provider.providerWorkPhone, TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
-		HeaderUtil.addTelecomPart(telecoms, StubRecord.Provider.providerEmail, TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
+		HeaderUtil.addTelecomPart(telecoms, provider.getPhone(), TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
+		HeaderUtil.addTelecomPart(telecoms, provider.getWorkPhone(), TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
+		HeaderUtil.addTelecomPart(telecoms, provider.getEmail(), TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
 		if(!telecoms.isEmpty()) {
 			this.telecoms = telecoms;
 		}
@@ -74,7 +74,7 @@ public class AuthorModel {
 	private void setPerson() {
 		Person person = new Person();
 		SET<PN> names = new SET<PN>();
-		HeaderUtil.addNamePart(names, StubRecord.Provider.providerFirstName, StubRecord.Provider.providerLastName, EntityNameUse.OfficialRecord);
+		HeaderUtil.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.OfficialRecord);
 		if(!names.isEmpty()) {
 			person.setName(names);
 			this.person = person;

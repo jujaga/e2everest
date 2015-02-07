@@ -13,8 +13,8 @@ import org.marc.everest.datatypes.TelecommunicationsAddressUse;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.LanguageCommunication;
 
-import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.constant.Constants.TelecomType;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 
 class HeaderUtil {
@@ -54,12 +54,10 @@ class HeaderUtil {
 	}
 
 	protected static void addLanguagePart(ArrayList<LanguageCommunication> languages, String value) {
-		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
-			if(Mappings.languageCode.containsKey(value)) {
-				LanguageCommunication language = new LanguageCommunication();
-				language.setLanguageCode(Mappings.languageCode.get(value));
-				languages.add(language);
-			}
+		if(!EverestUtils.isNullorEmptyorWhitespace(value) && Mappings.languageCode.containsKey(value)) {
+			LanguageCommunication language = new LanguageCommunication();
+			language.setLanguageCode(Mappings.languageCode.get(value));
+			languages.add(language);
 		}
 	}
 }

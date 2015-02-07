@@ -1,36 +1,28 @@
 package com.jujaga.e2e.populator.header;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.TS;
-import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedAuthor;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 
-import com.jujaga.e2e.StubRecord;
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.populator.EmrExportPopulator;
-import com.jujaga.e2e.populator.Populator;
+import com.jujaga.e2e.director.E2ECreator;
 
 public class AuthorPopulatorTest {
 	private static ClinicalDocument clinicalDocument;
 
 	@BeforeClass
 	public static void beforeClass() {
-		Integer demographicNo = StubRecord.Demographic.demographicNo;
-		CE<String> code = Constants.EMRConversionDocument.CODE;
-		II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
-
-		Populator populator = new EmrExportPopulator(demographicNo, code, templateId);
-		populator.populate();
-		clinicalDocument = populator.getClinicalDocument();
+		clinicalDocument = E2ECreator.createEmrConversionDocument(Constants.Runtime.VALID_DEMOGRAPHIC);
 	}
 
 	@Test
@@ -44,7 +36,11 @@ public class AuthorPopulatorTest {
 	public void authorProviderTest() {
 		Author author = clinicalDocument.getAuthor().get(0);
 		assertNotNull(author);
-		assertEquals(new TS(StubRecord.Demographic.docCreated, TS.DAY), author.getTime());
+		assertFalse(author.getTime().isInvalidDate());
+
+		TS now = TS.now();
+		now.setDateValuePrecision(TS.DAY);
+		assertTrue(author.getTime().toString().contains(now.toString()));
 
 		AssignedAuthor assignedAuthor = author.getAssignedAuthor();
 		assertNotNull(assignedAuthor);
@@ -55,7 +51,11 @@ public class AuthorPopulatorTest {
 	public void authorSystemTest() {
 		Author author = clinicalDocument.getAuthor().get(1);
 		assertNotNull(author);
-		assertEquals(new TS(StubRecord.Demographic.docCreated, TS.DAY), author.getTime());
+		assertFalse(author.getTime().isInvalidDate());
+
+		TS now = TS.now();
+		now.setDateValuePrecision(TS.DAY);
+		assertTrue(author.getTime().toString().contains(now.toString()));
 
 		AssignedAuthor assignedAuthor = author.getAssignedAuthor();
 		assertNotNull(assignedAuthor);
