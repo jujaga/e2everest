@@ -16,12 +16,12 @@ public class Constants {
 	public static class EMRConversionDocument {
 		public static final String TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.1.1";
 		public static final String CODE_DISPLAY_NAME_LOINC = "Medical Records";
-		public static final String CODE_SYSTEM_LOINC = CodeSystems.LOINC_OID;
+		public static final String CODE_SYSTEM_LOINC = Constants.CodeSystems.LOINC_OID;
 		public static final String CODE_LOINC = "11503-0";
 
 		public static final CE<String> CODE = new CE<String>(
-				EMRConversionDocument.CODE_LOINC, CodeSystems.LOINC_OID,
-				CodeSystems.LOINC_DISPLAY_NAME, CodeSystems.LOINC_VERSION);
+				EMRConversionDocument.CODE_LOINC, Constants.CodeSystems.LOINC_OID,
+				Constants.CodeSystems.LOINC_DISPLAY_NAME, Constants.CodeSystems.LOINC_VERSION);
 	}
 
 	public static class DocumentHeader {

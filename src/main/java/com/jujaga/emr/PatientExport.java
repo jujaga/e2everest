@@ -26,11 +26,6 @@ public class PatientExport {
 	}
 
 	private boolean loadPatient(Integer demographicNo) {
-		if(loaded) {
-			log.warn("Demographic ".concat(demographicNo.toString()).concat(" already loaded"));
-			return true;
-		}
-
 		demographic = demographicDao.find(demographicNo);
 		if(demographic == null) {
 			log.error("Demographic ".concat(demographicNo.toString()).concat(" can't be loaded"));

@@ -5,23 +5,13 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.InformationRecipient;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.IntendedRecipient;
 
-import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.director.E2ECreator;
+import com.jujaga.e2e.populator.AbstractPopulatorTest;
 
-public class InformationRecipientPopulatorTest {
-	private static ClinicalDocument clinicalDocument;
-
-	@BeforeClass
-	public static void beforeClass() {
-		clinicalDocument = E2ECreator.createEmrConversionDocument(Constants.Runtime.VALID_DEMOGRAPHIC);
-	}
-
+public class InformationRecipientPopulatorTest extends AbstractPopulatorTest {
 	@Test
 	public void informationRecipientTest() {
 		ArrayList<InformationRecipient> informationRecipients = clinicalDocument.getInformationRecipient();

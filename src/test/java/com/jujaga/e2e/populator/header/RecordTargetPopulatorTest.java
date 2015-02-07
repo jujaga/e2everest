@@ -7,21 +7,17 @@ import java.util.ArrayList;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Patient;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PatientRole;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RecordTarget;
 
-import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.director.E2ECreator;
+import com.jujaga.e2e.populator.AbstractPopulatorTest;
 
-public class RecordTargetPopulatorTest {
-	private static ClinicalDocument clinicalDocument;
+public class RecordTargetPopulatorTest extends AbstractPopulatorTest {
 	private static PatientRole patientRole;
 
 	@BeforeClass
 	public static void beforeClass() {
-		clinicalDocument = E2ECreator.createEmrConversionDocument(Constants.Runtime.VALID_DEMOGRAPHIC);
 		patientRole = clinicalDocument.getRecordTarget().get(0).getPatientRole();
 	}
 

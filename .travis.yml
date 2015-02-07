@@ -5,4 +5,4 @@ notifications:
     on_success: never
     on_failure: change
 after_success:
-  mvn clean cobertura:cobertura coveralls:report
+  mvn cobertura:cobertura coveralls:report

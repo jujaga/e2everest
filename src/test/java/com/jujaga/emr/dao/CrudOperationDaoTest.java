@@ -1,4 +1,4 @@
-package com.jujaga.emr;
+package com.jujaga.emr.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -12,7 +12,7 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.model.Demographic;
 
-public class SimpleDaoTest {
+public class CrudOperationDaoTest {
 	private static ApplicationContext context;
 	private static DemographicDao dao;
 
@@ -59,14 +59,15 @@ public class SimpleDaoTest {
 	}
 
 	@Test
-	public void testRemove(){Demographic demographic = new Demographic();
-	demographic.setFirstName("oldtest");
-	dao.persist(demographic);
+	public void testRemove(){
+		Demographic demographic = new Demographic();
+		demographic.setFirstName("oldtest");
+		dao.persist(demographic);
 
-	Demographic demographic2 = dao.find(demographic.getDemographicNo());
-	dao.remove(demographic2);
+		Demographic demographic2 = dao.find(demographic.getDemographicNo());
+		dao.remove(demographic2);
 
-	Demographic demoTest = dao.find(demographic2.getDemographicNo());
-	assertNull(demoTest);
+		Demographic demoTest = dao.find(demographic2.getDemographicNo());
+		assertNull(demoTest);
 	}
 }

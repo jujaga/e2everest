@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.ST;
@@ -15,22 +14,14 @@ import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.CS;
 import org.marc.everest.datatypes.generic.LIST;
 import org.marc.everest.datatypes.generic.SET;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.BindingRealm;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.director.E2ECreator;
+import com.jujaga.e2e.populator.AbstractPopulatorTest;
 import com.jujaga.e2e.util.EverestUtils;
 
-public class HeaderPopulatorTest {
-	private static ClinicalDocument clinicalDocument;
-
-	@BeforeClass
-	public static void beforeClass() {
-		clinicalDocument = E2ECreator.createEmrConversionDocument(Constants.Runtime.VALID_DEMOGRAPHIC);
-	}
-
+public class HeaderPopulatorTest extends AbstractPopulatorTest {
 	@Test
 	public void realmCodeTest() {
 		SET<CS<BindingRealm>> realm = clinicalDocument.getRealmCode();

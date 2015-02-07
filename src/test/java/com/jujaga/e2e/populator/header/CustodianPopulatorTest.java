@@ -2,24 +2,14 @@ package com.jujaga.e2e.populator.header;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedCustodian;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Custodian;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.CustodianOrganization;
 
-import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.director.E2ECreator;
+import com.jujaga.e2e.populator.AbstractPopulatorTest;
 
-public class CustodianPopulatorTest {
-	private static ClinicalDocument clinicalDocument;
-
-	@BeforeClass
-	public static void beforeClass() {
-		clinicalDocument = E2ECreator.createEmrConversionDocument(Constants.Runtime.VALID_DEMOGRAPHIC);
-	}
-
+public class CustodianPopulatorTest extends AbstractPopulatorTest {
 	@Test
 	public void custodianTest() {
 		Custodian custodian = clinicalDocument.getCustodian();
