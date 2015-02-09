@@ -26,17 +26,19 @@ public class EntityModelUtils {
 		Method m[] = model.getClass().getDeclaredMethods();
 		AccessibleObject.setAccessible(m, true);
 
-		for (int i = 0; i < m.length; i++) {
+		for (Integer i = 0; i < m.length; i++) {
 			try {
-				if(m[i].getName().startsWith("get")) {
-					m[i].invoke(model);
-				}
-				else if(m[i].getName().startsWith("set")) {
+				// Setters
+				if(m[i].getName().startsWith("set")) {
 					Object[] args = {null};
 					m[i].invoke(model, args);
 				}
+				// Getters and Booleans
+				else if(m[i].getName().startsWith("get")){
+					m[i].invoke(model);
+				}
 			} catch (Exception e) {
-				log.warn(e.getMessage());
+				log.warn(e.toString() + " - " + m[i].getName());
 			}
 		}
 	}
@@ -45,10 +47,10 @@ public class EntityModelUtils {
 		Field f[] = model.getClass().getDeclaredFields();
 		AccessibleObject.setAccessible(f, true);
 
-		for (int i = 0; i < f.length; i++) {
-			boolean isId = false;
+		for (Integer i = 0; i < f.length; i++) {
+			Boolean isId = false;
 			Annotation annotations[] = f[i].getAnnotations();
-			for (int j = 0; j < annotations.length; j++) {
+			for (Integer j = 0; j < annotations.length; j++) {
 				if(annotations[j].annotationType() == Id.class) {
 					isId = true;
 				}
@@ -60,7 +62,7 @@ public class EntityModelUtils {
 			if(isId)
 				continue;
 
-			int modifiers = f[i].getModifiers();
+			Integer modifiers = f[i].getModifiers();
 			if((modifiers & Modifier.STATIC) == Modifier.STATIC) {
 				continue;
 			}
@@ -109,7 +111,7 @@ public class EntityModelUtils {
 					log.warn("Can't generate test data for class type:" + f[i].getType());
 				}
 			} catch (Exception e) {
-				log.warn(e.getMessage());
+				log.warn(e.toString() + " - " + f[i].getName());
 			}
 		}
 

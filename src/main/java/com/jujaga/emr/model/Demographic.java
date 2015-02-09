@@ -5,8 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Entity implementation class for Entity: Demographic
@@ -18,7 +21,7 @@ public class Demographic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer demographicNo;
 	private String title;
 	private String lastName;
@@ -40,12 +43,16 @@ public class Demographic implements Serializable {
 	private String ver;
 
 	private String rosterStatus;
+	@Temporal(TemporalType.DATE)
 	private Date rosterDate;
+	@Temporal(TemporalType.DATE)
 	private Date rosterTerminationDate;
 	private String rosterTerminationReason;
 
 	private String patientStatus;
+	@Temporal(TemporalType.DATE)
 	private Date patientStatusDate;
+	@Temporal(TemporalType.DATE)
 	private Date dateJoined;
 	private String chartNo;
 	private String officialLanguage;
@@ -53,10 +60,13 @@ public class Demographic implements Serializable {
 	private String providerNo;
 
 	private String sex;
+	@Temporal(TemporalType.DATE)
 	private Date endDate;
+	@Temporal(TemporalType.DATE)
 	private Date effDate;
 	private String pcnIndicator;
 	private String hcType;
+	@Temporal(TemporalType.DATE)
 	private Date hcRenewDate;
 
 	private String familyDoctor;
@@ -71,6 +81,7 @@ public class Demographic implements Serializable {
 	private String anonymous = null;
 
 	private String lastUpdateUser = null;
+	@Temporal(TemporalType.DATE)
 	private Date lastUpdateDate = null;
 
 	public Demographic() {

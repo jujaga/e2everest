@@ -8,7 +8,7 @@ import com.jujaga.e2e.util.EverestUtils;
 
 public class Main {
 	public static void main(String[] args) {
-		boolean validate = true;
+		Boolean validate = true;
 		Integer demographicNo = Constants.Runtime.VALID_DEMOGRAPHIC;
 
 		// Populate Clinical Document

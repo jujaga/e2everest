@@ -2,8 +2,10 @@ package com.jujaga.emr.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,18 +19,29 @@ public class Clinic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="clinic_no")
 	private Integer id;
+	@Column(name="clinic_name")
 	private String clinicName;
+	@Column(name="clinic_address")
 	private String clinicAddress;
+	@Column(name="clinic_city")
 	private String clinicCity;
+	@Column(name="clinic_postal")
 	private String clinicPostal;
+	@Column(name="clinic_phone")
 	private String clinicPhone;
+	@Column(name="clinic_fax")
 	private String clinicFax;
+	@Column(name="clinic_location_code")
 	private String clinicLocationCode;
 	private String status;
+	@Column(name="clinic_province")
 	private String clinicProvince;
+	@Column(name="clinic_delim_phone")
 	private String clinicDelimPhone;
+	@Column(name="clinic_delim_fax")
 	private String clinicDelimFax;
 
 	public Clinic() {

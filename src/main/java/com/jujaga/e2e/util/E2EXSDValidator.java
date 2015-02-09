@@ -18,11 +18,11 @@ import org.xml.sax.XMLReader;
 public class E2EXSDValidator {
 	private static Logger log = Logger.getLogger(E2EXSDValidator.class.getName());
 
-	public static boolean isWellFormedXML(String xmlstring) {
+	public static Boolean isWellFormedXML(String xmlstring) {
 		return isWellFormedXML(xmlstring, false);
 	}
 
-	public static boolean isWellFormedXML(String xmlstring, boolean testSuppress) {
+	public static Boolean isWellFormedXML(String xmlstring, Boolean testSuppress) {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(false);
 		factory.setNamespaceAware(true);
@@ -41,11 +41,11 @@ public class E2EXSDValidator {
 		}
 	}
 
-	public static boolean isValidXML(String xmlstring) {
+	public static Boolean isValidXML(String xmlstring) {
 		return isValidXML(xmlstring, false);
 	}
 
-	public static boolean isValidXML(String xmlstring, boolean testSuppress) {
+	public static Boolean isValidXML(String xmlstring, Boolean testSuppress) {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(true);
 		factory.setNamespaceAware(true);

@@ -12,7 +12,7 @@ public class PatientExport {
 
 	private DemographicDao demographicDao = null;
 
-	private boolean loaded = false;
+	private Boolean loaded = false;
 	private Demographic demographic = null;
 
 	public PatientExport(Integer demographicNo) {
@@ -23,12 +23,12 @@ public class PatientExport {
 		loaded = loadPatient(demographicNo);
 	}
 
-	private boolean loadPatient(Integer demographicNo) {
+	private Boolean loadPatient(Integer demographicNo) {
 		demographic = demographicDao.find(demographicNo);
 		return demographic != null;
 	}
 
-	public boolean isLoaded() {
+	public Boolean isLoaded() {
 		return loaded;
 	}
 

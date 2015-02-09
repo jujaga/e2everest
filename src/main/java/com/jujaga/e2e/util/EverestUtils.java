@@ -8,6 +8,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -26,7 +27,7 @@ public class EverestUtils {
 	private static Logger log = Logger.getLogger(EverestUtils.class.getName());
 
 	// Check String for Null, Empty or Whitespace
-	public static boolean isNullorEmptyorWhitespace(String obj) {
+	public static Boolean isNullorEmptyorWhitespace(String obj) {
 		return obj == null || obj.isEmpty() || obj.trim().isEmpty();
 	}
 
@@ -85,7 +86,7 @@ public class EverestUtils {
 	}
 
 	// Pretty Print XML
-	public static String prettyFormatXML(String input, int indent) {
+	public static String prettyFormatXML(String input, Integer indent) {
 		if(isNullorEmptyorWhitespace(input)) {
 			return null;
 		}
@@ -101,8 +102,8 @@ public class EverestUtils {
 			tf.transform(xmlInput, xmlOutput);
 
 			return xmlOutput.getWriter().toString();
-		} catch (Exception e) {
-			log.error(e.getMessage());
+		} catch (TransformerException e) {
+			log.error(e.toString());
 			return null;
 		}
 	}

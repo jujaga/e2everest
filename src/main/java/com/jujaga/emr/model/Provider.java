@@ -5,8 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Entity implementation class for Entity: Provider
@@ -19,7 +22,7 @@ public class Provider implements Serializable {
 	public static final String SYSTEM_PROVIDER_NO = "-1";
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer providerNo;
 	private String lastName;
 	private String firstName;
@@ -27,6 +30,7 @@ public class Provider implements Serializable {
 	private String specialty;
 	private String team;
 	private String sex;
+	@Temporal(TemporalType.DATE)
 	private Date dob;
 	private String address;
 	private String phone;
@@ -44,7 +48,9 @@ public class Provider implements Serializable {
 	private String email;
 	private String title;
 	private String lastUpdateUser;
+	@Temporal(TemporalType.DATE)
 	private Date lastUpdateDate = new Date();
+	@Temporal(TemporalType.DATE)
 	private Date SignedConfidentiality;
 
 	public Provider() {
