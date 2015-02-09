@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import org.apache.log4j.Logger;
 import org.marc.everest.datatypes.AD;
 import org.marc.everest.datatypes.ADXP;
 import org.marc.everest.datatypes.AddressPartType;
@@ -30,7 +29,6 @@ import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Demographic;
 
 public class RecordTargetModel {
-	private static Logger log = Logger.getLogger(RecordTargetModel.class.getName());
 	private Demographic demographic;
 
 	private SET<II> ids;
@@ -44,10 +42,6 @@ public class RecordTargetModel {
 	public RecordTargetModel(Demographic demographic) {
 		this.demographic = demographic;
 		if(this.demographic != null) {
-			if(this.demographic.getDemographicNo() <= 0) {
-				log.error("demographicNo should be greater than 0");
-			}
-
 			setIds();
 			setAddresses();
 			setTelecoms();

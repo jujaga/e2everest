@@ -18,14 +18,14 @@ import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 
 class HeaderUtil {
-	protected static void addAddressPart(ArrayList<ADXP> addrParts, String value, AddressPartType addressPartType) {
+	static void addAddressPart(ArrayList<ADXP> addrParts, String value, AddressPartType addressPartType) {
 		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
 			ADXP addrPart = new ADXP(value, addressPartType);
 			addrParts.add(addrPart);
 		}
 	}
 
-	protected static void addTelecomPart(SET<TEL> telecoms, String value, TelecommunicationsAddressUse telecomAddressUse, TelecomType telecomType) {
+	static void addTelecomPart(SET<TEL> telecoms, String value, TelecommunicationsAddressUse telecomAddressUse, TelecomType telecomType) {
 		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
 			switch(telecomType) {
 			case TELEPHONE:
@@ -40,7 +40,7 @@ class HeaderUtil {
 		}
 	}
 
-	protected static void addNamePart(SET<PN> names, String firstName, String lastName, EntityNameUse entityNameUse) {
+	static void addNamePart(SET<PN> names, String firstName, String lastName, EntityNameUse entityNameUse) {
 		ArrayList<ENXP> name = new ArrayList<ENXP>();
 		if(!EverestUtils.isNullorEmptyorWhitespace(firstName)) {
 			name.add(new ENXP(firstName, EntityNamePartType.Given));
@@ -53,7 +53,7 @@ class HeaderUtil {
 		}
 	}
 
-	protected static void addLanguagePart(ArrayList<LanguageCommunication> languages, String value) {
+	static void addLanguagePart(ArrayList<LanguageCommunication> languages, String value) {
 		if(!EverestUtils.isNullorEmptyorWhitespace(value) && Mappings.languageCode.containsKey(value)) {
 			LanguageCommunication language = new LanguageCommunication();
 			language.setLanguageCode(Mappings.languageCode.get(value));

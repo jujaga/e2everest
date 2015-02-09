@@ -12,6 +12,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.log4j.Logger;
 import org.marc.everest.formatters.interfaces.IFormatterGraphResult;
 import org.marc.everest.formatters.xml.datatypes.r1.DatatypeFormatter;
 import org.marc.everest.formatters.xml.its1.XmlIts1Formatter;
@@ -22,6 +23,8 @@ import com.jujaga.e2e.constant.Constants;
 
 // General Everest Utility Functions
 public class EverestUtils {
+	private static Logger log = Logger.getLogger(EverestUtils.class.getName());
+
 	// Check String for Null, Empty or Whitespace
 	public static boolean isNullorEmptyorWhitespace(String obj) {
 		return obj == null || obj.isEmpty() || obj.trim().isEmpty();
@@ -99,7 +102,7 @@ public class EverestUtils {
 
 			return xmlOutput.getWriter().toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return null;
 		}
 	}

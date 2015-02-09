@@ -29,5 +29,6 @@ public class EverestUtilsTest {
 	@Test
 	public void prettyFormatXMLTest() {
 		assertNotNull(EverestUtils.prettyFormatXML("<test/>", Constants.XML.INDENT));
+		assertNull(EverestUtils.prettyFormatXML(null, Constants.XML.INDENT));
 	}
 }

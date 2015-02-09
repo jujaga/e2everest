@@ -26,11 +26,12 @@ public class AuthorModel {
 
 	public AuthorModel(Provider provider) {
 		this.provider = provider;
-
-		setIds();
-		setTelecoms();
-		setPerson();
-		setDevice();
+		if(this.provider != null) {
+			setIds();
+			setTelecoms();
+			setPerson();
+			setDevice();
+		}
 	}
 
 	public SET<II> getIds() {
@@ -40,7 +41,7 @@ public class AuthorModel {
 	// TODO Set extension to cpsid or other "official" number
 	private void setIds() {
 		II id = new II();
-		if(!EverestUtils.isNullorEmptyorWhitespace(provider.getProviderNo().toString())) {
+		if(provider.getProviderNo() != null && !EverestUtils.isNullorEmptyorWhitespace(provider.getProviderNo().toString())) {
 			id.setRoot(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_ID_OID);
 			id.setAssigningAuthorityName(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME);
 			id.setExtension(provider.getProviderNo().toString());

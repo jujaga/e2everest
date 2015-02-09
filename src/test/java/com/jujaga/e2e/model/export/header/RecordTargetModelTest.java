@@ -53,7 +53,6 @@ public class RecordTargetModelTest {
 		recordTargetModel = new RecordTargetModel(demographic);
 
 		nullDemographic = new Demographic();
-		dao.persist(nullDemographic);
 		nullRecordTargetModel = new RecordTargetModel(nullDemographic);
 	}
 
@@ -162,6 +161,17 @@ public class RecordTargetModelTest {
 		String sexCode = demographic.getSex().toUpperCase().replace("U", "UN");
 		assertEquals(Mappings.genderCode.get(sexCode), gender.getCode());
 		assertEquals(Mappings.genderDescription.get(sexCode), gender.getDisplayName());
+	}
+
+	@Test
+	public void invalidGenderTest() {
+		Demographic invalidGender = new Demographic();
+		invalidGender.setSex("z");
+		RecordTargetModel invalidGenderModel = new RecordTargetModel(invalidGender);
+
+		CE<AdministrativeGender> gender = invalidGenderModel.getGender();
+		assertNotNull(gender);
+		assertTrue(gender.isNull());
 	}
 
 	@Test

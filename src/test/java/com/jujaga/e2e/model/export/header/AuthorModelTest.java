@@ -44,7 +44,6 @@ public class AuthorModelTest {
 		authorModel = new AuthorModel(provider);
 
 		nullProvider = new Provider();
-		dao.persist(nullProvider);
 		nullAuthorModel = new AuthorModel(nullProvider);
 	}
 
@@ -68,7 +67,7 @@ public class AuthorModelTest {
 
 		II id = ids.get(0);
 		assertNotNull(id);
-		assertFalse(id.isNull());
+		assertTrue(id.isNull());
 	}
 
 	@Test

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +37,6 @@ public class CustodianModelTest {
 		custodianModel = new CustodianModel(clinic);
 
 		nullClinic = new Clinic();
-		dao.persist(nullClinic);
 		nullCustodianModel = new CustodianModel(nullClinic);
 	}
 
@@ -60,7 +60,7 @@ public class CustodianModelTest {
 
 		II id = ids.get(0);
 		assertNotNull(id);
-		assertFalse(id.isNull());
+		assertTrue(id.isNull());
 	}
 
 	@Test

@@ -1,6 +1,5 @@
 package com.jujaga.emr;
 
-import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -9,7 +8,6 @@ import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.model.Demographic;
 
 public class PatientExport {
-	private static Logger log = Logger.getLogger(PatientExport.class.getName());
 	private static ApplicationContext context = null;
 
 	private DemographicDao demographicDao = null;
@@ -27,12 +25,7 @@ public class PatientExport {
 
 	private boolean loadPatient(Integer demographicNo) {
 		demographic = demographicDao.find(demographicNo);
-		if(demographic == null) {
-			log.error("Demographic ".concat(demographicNo.toString()).concat(" can't be loaded"));
-			return false;
-		}
-
-		return true;
+		return demographic != null;
 	}
 
 	public boolean isLoaded() {

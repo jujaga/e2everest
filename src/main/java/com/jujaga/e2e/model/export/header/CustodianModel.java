@@ -20,9 +20,10 @@ public class CustodianModel {
 
 	public CustodianModel(Clinic clinic) {
 		this.clinic = clinic;
-
-		setIds();
-		setName();
+		if(this.clinic != null) {
+			setIds();
+			setName();
+		}
 	}
 
 	public SET<II> getIds() {
@@ -31,7 +32,7 @@ public class CustodianModel {
 
 	private void setIds() {
 		II id = new II();
-		if(!EverestUtils.isNullorEmptyorWhitespace(clinic.getId().toString())) {
+		if(clinic.getId() != null && !EverestUtils.isNullorEmptyorWhitespace(clinic.getId().toString())) {
 			id.setRoot(Constants.EMR.EMR_OID);
 			id.setAssigningAuthorityName(Constants.EMR.EMR_VERSION);
 			id.setExtension(clinic.getId().toString());
