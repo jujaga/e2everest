@@ -27,21 +27,10 @@ public class HeaderPopulator extends AbstractPopulator {
 		this.code = code;
 		this.templateId = templateId;
 
-		// Record Target
-		RecordTargetPopulator recordTargetPopulator = new RecordTargetPopulator(patientExport);
-		populators.add(recordTargetPopulator);
-
-		// Author
-		AuthorPopulator authorPopulator = new AuthorPopulator(patientExport);
-		populators.add(authorPopulator);
-
-		// Custodian
-		CustodianPopulator custodianPopulator = new CustodianPopulator(patientExport);
-		populators.add(custodianPopulator);
-
-		// Information Recipient
-		InformationRecipientPopulator informationRecipientPopulator = new InformationRecipientPopulator();
-		populators.add(informationRecipientPopulator);
+		populators.add(new RecordTargetPopulator(patientExport));
+		populators.add(new AuthorPopulator(patientExport));
+		populators.add(new CustodianPopulator(patientExport));
+		populators.add(new InformationRecipientPopulator());
 	}
 
 	@Override

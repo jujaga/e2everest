@@ -11,11 +11,8 @@ import com.jujaga.emr.PatientExport;
 public class EmrExportPopulator extends AbstractPopulator {
 	public EmrExportPopulator(PatientExport patientExport, CE<String> code, II templateId) {
 		if(patientExport.isLoaded()) {
-			HeaderPopulator emrExportHeaderPopulator = new HeaderPopulator(patientExport, code, templateId);
-			this.populators.add(emrExportHeaderPopulator);
-
-			DocumentBodyPopulator bodyPopulator = new DocumentBodyPopulator(patientExport);
-			this.populators.add(bodyPopulator);
+			this.populators.add(new HeaderPopulator(patientExport, code, templateId));
+			this.populators.add(new DocumentBodyPopulator(patientExport));
 
 			this.clinicalDocument = new ClinicalDocument();
 			AbstractPopulator.setClinicalDocument(clinicalDocument, this.populators);

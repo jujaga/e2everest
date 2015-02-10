@@ -17,7 +17,6 @@ public class Main {
 		// Output Clinical Document as String
 		String output = EverestUtils.generateDocumentToString(clinicalDocument, validate);
 		if(output != null) {
-			System.out.println();
 			System.out.println(output);
 		}
 	}
