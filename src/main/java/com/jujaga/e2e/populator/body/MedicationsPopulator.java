@@ -5,40 +5,43 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
+import com.jujaga.e2e.model.export.body.MedicationsModel;
 import com.jujaga.emr.PatientExport;
 
 public class MedicationsPopulator extends AbstractBodyPopulator {
-	public MedicationsPopulator(PatientExport patientExport) {
+	private final MedicationsModel medicationsModel;
+
+	MedicationsPopulator(PatientExport patientExport) {
 		patientExport.isLoaded();
+		medicationsModel = new MedicationsModel();
 		// TODO Figure out way of mapping many drugs to one object
 	}
 
 	@Override
 	public void populate() {
-		super.populate();
-
 		Entry entry = new Entry();
 		entry.setClinicalStatement(populateClinicalStatement());
-		//entries.add(entry);
+		entries.add(entry);
+
+		super.populate();
 	}
 
 	@Override
 	public ClinicalStatement populateClinicalStatement() {
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
 		substanceAdministration.setMoodCode(x_DocumentSubstanceMood.Eventoccurrence);
+		substanceAdministration.setId(medicationsModel.getIds());
 
 		return substanceAdministration;
 	}
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String populateText() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jujaga.e2e</groupId>
 	<artifactId>e2everest</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>e2everest</name>
 	<url>https://github.com/jujaga/e2everest</url>
 	<description>A Proof of Concept E2E Everest Implementation
@@ -90,9 +90,6 @@ Data model emulates an OSCAR EMR database</description>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
 				<version>3.0.1</version>
-				<configuration>
-				  <repoToken>edercZ1i48CvKiEujA6J0TfNYh8oIh11n</repoToken>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

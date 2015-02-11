@@ -57,9 +57,9 @@ public class AuthorModel {
 
 	private void setTelecoms() {
 		SET<TEL> telecoms = new SET<TEL>();
-		HeaderUtil.addTelecomPart(telecoms, provider.getPhone(), TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
-		HeaderUtil.addTelecomPart(telecoms, provider.getWorkPhone(), TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
-		HeaderUtil.addTelecomPart(telecoms, provider.getEmail(), TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
+		HeaderUtils.addTelecomPart(telecoms, provider.getPhone(), TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
+		HeaderUtils.addTelecomPart(telecoms, provider.getWorkPhone(), TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
+		HeaderUtils.addTelecomPart(telecoms, provider.getEmail(), TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
 		if(!telecoms.isEmpty()) {
 			this.telecoms = telecoms;
 		}
@@ -75,7 +75,7 @@ public class AuthorModel {
 	private void setPerson() {
 		Person person = new Person();
 		SET<PN> names = new SET<PN>();
-		HeaderUtil.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.OfficialRecord);
+		HeaderUtils.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.OfficialRecord);
 		if(!names.isEmpty()) {
 			person.setName(names);
 			this.person = person;

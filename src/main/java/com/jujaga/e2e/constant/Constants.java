@@ -4,6 +4,12 @@ import org.marc.everest.datatypes.generic.CE;
 
 // E2E constants and other hard-coded numbers/string will go here
 public class Constants {
+	public static enum IdPrefixes {
+		AdvanceDirectives, Alerts, Allergies, ClinicalMeasuredObservations, Encounters,
+		FamilyHistory, Immunizations, Medications, Lab, LabOBR, MedicationPrescriptions,
+		ProblemList, RiskFactors, Referrals, SocialHistory, SubstanceUse
+	}
+
 	public static enum TelecomType {
 		EMAIL, TELEPHONE
 	}
