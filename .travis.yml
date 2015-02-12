@@ -4,3 +4,5 @@ notifications:
   email:
     on_success: never
     on_failure: change
+after_success:
+  mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID cobertura:cobertura coveralls:report
