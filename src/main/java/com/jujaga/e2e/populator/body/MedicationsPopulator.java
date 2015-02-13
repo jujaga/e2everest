@@ -1,8 +1,10 @@
 package com.jujaga.e2e.populator.body;
 
+import org.marc.everest.datatypes.BL;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
 import com.jujaga.e2e.model.export.body.MedicationsModel;
@@ -19,8 +21,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator {
 
 	@Override
 	public void populate() {
-		Entry entry = new Entry();
-		entry.setClinicalStatement(populateClinicalStatement());
+		Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true), populateClinicalStatement());
 		entries.add(entry);
 
 		super.populate();

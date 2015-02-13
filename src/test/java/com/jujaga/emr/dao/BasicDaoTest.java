@@ -10,15 +10,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.emr.model.Clinic;
 import com.jujaga.emr.model.Demographic;
-import com.jujaga.emr.model.Drug;
 import com.jujaga.emr.model.Provider;
 import com.jujaga.emr.util.EntityModelUtils;
 
-public class GeneralDaoTest {
+public class BasicDaoTest {
 	private static ApplicationContext context;
 	private static ClinicDao clinicDao;
 	private static DemographicDao demographicDao;
-	private static DrugDao drugDao;
 	private static ProviderDao providerDao;
 
 	@BeforeClass
@@ -26,7 +24,6 @@ public class GeneralDaoTest {
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
 		clinicDao = context.getBean(ClinicDao.class);
 		demographicDao = context.getBean(DemographicDao.class);
-		drugDao = context.getBean(DrugDao.class);
 		providerDao = context.getBean(ProviderDao.class);
 	}
 
@@ -44,14 +41,6 @@ public class GeneralDaoTest {
 		Demographic entity = (Demographic) EntityModelUtils.generateTestDataForModelClass(new Demographic());
 		demographicDao.persist(entity);
 		assertNotNull(entity.getDemographicNo());
-	}
-
-	@Test
-	public void drugTest() {
-		EntityModelUtils.invokeMethodsForModelClass(new Drug());
-		Drug entity = (Drug) EntityModelUtils.generateTestDataForModelClass(new Drug());
-		drugDao.persist(entity);
-		assertNotNull(entity.getId());
 	}
 
 	@Test

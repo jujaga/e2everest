@@ -125,7 +125,6 @@ public class Drug implements Serializable {
 	private Boolean startDateUnknown;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdateDate;
-	private Boolean dispenseInternal = false;
 
 	public Drug() {
 		super();
@@ -569,13 +568,5 @@ public class Drug implements Serializable {
 
 	public void setLastUpdateDate(Date lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
-	}
-
-	public Boolean getDispenseInternal() {
-		return dispenseInternal;
-	}
-
-	public void setDispenseInternal(Boolean dispenseInternal) {
-		this.dispenseInternal = dispenseInternal;
 	}
 }
