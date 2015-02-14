@@ -38,17 +38,29 @@ public class AuthorModel {
 		return ids;
 	}
 
-	// TODO Set extension to cpsid or other "official" number
 	private void setIds() {
+		String providerId = getProviderID();
 		II id = new II();
-		if(provider.getProviderNo() != null && !EverestUtils.isNullorEmptyorWhitespace(provider.getProviderNo().toString())) {
+		if(providerId != null && !EverestUtils.isNullorEmptyorWhitespace(providerId)) {
 			id.setRoot(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_ID_OID);
 			id.setAssigningAuthorityName(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME);
-			id.setExtension(provider.getProviderNo().toString());
+			id.setExtension(providerId);
 		} else {
 			id.setNullFlavor(NullFlavor.NoInformation);
 		}
 		this.ids = new SET<II>(id);
+	}
+
+	private String getProviderID() {
+		String id = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(provider.getPractitionerNo())) {
+			id = provider.getPractitionerNo();
+		} else if (!EverestUtils.isNullorEmptyorWhitespace(provider.getOhipNo())) {
+			id = provider.getOhipNo();
+		} else if (provider.getProviderNo() != null) {
+			id = provider.getProviderNo().toString();
+		}
+		return id;
 	}
 
 	public SET<TEL> getTelecoms() {
@@ -62,8 +74,7 @@ public class AuthorModel {
 		HeaderUtils.addTelecomPart(telecoms, provider.getEmail(), TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
 		if(!telecoms.isEmpty()) {
 			this.telecoms = telecoms;
-		}
-		else {
+		} else {
 			this.telecoms = null;
 		}
 	}
@@ -79,8 +90,7 @@ public class AuthorModel {
 		if(!names.isEmpty()) {
 			person.setName(names);
 			this.person = person;
-		}
-		else {
+		} else {
 			this.person = null;
 		}
 	}
