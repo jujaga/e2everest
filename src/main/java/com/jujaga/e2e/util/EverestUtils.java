@@ -2,7 +2,6 @@ package com.jujaga.e2e.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Comparator;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -22,7 +21,6 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.xml.XMLStateStreamWriter;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.emr.model.Drug;
 
 // General Everest Utility Functions
 public class EverestUtils {
@@ -107,28 +105,6 @@ public class EverestUtils {
 		} catch (TransformerException e) {
 			log.error(e.toString());
 			return null;
-		}
-	}
-
-	public static class SortByDin implements Comparator<Drug> {
-		public int compare(Drug one, Drug two) {
-			int answer;
-			try {
-				answer = Integer.parseInt(one.getRegionalIdentifier()) - Integer.parseInt(two.getRegionalIdentifier());
-			} catch (Exception e) {
-				answer = getDrugName(one).compareTo(getDrugName(two));
-			}
-			return answer;
-		}
-
-		private String getDrugName(Drug drug) {
-			if(drug.getBrandName() != null) {
-				return drug.getBrandName();
-			} else if(drug.getGenericName() != null) {
-				return drug.getGenericName();
-			} else {
-				return "";
-			}
 		}
 	}
 }

@@ -4,11 +4,15 @@ import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.generic.SET;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.emr.model.Drug;
 
 public class MedicationsModel {
+	private Drug drug;
 	private SET<II> ids;
 
-	public MedicationsModel() {
+	public MedicationsModel(Drug drug) {
+		this.drug = drug;
+
 		setIds();
 	}
 
@@ -17,6 +21,6 @@ public class MedicationsModel {
 	}
 
 	private void setIds() {
-		this.ids = BodyUtils.buildUniqueId(Constants.IdPrefixes.Medications, 1);
+		this.ids = BodyUtils.buildUniqueId(Constants.IdPrefixes.Medications, drug.getId());
 	}
 }
