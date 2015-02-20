@@ -17,13 +17,13 @@ import com.jujaga.e2e.model.export.body.MedicationsModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Drug;
 
-public class MedicationsPopulator extends AbstractBodyPopulator {
+public class MedicationsPopulator extends AbstractBodyPopulator implements ISectionPopulator<Drug> {
 	private List<Drug> allDrugs;
 	private Map<Integer, List<Drug>> mapDrugs;
 
 	MedicationsPopulator(PatientExport patientExport) {
 		mapDrugs = new HashMap<Integer, List<Drug>>();
-		allDrugs = patientExport.getMedications();
+		allDrugs = (List<Drug>) patientExport.getMedications();
 		Collections.reverse(allDrugs); // Order recent drugs first
 
 		for(Drug drug : allDrugs) {
@@ -53,6 +53,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator {
 		super.populate();
 	}
 
+	@Override
 	public ClinicalStatement populateClinicalStatement(List<Drug> list) {
 		MedicationsModel medicationsModel = new MedicationsModel(list.get(0));
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration();

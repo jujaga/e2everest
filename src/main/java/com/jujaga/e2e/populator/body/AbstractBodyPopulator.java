@@ -11,7 +11,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 
 import com.jujaga.e2e.populator.AbstractPopulator;
 
-public abstract class AbstractBodyPopulator extends AbstractPopulator implements ISectionPopulator {	
+public abstract class AbstractBodyPopulator extends AbstractPopulator {	
 	protected ArrayList<Entry> entries = new ArrayList<Entry>();
 
 	@Override
