@@ -40,66 +40,38 @@ public class MedicationsPopulator extends AbstractBodyPopulator {
 				mapDrugs.put(din, Arrays.asList(drug));
 			}
 		}
-
-		// Sort drugs based off of DIN or drugName
-		/*Collections.sort(drugs, new Comparator<Drug>() {
-			@Override
-			public int compare(Drug one, Drug two) {
-				int answer;
-				try {
-					answer = Integer.parseInt(one.getRegionalIdentifier()) - Integer.parseInt(two.getRegionalIdentifier());
-				} catch (Exception e) {
-					answer = getDrugName(one).compareTo(getDrugName(two));
-				}
-				return answer;
-			}
-
-			private String getDrugName(Drug drug) {
-				if(drug.getBrandName() != null) {
-					return drug.getBrandName();
-				} else if(drug.getGenericName() != null) {
-					return drug.getGenericName();
-				} else {
-					return "";
-				}
-			}
-		});*/
 	}
-
-
 
 	@Override
 	public void populate() {
-		for(Map.Entry<Integer, List<Drug>> medication : mapDrugs.entrySet()) {
+		for(List<Drug> medication : mapDrugs.values()) {
 			Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
-			entry.setClinicalStatement(populateClinicalStatement(medication.getValue()));
+			entry.setClinicalStatement(populateClinicalStatement(medication));
 			entries.add(entry);
 		}
 
 		super.populate();
 	}
 
-	public ClinicalStatement populateClinicalStatement(List<Drug> medication) {
-		MedicationsModel medicationsModel = new MedicationsModel(medication.get(0));
+	public ClinicalStatement populateClinicalStatement(List<Drug> list) {
+		MedicationsModel medicationsModel = new MedicationsModel(list.get(0));
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
 		substanceAdministration.setMoodCode(x_DocumentSubstanceMood.Eventoccurrence);
 		substanceAdministration.setId(medicationsModel.getIds());
+		substanceAdministration.setCode(medicationsModel.getCode());
+		substanceAdministration.setStatusCode(medicationsModel.getStatusCode());
+		// Consumable - manufacturedproduct
+		// entryRelationship - RecordType - Long/Short term
+		// entryRelationship - Last Review Date
+		// Loop through prescriptions entryRelationship
 
 		return substanceAdministration;
-	}
-
-	@Override
-	public ClinicalStatement populateClinicalStatement(Object list) {
-		// TODO Resolve polymorphic argument list
-		return null;
 	}
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
 		return null;
 	}
-
-
 
 	@Override
 	public String populateText() {

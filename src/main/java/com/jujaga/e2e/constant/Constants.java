@@ -14,6 +14,10 @@ public class Constants {
 		EMAIL, TELEPHONE
 	}
 
+	public static enum SubstanceAdministrationType {
+		DRUG, IMMUNIZ, ANTIGEN
+	}
+
 	public static final class EMR {
 		public static final String EMR_OID = "2.16.840.1.113883.3.3331";
 		public static final String EMR_VERSION = "OSCAR EMR";
@@ -57,6 +61,8 @@ public class Constants {
 	}
 
 	public static class CodeSystems {
+		public static final String ACT_CODE_CODESYSTEM_OID = "2.16.840.1.113883.5.4";
+		public static final String ACT_CODE_DISPLAY_NAME = "ActCode";
 		public static final String GENDER_CODE_SYSTEM = "2.16.840.1.113883.5.1";
 		public static final String LOINC_OID = "2.16.840.1.113883.6.1";
 		public static final String LOINC_DISPLAY_NAME = "LOINC";
