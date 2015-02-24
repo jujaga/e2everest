@@ -13,7 +13,9 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
+import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.model.export.body.MedicationsModel;
+import com.jujaga.e2e.model.export.template.ConsumableModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Drug;
 
@@ -22,6 +24,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator implements ISect
 	private Map<Integer, List<Drug>> mapDrugs;
 
 	MedicationsPopulator(PatientExport patientExport) {
+		bodyConstants = Medications.getConstants();
 		mapDrugs = new HashMap<Integer, List<Drug>>();
 		allDrugs = (List<Drug>) patientExport.getMedications();
 		Collections.reverse(allDrugs); // Order recent drugs first
@@ -31,7 +34,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator implements ISect
 			try {
 				din = Integer.parseInt(drug.getRegionalIdentifier());
 			} catch (NumberFormatException e) {
-				din = -1; // TODO Convert to constant
+				din = Medications.NO_DIN_NUMBER;
 			}
 
 			if(mapDrugs.containsKey(din)) {
@@ -61,7 +64,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator implements ISect
 		substanceAdministration.setId(medicationsModel.getIds());
 		substanceAdministration.setCode(medicationsModel.getCode());
 		substanceAdministration.setStatusCode(medicationsModel.getStatusCode());
-		// Consumable - manufacturedproduct
+		substanceAdministration.setConsumable(ConsumableModel.getConsumable(list.get(0)));
 		// entryRelationship - RecordType - Long/Short term
 		// entryRelationship - Last Review Date
 		// Loop through prescriptions entryRelationship

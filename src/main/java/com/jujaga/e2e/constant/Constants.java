@@ -4,6 +4,9 @@ import org.marc.everest.datatypes.generic.CE;
 
 // E2E constants and other hard-coded numbers/string will go here
 public class Constants {
+	/**
+	 * Enumerations
+	 */
 	public static enum IdPrefixes {
 		AdvanceDirectives, Alerts, Allergies, ClinicalMeasuredObservations, Encounters,
 		FamilyHistory, Immunizations, Medications, Lab, LabOBR, MedicationPrescriptions,
@@ -18,6 +21,9 @@ public class Constants {
 		DRUG, IMMUNIZ, ANTIGEN
 	}
 
+	/**
+	 * Header Constants
+	 */
 	public static final class EMR {
 		public static final String EMR_OID = "2.16.840.1.113883.3.3331";
 		public static final String EMR_VERSION = "OSCAR EMR";
@@ -30,7 +36,7 @@ public class Constants {
 		public static final String CODE_LOINC = "11503-0";
 
 		public static final CE<String> CODE = new CE<String>(
-				EMRConversionDocument.CODE_LOINC, Constants.CodeSystems.LOINC_OID,
+				Constants.EMRConversionDocument.CODE_LOINC, Constants.CodeSystems.LOINC_OID,
 				Constants.CodeSystems.LOINC_DISPLAY_NAME, Constants.CodeSystems.LOINC_VERSION);
 	}
 
@@ -60,6 +66,14 @@ public class Constants {
 		public static final String HUMANLANGUAGE_FRENCH_DESCRIPTION = "French";
 	}
 
+	/**
+	 * Body Constants
+	 */
+	public static class SectionSupport {
+		public static final String SECTION_SUPPORTED_NO_DATA = "No information for this section for this patient";
+		public static final String SECTION_NOT_SUPPORTED_NO_DATA = "This section is not supported by the Originating Application";
+	}
+
 	public static class CodeSystems {
 		public static final String ACT_CODE_CODESYSTEM_OID = "2.16.840.1.113883.5.4";
 		public static final String ACT_CODE_DISPLAY_NAME = "ActCode";
@@ -69,6 +83,9 @@ public class Constants {
 		public static final String LOINC_VERSION = "2.44";
 	}
 
+	/**
+	 * Runtime Constants
+	 */
 	public static class XML {
 		public static final Integer INDENT = 2;
 		public static final String ENCODING = "UTF-8";
