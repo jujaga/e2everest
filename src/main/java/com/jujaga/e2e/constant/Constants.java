@@ -24,7 +24,7 @@ public class Constants {
 	/**
 	 * Header Constants
 	 */
-	public static final class EMR {
+	public static class EMR {
 		public static final String EMR_OID = "2.16.840.1.113883.3.3331";
 		public static final String EMR_VERSION = "OSCAR EMR";
 	}
@@ -46,6 +46,9 @@ public class Constants {
 		public static final String PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION = "POCD_HD000040";
 		public static final String PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE = "CA-BC";
 		public static final String LANGUAGE_ENGLISH_CANADIAN = "en-CA";
+
+		public static final String EMAIL_PREFIX = "mailto:";
+		public static final String TEL_PREFIX = "tel:";
 
 		public static final String MALE_ADMINISTRATIVE_GENDER_CODE = "M";
 		public static final String FEMALE_ADMINISTRATIVE_GENDER_CODE = "F";
@@ -85,6 +88,8 @@ public class Constants {
 		public static final String LOINC_OID = "2.16.840.1.113883.6.1";
 		public static final String LOINC_DISPLAY_NAME = "LOINC";
 		public static final String LOINC_VERSION = "2.44";
+		public static final String OBSERVATIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.3";
+		public static final String OBSERVATIONTYPE_CA_PENDING_DISPLAY_NAME = "ObservationType-CA-Pending";
 	}
 
 	/**

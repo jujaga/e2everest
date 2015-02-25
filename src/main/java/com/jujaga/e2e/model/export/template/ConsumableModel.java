@@ -20,16 +20,13 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Drug;
 
+// TODO Consider making this class non-static
 public class ConsumableModel {
-	public static enum CodePriority {
-		DIN, ATC
-	}
-
 	/*public static Consumable getConsumable(Immunization immunization) {
 		return null;
 	}*/
 
-	public static Consumable getConsumable(Drug drug, CodePriority codePriority) {
+	public static Consumable getConsumable(Drug drug) {
 		Consumable consumable = new Consumable();
 		ManufacturedProduct manufacturedProduct = new ManufacturedProduct();
 		LabeledDrug labeledDrug = new LabeledDrug();
@@ -41,31 +38,22 @@ public class ConsumableModel {
 		manufacturedProduct.setManufacturedDrugOrOtherMaterial(labeledDrug);
 
 		labeledDrug.setDeterminerCode(EntityDeterminerDetermined.Described);
-		labeledDrug.setCode(getDrugCode(drug, codePriority));
+		labeledDrug.setCode(getDrugCode(drug));
 		labeledDrug.setName(getDrugName(drug));
+		// TODO Add e2e namespace extension fields
 
 		return consumable;
 	}
 
-	private static CE<DrugEntity> getDrugCode(Drug drug, CodePriority codePriority) {
+	private static CE<DrugEntity> getDrugCode(Drug drug) {
 		CE<DrugEntity> code = new CE<DrugEntity>();
 
-		if(codePriority == CodePriority.DIN && !EverestUtils.isNullorEmptyorWhitespace(drug.getRegionalIdentifier())) {
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getRegionalIdentifier())) {
 			code.setCodeEx(new DrugEntity(drug.getRegionalIdentifier(), Constants.CodeSystems.DIN_OID));
 			code.setCodeSystemName(Constants.CodeSystems.DIN_DISPLAY_NAME);
 		} else if(!EverestUtils.isNullorEmptyorWhitespace(drug.getAtc())) {
 			code.setCodeEx(new DrugEntity(drug.getAtc(), Constants.CodeSystems.ATC_OID));
 			code.setCodeSystemName(Constants.CodeSystems.ATC_DISPLAY_NAME);
-		} else {
-			code.setNullFlavor(NullFlavor.NoInformation);
-		}
-
-		if(codePriority == CodePriority.ATC && !EverestUtils.isNullorEmptyorWhitespace(drug.getAtc())) {
-			code.setCodeEx(new DrugEntity(drug.getAtc(), Constants.CodeSystems.ATC_OID));
-			code.setCodeSystemName(Constants.CodeSystems.ATC_DISPLAY_NAME);
-		} else if(!EverestUtils.isNullorEmptyorWhitespace(drug.getRegionalIdentifier())) {
-			code.setCodeEx(new DrugEntity(drug.getRegionalIdentifier(), Constants.CodeSystems.DIN_OID));
-			code.setCodeSystemName(Constants.CodeSystems.DIN_DISPLAY_NAME);
 		} else {
 			code.setNullFlavor(NullFlavor.NoInformation);
 		}

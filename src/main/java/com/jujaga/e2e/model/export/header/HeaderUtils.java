@@ -14,6 +14,7 @@ import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.LanguageCommunication;
 
 import com.jujaga.e2e.constant.Constants.TelecomType;
+import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 
@@ -29,10 +30,10 @@ class HeaderUtils {
 		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
 			switch(telecomType) {
 			case TELEPHONE:
-				telecoms.add(new TEL("tel:" + value.replaceAll("-", ""), telecomAddressUse));
+				telecoms.add(new TEL(Constants.DocumentHeader.TEL_PREFIX + value.replaceAll("-", ""), telecomAddressUse));
 				break;
 			case EMAIL:
-				telecoms.add(new TEL("mailto:" + value, telecomAddressUse));
+				telecoms.add(new TEL(Constants.DocumentHeader.EMAIL_PREFIX + value, telecomAddressUse));
 				break;
 			default:
 				break;

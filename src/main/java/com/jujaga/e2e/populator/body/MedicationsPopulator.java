@@ -1,5 +1,6 @@
 package com.jujaga.e2e.populator.body;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import org.marc.everest.datatypes.BL;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
@@ -59,14 +61,19 @@ public class MedicationsPopulator extends AbstractBodyPopulator implements ISect
 	public ClinicalStatement populateClinicalStatement(List<Drug> list) {
 		MedicationsModel medicationsModel = new MedicationsModel(list.get(0));
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
+
 		substanceAdministration.setMoodCode(x_DocumentSubstanceMood.Eventoccurrence);
 		substanceAdministration.setId(medicationsModel.getIds());
 		substanceAdministration.setCode(medicationsModel.getCode());
 		substanceAdministration.setStatusCode(medicationsModel.getStatusCode());
 		substanceAdministration.setConsumable(medicationsModel.getConsumable());
-		// entryRelationship - RecordType - Long/Short term
-		// entryRelationship - Last Review Date
+
+		entryRelationships.add(medicationsModel.getRecordType());
+		entryRelationships.add(medicationsModel.getLastReviewDate());
 		// Loop through prescriptions entryRelationship
+
+		substanceAdministration.setEntryRelationship(entryRelationships);
 
 		return substanceAdministration;
 	}

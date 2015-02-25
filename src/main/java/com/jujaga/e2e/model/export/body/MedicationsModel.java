@@ -7,11 +7,14 @@ import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 
+import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.template.ConsumableModel;
-import com.jujaga.e2e.model.export.template.ConsumableModel.CodePriority;
+import com.jujaga.e2e.model.export.template.observation.DateObservationModel;
+import com.jujaga.e2e.model.export.template.observation.UnboundObservationModel;
 import com.jujaga.emr.model.Drug;
 
 public class MedicationsModel {
@@ -22,6 +25,8 @@ public class MedicationsModel {
 	private CD<String> code;
 	private ActStatus statusCode;
 	private Consumable consumable;
+	private EntryRelationship recordType;
+	private EntryRelationship lastReviewDate;
 
 	public MedicationsModel(Drug drug) {
 		this.drug = drug;
@@ -30,6 +35,8 @@ public class MedicationsModel {
 		setCode();
 		setStatusCode();
 		setConsumable();
+		setRecordType();
+		setLastReviewDate();
 	}
 
 	private boolean isActiveDrug(Date date) {
@@ -77,6 +84,28 @@ public class MedicationsModel {
 	}
 
 	private void setConsumable() {
-		this.consumable = ConsumableModel.getConsumable(drug, CodePriority.DIN);
+		this.consumable = ConsumableModel.getConsumable(drug);
+	}
+
+	public EntryRelationship getRecordType() {
+		return recordType;
+	}
+
+	private void setRecordType() {
+		String value;
+		if(drug.getLongTerm()) {
+			value = Medications.LONG_TERM;
+		} else {
+			value = Medications.SHORT_TERM;
+		}
+		this.recordType = new UnboundObservationModel().getEntryRelationship(value);
+	}
+
+	public EntryRelationship getLastReviewDate() {
+		return lastReviewDate;
+	}
+
+	private void setLastReviewDate() {
+		this.lastReviewDate = new DateObservationModel().getEntryRelationship(drug.getLastUpdateDate());
 	}
 }
