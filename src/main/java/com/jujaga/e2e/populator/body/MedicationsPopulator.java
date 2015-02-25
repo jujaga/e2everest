@@ -15,7 +15,6 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
 import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.model.export.body.MedicationsModel;
-import com.jujaga.e2e.model.export.template.ConsumableModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Drug;
 
@@ -64,7 +63,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator implements ISect
 		substanceAdministration.setId(medicationsModel.getIds());
 		substanceAdministration.setCode(medicationsModel.getCode());
 		substanceAdministration.setStatusCode(medicationsModel.getStatusCode());
-		substanceAdministration.setConsumable(ConsumableModel.getConsumable(list.get(0)));
+		substanceAdministration.setConsumable(medicationsModel.getConsumable());
 		// entryRelationship - RecordType - Long/Short term
 		// entryRelationship - Last Review Date
 		// Loop through prescriptions entryRelationship

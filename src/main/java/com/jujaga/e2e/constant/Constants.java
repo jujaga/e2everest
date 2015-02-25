@@ -77,6 +77,10 @@ public class Constants {
 	public static class CodeSystems {
 		public static final String ACT_CODE_CODESYSTEM_OID = "2.16.840.1.113883.5.4";
 		public static final String ACT_CODE_DISPLAY_NAME = "ActCode";
+		public static final String ATC_OID = "2.16.840.1.113883.6.73";
+		public static final String ATC_DISPLAY_NAME = "whoATC";
+		public static final String DIN_OID = "2.16.840.1.113883.5.1105";
+		public static final String DIN_DISPLAY_NAME = "HC-DIN";
 		public static final String GENDER_CODE_SYSTEM = "2.16.840.1.113883.5.1";
 		public static final String LOINC_OID = "2.16.840.1.113883.6.1";
 		public static final String LOINC_DISPLAY_NAME = "LOINC";

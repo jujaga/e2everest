@@ -6,9 +6,12 @@ import org.apache.log4j.Logger;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.model.export.template.ConsumableModel;
+import com.jujaga.e2e.model.export.template.ConsumableModel.CodePriority;
 import com.jujaga.emr.model.Drug;
 
 public class MedicationsModel {
@@ -18,6 +21,7 @@ public class MedicationsModel {
 	private SET<II> ids;
 	private CD<String> code;
 	private ActStatus statusCode;
+	private Consumable consumable;
 
 	public MedicationsModel(Drug drug) {
 		this.drug = drug;
@@ -25,6 +29,7 @@ public class MedicationsModel {
 		setIds();
 		setCode();
 		setStatusCode();
+		setConsumable();
 	}
 
 	private boolean isActiveDrug(Date date) {
@@ -65,5 +70,13 @@ public class MedicationsModel {
 		} else {
 			this.statusCode = ActStatus.Completed;
 		}
+	}
+
+	public Consumable getConsumable() {
+		return consumable;
+	}
+
+	private void setConsumable() {
+		this.consumable = ConsumableModel.getConsumable(drug, CodePriority.DIN);
 	}
 }
