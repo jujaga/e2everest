@@ -84,7 +84,7 @@ public class MedicationsModel {
 	}
 
 	private void setConsumable() {
-		this.consumable = ConsumableModel.getConsumable(drug);
+		this.consumable = new ConsumableModel().getConsumable(drug);
 	}
 
 	public EntryRelationship getRecordType() {

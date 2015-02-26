@@ -20,32 +20,38 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Drug;
 
-// TODO Consider making this class non-static
 public class ConsumableModel {
+	private Drug drug;
+	private Consumable consumable;
+
+	public ConsumableModel() {
+		consumable = new Consumable();
+		consumable.setManufacturedProduct(new ManufacturedProduct());
+	}
+
 	/*public static Consumable getConsumable(Immunization immunization) {
-		return null;
+	return null;
 	}*/
 
-	public static Consumable getConsumable(Drug drug) {
-		Consumable consumable = new Consumable();
-		ManufacturedProduct manufacturedProduct = new ManufacturedProduct();
-		LabeledDrug labeledDrug = new LabeledDrug();
+	// TODO Add e2e namespace extension fields
+	public Consumable getConsumable(Drug drug) {
+		this.drug = drug;
 
 		consumable.setTemplateId(new ArrayList<II>(Arrays.asList(new II(Medications.MEDICATION_IDENTIFICATION_TEMPLATE_ID))));
-		consumable.setManufacturedProduct(manufacturedProduct);
 
+		LabeledDrug labeledDrug = new LabeledDrug();
+		labeledDrug.setDeterminerCode(EntityDeterminerDetermined.Described);
+		labeledDrug.setCode(getDrugCode());
+		labeledDrug.setName(getDrugName());
+
+		ManufacturedProduct manufacturedProduct = consumable.getManufacturedProduct();
 		manufacturedProduct.setClassCode(RoleClassManufacturedProduct.ManufacturedProduct);
 		manufacturedProduct.setManufacturedDrugOrOtherMaterial(labeledDrug);
-
-		labeledDrug.setDeterminerCode(EntityDeterminerDetermined.Described);
-		labeledDrug.setCode(getDrugCode(drug));
-		labeledDrug.setName(getDrugName(drug));
-		// TODO Add e2e namespace extension fields
 
 		return consumable;
 	}
 
-	private static CE<DrugEntity> getDrugCode(Drug drug) {
+	private CE<DrugEntity> getDrugCode() {
 		CE<DrugEntity> code = new CE<DrugEntity>();
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getRegionalIdentifier())) {
@@ -61,7 +67,7 @@ public class ConsumableModel {
 		return code;
 	}
 
-	private static EN getDrugName(Drug drug) {
+	private EN getDrugName() {
 		EN name = new EN();
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getGenericName())) {
