@@ -39,13 +39,14 @@ public class ConsumableModel {
 
 		consumable.setTemplateId(new ArrayList<II>(Arrays.asList(new II(Medications.MEDICATION_IDENTIFICATION_TEMPLATE_ID))));
 
+		ManufacturedProduct manufacturedProduct = consumable.getManufacturedProduct();
+		manufacturedProduct.setClassCode(RoleClassManufacturedProduct.ManufacturedProduct);
+
 		LabeledDrug labeledDrug = new LabeledDrug();
 		labeledDrug.setDeterminerCode(EntityDeterminerDetermined.Described);
 		labeledDrug.setCode(getDrugCode());
 		labeledDrug.setName(getDrugName());
 
-		ManufacturedProduct manufacturedProduct = consumable.getManufacturedProduct();
-		manufacturedProduct.setClassCode(RoleClassManufacturedProduct.ManufacturedProduct);
 		manufacturedProduct.setManufacturedDrugOrOtherMaterial(labeledDrug);
 
 		return consumable;

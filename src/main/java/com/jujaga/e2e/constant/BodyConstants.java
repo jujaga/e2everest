@@ -6,11 +6,6 @@ public class BodyConstants {
 		SHALL, SHOULD, MAY
 	}
 
-	public static class ObservationCodes {
-		public static final String DATE_OBSERVATION_CODE = "DATEOBS";
-		public static final String UNBOUND_OBSERVATION_CODE = "UNBOUND";
-	}
-
 	public abstract static class AbstractBodyConstants {
 		public SectionPriority SECTION_PRIORITY;
 		public String WITH_ENTRIES_TITLE;

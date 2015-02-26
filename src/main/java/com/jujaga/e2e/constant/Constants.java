@@ -21,6 +21,11 @@ public class Constants {
 		DRUG, IMMUNIZ, ANTIGEN
 	}
 
+	public static enum ObservationType {
+		UNBOUND, ICD9CODE, INSTRUCT, REASON, PRNIND, COMMENT, DATEOBS, SEV, ALRGRP,
+		CLINSTAT, RECLINK, TRTNOTE, REACTOBS, NXTENCREAS, OUTCOBS
+	}
+
 	/**
 	 * Header Constants
 	 */

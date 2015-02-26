@@ -20,7 +20,7 @@ import com.jujaga.e2e.model.export.body.MedicationsModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Drug;
 
-public class MedicationsPopulator extends AbstractBodyPopulator implements ISectionPopulator<Drug> {
+public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 	private List<Drug> allDrugs;
 	private Map<Integer, List<Drug>> mapDrugs;
 
@@ -70,7 +70,9 @@ public class MedicationsPopulator extends AbstractBodyPopulator implements ISect
 		substanceAdministration.setConsumable(medicationsModel.getConsumable());
 
 		entryRelationships.add(medicationsModel.getRecordType());
-		entryRelationships.add(medicationsModel.getLastReviewDate());
+		if(medicationsModel.getLastReviewDate() != null) {
+			entryRelationships.add(medicationsModel.getLastReviewDate());
+		}
 		// Loop through prescriptions entryRelationship
 
 		substanceAdministration.setEntryRelationship(entryRelationships);
