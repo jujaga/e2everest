@@ -1,12 +1,17 @@
 package com.jujaga.e2e.model.export.body;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.SET;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Constants.IdPrefixes;
 
-class BodyUtils {
+public class BodyUtils {
 	public static SET<II> buildUniqueId(IdPrefixes prefix, Integer id) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(prefix).append("-").append(id.toString());
@@ -16,5 +21,11 @@ class BodyUtils {
 		ii.setAssigningAuthorityName(Constants.EMR.EMR_VERSION);
 		ii.setExtension(sb.toString());
 		return new SET<II>(ii);
+	}
+
+	public static TS buildTSFromDate(Date date) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		return new TS(calendar, TS.DAY);
 	}
 }
