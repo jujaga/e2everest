@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.ENXP;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.ON;
 import org.marc.everest.datatypes.generic.SET;
 import org.springframework.context.ApplicationContext;
@@ -61,6 +62,7 @@ public class CustodianModelTest {
 		II id = ids.get(0);
 		assertNotNull(id);
 		assertTrue(id.isNull());
+		assertEquals(NullFlavor.NoInformation, id.getNullFlavor().getCode());
 	}
 
 	@Test

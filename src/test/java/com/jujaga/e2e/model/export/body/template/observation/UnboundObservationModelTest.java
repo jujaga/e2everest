@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
@@ -47,6 +48,7 @@ public class UnboundObservationModelTest {
 		assertNotNull(observation);
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
 		assertTrue(observation.getText().isNull());
+		assertEquals(NullFlavor.NoInformation, observation.getText().getNullFlavor().getCode());
 
 		CD<String> code = observation.getCode();
 		assertNotNull(code);

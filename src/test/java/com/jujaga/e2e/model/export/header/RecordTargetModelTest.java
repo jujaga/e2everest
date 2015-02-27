@@ -19,6 +19,7 @@ import org.marc.everest.datatypes.ENXP;
 import org.marc.everest.datatypes.EntityNamePartType;
 import org.marc.everest.datatypes.EntityNameUse;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.PN;
 import org.marc.everest.datatypes.PostalAddressUse;
 import org.marc.everest.datatypes.TEL;
@@ -77,6 +78,7 @@ public class RecordTargetModelTest {
 		II id = ids.get(0);
 		assertNotNull(id);
 		assertTrue(id.isNull());
+		assertEquals(NullFlavor.NoInformation, id.getNullFlavor().getCode());
 	}
 
 	@Test
@@ -172,6 +174,7 @@ public class RecordTargetModelTest {
 		CE<AdministrativeGender> gender = invalidGenderModel.getGender();
 		assertNotNull(gender);
 		assertTrue(gender.isNull());
+		assertEquals(NullFlavor.NoInformation, gender.getNullFlavor().getCode());
 	}
 
 	@Test
@@ -179,6 +182,7 @@ public class RecordTargetModelTest {
 		CE<AdministrativeGender> gender = nullRecordTargetModel.getGender();
 		assertNotNull(gender);
 		assertTrue(gender.isNull());
+		assertEquals(NullFlavor.NoInformation, gender.getNullFlavor().getCode());
 	}
 
 	@Test
@@ -199,6 +203,7 @@ public class RecordTargetModelTest {
 		TS birthDate = nullRecordTargetModel.getBirthDate();
 		assertNotNull(birthDate);
 		assertTrue(birthDate.isNull());
+		assertEquals(NullFlavor.NoInformation, birthDate.getNullFlavor().getCode());
 	}
 
 	@Test

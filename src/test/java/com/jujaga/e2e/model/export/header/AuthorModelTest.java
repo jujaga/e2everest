@@ -14,6 +14,7 @@ import org.marc.everest.datatypes.ENXP;
 import org.marc.everest.datatypes.EntityNamePartType;
 import org.marc.everest.datatypes.EntityNameUse;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.PN;
 import org.marc.everest.datatypes.TEL;
 import org.marc.everest.datatypes.generic.SET;
@@ -68,6 +69,7 @@ public class AuthorModelTest {
 		II id = ids.get(0);
 		assertNotNull(id);
 		assertTrue(id.isNull());
+		assertEquals(NullFlavor.NoInformation, id.getNullFlavor().getCode());
 	}
 
 	@Test
