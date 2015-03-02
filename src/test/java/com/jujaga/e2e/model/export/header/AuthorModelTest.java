@@ -37,6 +37,8 @@ public class AuthorModelTest {
 	private static Provider nullProvider;
 	private static AuthorModel nullAuthorModel;
 
+	private static final String test = "test";
+
 	@BeforeClass
 	public static void beforeClass() {
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
@@ -59,6 +61,33 @@ public class AuthorModelTest {
 		assertEquals(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME, id.getAssigningAuthorityName());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
 		assertEquals(provider.getProviderNo().toString(), id.getExtension());
+	}
+
+	@Test
+	public void idSecondaryTest() {
+		Provider provider1 = new Provider();
+		provider1.setOhipNo(test);
+		AuthorModel model1 = new AuthorModel(provider1);
+
+		SET<II> ids1 = model1.getIds();
+		assertNotNull(ids1);
+
+		II id1 = ids1.get(0);
+		assertNotNull(id1);
+		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id1.getExtension()));
+		assertEquals(provider1.getOhipNo().toString(), id1.getExtension());
+
+		Provider provider2 = new Provider();
+		provider2.setProviderNo(1);
+		AuthorModel model2 = new AuthorModel(provider2);
+
+		SET<II> ids2 = model2.getIds();
+		assertNotNull(ids2);
+
+		II id2 = ids2.get(0);
+		assertNotNull(id2);
+		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id2.getExtension()));
+		assertEquals(provider2.getProviderNo().toString(), id2.getExtension());
 	}
 
 	@Test

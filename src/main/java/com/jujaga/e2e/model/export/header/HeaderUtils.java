@@ -19,6 +19,9 @@ import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 
 class HeaderUtils {
+	private HeaderUtils() {
+	}
+
 	static void addAddressPart(ArrayList<ADXP> addrParts, String value, AddressPartType addressPartType) {
 		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
 			ADXP addrPart = new ADXP(value, addressPartType);

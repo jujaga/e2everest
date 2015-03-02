@@ -19,10 +19,6 @@ public class E2EXSDValidator {
 	private static Logger log = Logger.getLogger(E2EXSDValidator.class.getName());
 
 	public static Boolean isWellFormedXML(String xmlstring) {
-		return isWellFormedXML(xmlstring, false);
-	}
-
-	public static Boolean isWellFormedXML(String xmlstring, Boolean testSuppress) {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(false);
 		factory.setNamespaceAware(true);
@@ -34,18 +30,12 @@ public class E2EXSDValidator {
 			reader.parse(new InputSource(new StringReader(xmlstring)));
 			return true;
 		} catch (Exception e) {
-			if(!testSuppress) {
-				log.warn(e.getMessage());
-			}
+			log.warn(e.getMessage());
 			return false;
 		}
 	}
 
 	public static Boolean isValidXML(String xmlstring) {
-		return isValidXML(xmlstring, false);
-	}
-
-	public static Boolean isValidXML(String xmlstring, Boolean testSuppress) {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(true);
 		factory.setNamespaceAware(true);
@@ -59,9 +49,7 @@ public class E2EXSDValidator {
 			reader.parse(new InputSource(new StringReader(xmlstring)));
 			return true;
 		} catch (Exception e) {
-			if(!testSuppress) {
-				log.warn(e.getMessage());
-			}
+			log.warn(e.getMessage());
 			return false;
 		}
 	}

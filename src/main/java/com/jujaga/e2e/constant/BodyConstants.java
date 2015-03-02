@@ -2,6 +2,9 @@ package com.jujaga.e2e.constant;
 
 
 public class BodyConstants {
+	private BodyConstants() {
+	}
+
 	public static enum SectionPriority {
 		SHALL, SHOULD, MAY
 	}

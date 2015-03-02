@@ -5,12 +5,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 
 import com.jujaga.e2e.constant.Constants;
 
 public class EverestUtilsTest {
+	@BeforeClass
+	public static void beforeClass() {
+		Logger.getRootLogger().setLevel(Level.FATAL);
+	}
+
 	@Test
 	public void isNullorEmptyorWhitespaceTest() {
 		assertTrue(EverestUtils.isNullorEmptyorWhitespace(null));
@@ -22,8 +30,8 @@ public class EverestUtilsTest {
 	@Test
 	public void generateDocumentToStringTest() {
 		ClinicalDocument clinicalDocument = new ClinicalDocument();
-		assertNotNull(EverestUtils.generateDocumentToString(clinicalDocument, false));
-		assertNull(EverestUtils.generateDocumentToString(null, false));
+		assertNotNull(EverestUtils.generateDocumentToString(clinicalDocument, true));
+		assertNull(EverestUtils.generateDocumentToString(null, true));
 	}
 
 	@Test

@@ -4,6 +4,9 @@ import org.marc.everest.datatypes.generic.CE;
 
 // E2E constants and other hard-coded numbers/string will go here
 public class Constants {
+	private Constants() {
+	}
+
 	/**
 	 * Enumerations
 	 */
