@@ -7,8 +7,7 @@ import java.util.Map;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.AdministrativeGender;
 
 public class Mappings {
-	private Mappings() {
-	}
+	private Mappings() {}
 
 	public static final Map<String, AdministrativeGender> genderCode;
 	static {

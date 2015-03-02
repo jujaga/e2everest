@@ -26,6 +26,8 @@ import com.jujaga.e2e.constant.Constants;
 public class EverestUtils {
 	private static Logger log = Logger.getLogger(EverestUtils.class.getName());
 
+	private EverestUtils() {}
+
 	// Check String for Null, Empty or Whitespace
 	public static Boolean isNullorEmptyorWhitespace(String obj) {
 		return obj == null || obj.isEmpty() || obj.trim().isEmpty();
@@ -87,24 +89,23 @@ public class EverestUtils {
 
 	// Pretty Print XML
 	public static String prettyFormatXML(String input, Integer indent) {
-		if(isNullorEmptyorWhitespace(input)) {
-			return null;
+		if(!isNullorEmptyorWhitespace(input)) {
+			try {
+				Source xmlInput = new StreamSource(new StringReader(input));
+				StreamResult xmlOutput = new StreamResult(new StringWriter());
+
+				Transformer tf = TransformerFactory.newInstance().newTransformer();
+				tf.setOutputProperty(OutputKeys.ENCODING, Constants.XML.ENCODING);
+				tf.setOutputProperty(OutputKeys.INDENT, "yes");
+				tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indent));
+				tf.transform(xmlInput, xmlOutput);
+
+				return xmlOutput.getWriter().toString();
+			} catch (TransformerException e) {
+				log.error(e.toString());
+			}
 		}
 
-		try {
-			Source xmlInput = new StreamSource(new StringReader(input));
-			StreamResult xmlOutput = new StreamResult(new StringWriter());
-
-			Transformer tf = TransformerFactory.newInstance().newTransformer();
-			tf.setOutputProperty(OutputKeys.ENCODING, Constants.XML.ENCODING);
-			tf.setOutputProperty(OutputKeys.INDENT, "yes");
-			tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indent));
-			tf.transform(xmlInput, xmlOutput);
-
-			return xmlOutput.getWriter().toString();
-		} catch (TransformerException e) {
-			log.error(e.toString());
-			return null;
-		}
+		return null;
 	}
 }

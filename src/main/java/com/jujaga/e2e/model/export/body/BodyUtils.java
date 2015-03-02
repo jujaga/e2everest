@@ -12,8 +12,7 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Constants.IdPrefixes;
 
 public class BodyUtils {
-	private BodyUtils() {
-	}
+	private BodyUtils() {}
 
 	public static SET<II> buildUniqueId(IdPrefixes prefix, Integer id) {
 		if(id == null) {

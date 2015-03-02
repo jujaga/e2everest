@@ -7,8 +7,7 @@ import org.marc.everest.interfaces.IResultDetail;
 public class E2EEverestValidator {
 	private static Logger log = Logger.getLogger(E2EEverestValidator.class.getName());
 
-	private E2EEverestValidator() {
-	}
+	private E2EEverestValidator() {}
 
 	public static Boolean isValidCDA(IFormatterGraphResult details) {
 		Boolean result = true;
