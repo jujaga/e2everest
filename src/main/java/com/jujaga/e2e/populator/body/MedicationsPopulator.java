@@ -85,8 +85,9 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 		return null;
 	}
 
+	// TODO Medications populateText
 	@Override
 	public String populateText() {
-		return null;
+		return "Medication Section";
 	}
 }

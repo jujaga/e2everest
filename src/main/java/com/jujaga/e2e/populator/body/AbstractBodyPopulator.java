@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.SD;
+import org.marc.everest.datatypes.doc.StructDocTextNode;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component3;
@@ -46,7 +48,7 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 		section.setTemplateId(new ArrayList<II>(Arrays.asList(new II(bodyConstants.WITH_ENTRIES_TEMPLATE_ID))));
 		section.setCode(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_DISPLAY_NAME, null));
 		section.setTitle(bodyConstants.WITH_ENTRIES_TITLE);
-		section.setText(null); // TODO use populateText to fill this field
+		section.setText(new SD(new StructDocTextNode(populateText())));
 
 		component.setSection(section);
 
