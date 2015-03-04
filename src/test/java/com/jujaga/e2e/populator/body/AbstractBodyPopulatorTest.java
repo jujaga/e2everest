@@ -1,10 +1,17 @@
 package com.jujaga.e2e.populator.body;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component3;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Section;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 
 import com.jujaga.e2e.constant.BodyConstants.AbstractBodyConstants;
 import com.jujaga.e2e.constant.Constants;
@@ -30,5 +37,26 @@ public abstract class AbstractBodyPopulatorTest {
 				break;
 			}
 		}
+	}
+
+	protected void componentSectionTest() {
+		assertNotNull(component);
+		assertEquals(ActRelationshipHasComponent.HasComponent, component.getTypeCode().getCode());
+		assertTrue(component.getContextConductionInd().toBoolean());
+
+		Section section = component.getSection();
+		assertNotNull(section);
+		assertTrue(section.getTemplateId().contains(new II(bodyConstants.WITH_ENTRIES_TEMPLATE_ID)) ||
+				section.getTemplateId().contains(new II(bodyConstants.WITHOUT_ENTRIES_TEMPLATE_ID)));
+		assertEquals(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_DISPLAY_NAME, null), section.getCode());
+		assertTrue(section.getTitle().getValue().equals(bodyConstants.WITH_ENTRIES_TITLE) ||
+				section.getTitle().getValue().equals(bodyConstants.WITHOUT_ENTRIES_TITLE));
+		assertNotNull(section.getText());
+	}
+
+	protected void entryCountTest(Integer count) {
+		Section section = component.getSection();
+		assertNotNull(section);
+		assertEquals(count.intValue(), section.getEntry().size());
 	}
 }

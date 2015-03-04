@@ -15,6 +15,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Section;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 
 import com.jujaga.e2e.constant.BodyConstants.AbstractBodyConstants;
+import com.jujaga.e2e.constant.BodyConstants.SectionPriority;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.populator.AbstractPopulator;
 
@@ -28,11 +29,13 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 
 		if(!entries.isEmpty()) { // HL7 Level 3
 			component.getSection().setEntry(entries);
+			clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
 		} else { // HL7 Level 2
 			component.getSection().setEntry(null);
+			if(bodyConstants.SECTION_PRIORITY == SectionPriority.SHALL) { 
+				clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
+			}
 		}
-
-		clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
 	}
 
 	abstract public ClinicalStatement populateClinicalStatement(List<T> list);
