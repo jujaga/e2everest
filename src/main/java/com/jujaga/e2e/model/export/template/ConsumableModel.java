@@ -56,10 +56,10 @@ public class ConsumableModel {
 		CE<DrugEntity> code = new CE<DrugEntity>();
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getRegionalIdentifier())) {
-			code.setCodeEx(new DrugEntity(drug.getRegionalIdentifier(), Constants.CodeSystems.DIN_OID));
+			code.setCodeEx(new DrugEntity(drug.getRegionalIdentifier().trim(), Constants.CodeSystems.DIN_OID));
 			code.setCodeSystemName(Constants.CodeSystems.DIN_DISPLAY_NAME);
 		} else if(!EverestUtils.isNullorEmptyorWhitespace(drug.getAtc())) {
-			code.setCodeEx(new DrugEntity(drug.getAtc(), Constants.CodeSystems.ATC_OID));
+			code.setCodeEx(new DrugEntity(drug.getAtc().trim(), Constants.CodeSystems.ATC_OID));
 			code.setCodeSystemName(Constants.CodeSystems.ATC_DISPLAY_NAME);
 		} else {
 			code.setNullFlavor(NullFlavor.NoInformation);

@@ -66,7 +66,7 @@ public class ConsumableModelTest {
 
 		CE<DrugEntity> code = labeledDrug.getCode();
 		assertNotNull(code);
-		assertEquals(drug.getRegionalIdentifier(), code.getCode().getCode());
+		assertEquals(drug.getRegionalIdentifier().trim(), code.getCode().getCode());
 		assertEquals(Constants.CodeSystems.DIN_OID, code.getCodeSystem());
 		assertEquals(Constants.CodeSystems.DIN_DISPLAY_NAME, code.getCodeSystemName());
 	}
@@ -78,7 +78,7 @@ public class ConsumableModelTest {
 
 		CE<DrugEntity> code = labeledDrug.getCode();
 		assertNotNull(code);
-		assertEquals(drug.getAtc(), code.getCode().getCode());
+		assertEquals(drug.getAtc().trim(), code.getCode().getCode());
 		assertEquals(Constants.CodeSystems.ATC_OID, code.getCodeSystem());
 		assertEquals(Constants.CodeSystems.ATC_DISPLAY_NAME, code.getCodeSystemName());
 	}
