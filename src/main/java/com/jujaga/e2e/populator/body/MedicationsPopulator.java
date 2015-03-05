@@ -59,6 +59,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<Drug> list) {
+		// Consider folding this section into for loop to reduce model call by one
 		MedicationsModel medicationsModel = new MedicationsModel(list.get(0));
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
 		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
@@ -73,7 +74,11 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 		if(medicationsModel.getLastReviewDate() != null) {
 			entryRelationships.add(medicationsModel.getLastReviewDate());
 		}
-		// Loop through prescriptions entryRelationship
+
+		for(Drug drug : list) {
+			MedicationsModel prescriptionModel = new MedicationsModel(drug);
+			entryRelationships.add(prescriptionModel.getPrescriptionInformation());
+		}
 
 		substanceAdministration.setEntryRelationship(entryRelationships);
 

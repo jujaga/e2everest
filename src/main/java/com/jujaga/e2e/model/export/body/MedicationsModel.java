@@ -13,6 +13,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.template.ConsumableModel;
+import com.jujaga.e2e.model.export.template.MedicationPrescriptionEventModel;
 import com.jujaga.e2e.model.export.template.observation.DateObservationModel;
 import com.jujaga.e2e.model.export.template.observation.UnboundObservationModel;
 import com.jujaga.emr.model.Drug;
@@ -27,6 +28,7 @@ public class MedicationsModel {
 	private Consumable consumable;
 	private EntryRelationship recordType;
 	private EntryRelationship lastReviewDate;
+	private EntryRelationship prescriptionInformation;
 
 	public MedicationsModel(Drug drug) {
 		this.drug = drug;
@@ -37,6 +39,7 @@ public class MedicationsModel {
 		setConsumable();
 		setRecordType();
 		setLastReviewDate();
+		setPrescriptionInformation();
 	}
 
 	private boolean isActiveDrug(Date date) {
@@ -107,5 +110,13 @@ public class MedicationsModel {
 
 	private void setLastReviewDate() {
 		this.lastReviewDate = new DateObservationModel().getEntryRelationship(drug.getLastUpdateDate());
+	}
+
+	public EntryRelationship getPrescriptionInformation() {
+		return prescriptionInformation;
+	}
+
+	private void setPrescriptionInformation() {
+		this.prescriptionInformation = new MedicationPrescriptionEventModel().getEntryRelationship(drug);
 	}
 }

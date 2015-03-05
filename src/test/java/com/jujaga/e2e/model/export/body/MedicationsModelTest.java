@@ -155,4 +155,16 @@ public class MedicationsModelTest {
 		EntryRelationship entryRelationship = nullMedicationsModel.getLastReviewDate();
 		assertNull(entryRelationship);
 	}
+
+	@Test
+	public void prescriptionInformationTest() {
+		EntryRelationship entryRelationship = medicationsModel.getPrescriptionInformation();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void prescriptionInformationNullTest() {
+		EntryRelationship entryRelationship = nullMedicationsModel.getPrescriptionInformation();
+		assertNotNull(entryRelationship);
+	}
 }
