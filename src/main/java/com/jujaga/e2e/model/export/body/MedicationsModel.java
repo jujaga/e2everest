@@ -16,6 +16,7 @@ import com.jujaga.e2e.model.export.template.ConsumableModel;
 import com.jujaga.e2e.model.export.template.MedicationPrescriptionEventModel;
 import com.jujaga.e2e.model.export.template.observation.DateObservationModel;
 import com.jujaga.e2e.model.export.template.observation.UnboundObservationModel;
+import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Drug;
 
 public class MedicationsModel {
@@ -53,6 +54,31 @@ public class MedicationsModel {
 		return false;
 	}
 
+	public String getTextSummary() {
+		StringBuilder sb = new StringBuilder();
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getGenericName())) {
+			sb.append(drug.getGenericName());
+		} else {
+			sb.append(drug.getBrandName());
+		}
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getDosage())) {
+			sb.append(" " + drug.getDosage());
+		}
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getFreqCode())) {
+			sb.append(" " + drug.getFreqCode());
+		}
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getDuration())) {
+			sb.append(" " + drug.getDuration());
+		}
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getDurUnit())) {
+			sb.append(" " + drug.getDurUnit());
+		}
+
+		return sb.toString();
+	}
+
 	public SET<II> getIds() {
 		return ids;
 	}
@@ -67,7 +93,7 @@ public class MedicationsModel {
 
 	private void setCode() {
 		this.code = new CD<String>(Constants.SubstanceAdministrationType.DRUG.toString(), Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID);
-		this.code.setCodeSystemName(Constants.CodeSystems.ACT_CODE_DISPLAY_NAME);
+		this.code.setCodeSystemName(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME);
 	}
 
 	public ActStatus getStatusCode() {

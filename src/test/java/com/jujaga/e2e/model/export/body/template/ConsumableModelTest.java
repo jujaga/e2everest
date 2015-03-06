@@ -68,7 +68,7 @@ public class ConsumableModelTest {
 		assertNotNull(code);
 		assertEquals(drug.getRegionalIdentifier().trim(), code.getCode().getCode());
 		assertEquals(Constants.CodeSystems.DIN_OID, code.getCodeSystem());
-		assertEquals(Constants.CodeSystems.DIN_DISPLAY_NAME, code.getCodeSystemName());
+		assertEquals(Constants.CodeSystems.DIN_NAME, code.getCodeSystemName());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class ConsumableModelTest {
 		assertNotNull(code);
 		assertEquals(drug.getAtc().trim(), code.getCode().getCode());
 		assertEquals(Constants.CodeSystems.ATC_OID, code.getCodeSystem());
-		assertEquals(Constants.CodeSystems.ATC_DISPLAY_NAME, code.getCodeSystemName());
+		assertEquals(Constants.CodeSystems.ATC_NAME, code.getCodeSystemName());
 	}
 
 	@Test

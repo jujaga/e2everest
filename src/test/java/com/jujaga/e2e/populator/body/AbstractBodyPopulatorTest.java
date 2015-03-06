@@ -48,7 +48,7 @@ public abstract class AbstractBodyPopulatorTest {
 		assertNotNull(section);
 		assertTrue(section.getTemplateId().contains(new II(bodyConstants.WITH_ENTRIES_TEMPLATE_ID)) ||
 				section.getTemplateId().contains(new II(bodyConstants.WITHOUT_ENTRIES_TEMPLATE_ID)));
-		assertEquals(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_DISPLAY_NAME, null), section.getCode());
+		assertEquals(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_NAME, null), section.getCode());
 		assertTrue(section.getTitle().getValue().equals(bodyConstants.WITH_ENTRIES_TITLE) ||
 				section.getTitle().getValue().equals(bodyConstants.WITHOUT_ENTRIES_TITLE));
 		assertNotNull(section.getText());

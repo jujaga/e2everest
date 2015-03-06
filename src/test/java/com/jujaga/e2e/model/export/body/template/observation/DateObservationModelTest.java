@@ -36,7 +36,7 @@ public class DateObservationModelTest {
 		CD<String> code = observation.getCode();
 		assertNotNull(code);
 		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID, code.getCodeSystem());
-		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_DISPLAY_NAME, code.getCodeSystemName());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME, code.getCodeSystemName());
 		assertEquals(Constants.ObservationType.DATEOBS.toString(), code.getCode());
 	}
 

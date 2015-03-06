@@ -48,6 +48,18 @@ public class MedicationsModelTest {
 	}
 
 	@Test
+	public void textSummaryTest() {
+		String text = medicationsModel.getTextSummary();
+		assertNotNull(text);
+	}
+
+	@Test
+	public void textSummaryNullTest() {
+		String text = nullMedicationsModel.getTextSummary();
+		assertNotNull(text);
+	}
+
+	@Test
 	public void idTest() {
 		SET<II> ids = medicationsModel.getIds();
 		assertNotNull(ids);
@@ -73,7 +85,7 @@ public class MedicationsModelTest {
 
 		assertEquals(Constants.SubstanceAdministrationType.DRUG.toString(), code.getCode());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, code.getCodeSystem());
-		assertEquals(Constants.CodeSystems.ACT_CODE_DISPLAY_NAME, code.getCodeSystemName());
+		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, code.getCodeSystemName());
 	}
 
 	@Test
@@ -83,7 +95,7 @@ public class MedicationsModelTest {
 
 		assertEquals(Constants.SubstanceAdministrationType.DRUG.toString(), code.getCode());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, code.getCodeSystem());
-		assertEquals(Constants.CodeSystems.ACT_CODE_DISPLAY_NAME, code.getCodeSystemName());
+		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, code.getCodeSystemName());
 	}
 
 	@Test

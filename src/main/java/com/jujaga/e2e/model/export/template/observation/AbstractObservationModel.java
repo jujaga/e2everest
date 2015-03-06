@@ -16,7 +16,7 @@ abstract class AbstractObservationModel {
 
 		CD<String> code = new CD<String>();
 		code.setCodeSystem(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID);
-		code.setCodeSystemName(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_DISPLAY_NAME);
+		code.setCodeSystemName(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME);
 		observation.setCode(code);
 
 		entryRelationship.setClinicalStatement(observation);

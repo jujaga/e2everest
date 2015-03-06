@@ -90,9 +90,14 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 		return null;
 	}
 
-	// TODO Medications populateText
 	@Override
-	public String populateText() {
-		return "Medication Section";
+	public List<String> populateText() {
+		List<String> list = new ArrayList<String>();
+		for(List<Drug> medication : mapDrugs.values()) {
+			MedicationsModel medicationsModel = new MedicationsModel(medication.get(0));
+			list.add(medicationsModel.getTextSummary());
+		}
+
+		return list;
 	}
 }

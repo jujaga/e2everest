@@ -44,7 +44,7 @@ public class Constants {
 
 		public static final CE<String> CODE = new CE<String>(
 				Constants.EMRConversionDocument.CODE_LOINC, Constants.CodeSystems.LOINC_OID,
-				Constants.CodeSystems.LOINC_DISPLAY_NAME, Constants.CodeSystems.LOINC_VERSION);
+				Constants.CodeSystems.LOINC_NAME, Constants.CodeSystems.LOINC_VERSION);
 	}
 
 	public static class DocumentHeader {
@@ -86,17 +86,17 @@ public class Constants {
 
 	public static class CodeSystems {
 		public static final String ACT_CODE_CODESYSTEM_OID = "2.16.840.1.113883.5.4";
-		public static final String ACT_CODE_DISPLAY_NAME = "ActCode";
+		public static final String ACT_CODE_CODESYSTEM_NAME = "ActCode";
+		public static final String ADMINISTRATIVE_GENDER_OID = "2.16.840.1.113883.5.1";
 		public static final String ATC_OID = "2.16.840.1.113883.6.73";
-		public static final String ATC_DISPLAY_NAME = "whoATC";
+		public static final String ATC_NAME = "whoATC";
 		public static final String DIN_OID = "2.16.840.1.113883.5.1105";
-		public static final String DIN_DISPLAY_NAME = "HC-DIN";
-		public static final String GENDER_CODE_SYSTEM = "2.16.840.1.113883.5.1";
+		public static final String DIN_NAME = "HC-DIN";
 		public static final String LOINC_OID = "2.16.840.1.113883.6.1";
-		public static final String LOINC_DISPLAY_NAME = "LOINC";
+		public static final String LOINC_NAME = "LOINC";
 		public static final String LOINC_VERSION = "2.44";
 		public static final String OBSERVATIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.3";
-		public static final String OBSERVATIONTYPE_CA_PENDING_DISPLAY_NAME = "ObservationType-CA-Pending";
+		public static final String OBSERVATIONTYPE_CA_PENDING_NAME = "ObservationType-CA-Pending";
 	}
 
 	/**

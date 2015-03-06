@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.SD;
-import org.marc.everest.datatypes.doc.StructDocTextNode;
+import org.marc.everest.datatypes.doc.StructDocElementNode;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component3;
@@ -40,18 +40,23 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 
 	abstract public ClinicalStatement populateClinicalStatement(List<T> list);
 	abstract public ClinicalStatement populateNullFlavorClinicalStatement();
-	abstract public String populateText();
+	abstract public List<String> populateText();
 
 	private Component3 makeSectionComponent() {
 		Component3 component = new Component3();
 		component.setTypeCode(ActRelationshipHasComponent.HasComponent);
 		component.setContextConductionInd(true);
 
+		StructDocElementNode list = new StructDocElementNode("list");
+		for(String text : populateText()) {
+			list.addElement("item", text);
+		}
+
 		Section section = new Section();
 		section.setTemplateId(new ArrayList<II>(Arrays.asList(new II(bodyConstants.WITH_ENTRIES_TEMPLATE_ID))));
-		section.setCode(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_DISPLAY_NAME, null));
+		section.setCode(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_NAME, null));
 		section.setTitle(bodyConstants.WITH_ENTRIES_TITLE);
-		section.setText(new SD(new StructDocTextNode(populateText())));
+		section.setText(new SD(list));
 
 		component.setSection(section);
 

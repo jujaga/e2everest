@@ -57,10 +57,10 @@ public class ConsumableModel {
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getRegionalIdentifier())) {
 			code.setCodeEx(new DrugEntity(drug.getRegionalIdentifier().trim(), Constants.CodeSystems.DIN_OID));
-			code.setCodeSystemName(Constants.CodeSystems.DIN_DISPLAY_NAME);
+			code.setCodeSystemName(Constants.CodeSystems.DIN_NAME);
 		} else if(!EverestUtils.isNullorEmptyorWhitespace(drug.getAtc())) {
 			code.setCodeEx(new DrugEntity(drug.getAtc().trim(), Constants.CodeSystems.ATC_OID));
-			code.setCodeSystemName(Constants.CodeSystems.ATC_DISPLAY_NAME);
+			code.setCodeSystemName(Constants.CodeSystems.ATC_NAME);
 		} else {
 			code.setNullFlavor(NullFlavor.NoInformation);
 		}
