@@ -36,10 +36,10 @@ public class DrugDaoTest {
 	public void findByDemographicIdTest() {
 		List<Drug> drugs = drugDao.findByDemographicId(Constants.Runtime.VALID_DEMOGRAPHIC);
 		assertNotNull(drugs);
-		assertEquals(2, drugs.size());
+		assertEquals(3, drugs.size());
 
 		List<Drug> drugs2 = drugDao.findByDemographicId(Constants.Runtime.VALID_DEMOGRAPHIC, false);
 		assertNotNull(drugs2);
-		assertEquals(2, drugs2.size());
+		assertEquals(3, drugs2.size());
 	}
 }

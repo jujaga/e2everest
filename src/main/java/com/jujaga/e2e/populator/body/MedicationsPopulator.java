@@ -22,11 +22,11 @@ import com.jujaga.emr.model.Drug;
 
 public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 	private List<Drug> allDrugs;
-	private Map<Integer, List<Drug>> mapDrugs;
+	private Map<Integer, ArrayList<Drug>> mapDrugs;
 
 	MedicationsPopulator(PatientExport patientExport) {
 		bodyConstants = Medications.getConstants();
-		mapDrugs = new HashMap<Integer, List<Drug>>();
+		mapDrugs = new HashMap<Integer, ArrayList<Drug>>();
 		allDrugs = (List<Drug>) patientExport.getMedications();
 		Collections.reverse(allDrugs); // Order recent drugs first
 
@@ -41,7 +41,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 			if(mapDrugs.containsKey(din)) {
 				mapDrugs.get(din).add(drug);
 			} else {
-				mapDrugs.put(din, Arrays.asList(drug));
+				mapDrugs.put(din, new ArrayList<Drug>(Arrays.asList(drug)));
 			}
 		}
 	}
@@ -59,25 +59,29 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<Drug> list) {
-		// Consider folding this section into for loop to reduce model call by one
-		MedicationsModel medicationsModel = new MedicationsModel(list.get(0));
+		Boolean medicationEventPopulated = false;
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
 		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
 
-		substanceAdministration.setMoodCode(x_DocumentSubstanceMood.Eventoccurrence);
-		substanceAdministration.setId(medicationsModel.getIds());
-		substanceAdministration.setCode(medicationsModel.getCode());
-		substanceAdministration.setStatusCode(medicationsModel.getStatusCode());
-		substanceAdministration.setConsumable(medicationsModel.getConsumable());
-
-		entryRelationships.add(medicationsModel.getRecordType());
-		if(medicationsModel.getLastReviewDate() != null) {
-			entryRelationships.add(medicationsModel.getLastReviewDate());
-		}
-
 		for(Drug drug : list) {
-			MedicationsModel prescriptionModel = new MedicationsModel(drug);
-			entryRelationships.add(prescriptionModel.getPrescriptionInformation());
+			MedicationsModel medicationsModel = new MedicationsModel(drug);
+
+			if(!medicationEventPopulated) {
+				substanceAdministration.setMoodCode(x_DocumentSubstanceMood.Eventoccurrence);
+				substanceAdministration.setId(medicationsModel.getIds());
+				substanceAdministration.setCode(medicationsModel.getCode());
+				substanceAdministration.setStatusCode(medicationsModel.getStatusCode());
+				substanceAdministration.setConsumable(medicationsModel.getConsumable());
+
+				entryRelationships.add(medicationsModel.getRecordType());
+				if(medicationsModel.getLastReviewDate() != null) {
+					entryRelationships.add(medicationsModel.getLastReviewDate());
+				}
+
+				medicationEventPopulated = true;
+			}
+
+			entryRelationships.add(medicationsModel.getPrescriptionInformation());
 		}
 
 		substanceAdministration.setEntryRelationship(entryRelationships);

@@ -30,6 +30,10 @@ public class BodyUtils {
 	}
 
 	public static TS buildTSFromDate(Date date) {
+		if(date == null) {
+			return null;
+		}
+
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(date);
 		return new TS(calendar, TS.DAY);
