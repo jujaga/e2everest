@@ -34,7 +34,7 @@ public class AuthorModel {
 
 		try {
 			Integer providerId;providerId = Integer.parseInt(providerNo);
-			ProviderDao providerDao = PatientExport.getApplicationContext().getBean(ProviderDao.class);
+			ProviderDao providerDao = new PatientExport().getApplicationContext().getBean(ProviderDao.class);
 			provider = providerDao.find(providerId);
 		} catch (NumberFormatException e) {
 			log.error("Provider " + providerNo + " not found");

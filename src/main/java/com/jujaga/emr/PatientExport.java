@@ -21,6 +21,12 @@ public class PatientExport {
 	private Demographic demographic = null;
 	private List<Drug> drugs = null;
 
+	public PatientExport() {
+		if(context == null) {
+			context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
+		}
+	}
+
 	public PatientExport(Integer demographicNo) {
 		if(context == null) {
 			context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
@@ -40,10 +46,7 @@ public class PatientExport {
 		return loaded;
 	}
 
-	public static ApplicationContext getApplicationContext() {
-		if(context == null) {
-			context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
-		}
+	public ApplicationContext getApplicationContext() {
 		return context;
 	}
 

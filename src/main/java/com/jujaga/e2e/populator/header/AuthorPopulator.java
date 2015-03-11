@@ -18,7 +18,7 @@ class AuthorPopulator extends AbstractPopulator {
 	private final AuthorModel authorModel;
 
 	AuthorPopulator(PatientExport patientExport) {
-		ProviderDao providerDao = PatientExport.getApplicationContext().getBean(ProviderDao.class);
+		ProviderDao providerDao = patientExport.getApplicationContext().getBean(ProviderDao.class);
 		Provider provider = providerDao.find(Integer.parseInt(patientExport.getDemographic().getProviderNo()));
 		authorModel = new AuthorModel(provider);
 	}
