@@ -48,6 +48,11 @@ public class MedicationsModelTest {
 	}
 
 	@Test
+	public void medcicationsModelNullTest() {
+		assertNotNull(new MedicationsModel(null));
+	}
+
+	@Test
 	public void textSummaryTest() {
 		String text = medicationsModel.getTextSummary();
 		assertNotNull(text);

@@ -58,6 +58,11 @@ public class RecordTargetModelTest {
 	}
 
 	@Test
+	public void recordTargetModelNullTest() {
+		assertNotNull(new RecordTargetModel(null));
+	}
+
+	@Test
 	public void idTest() {
 		SET<II> ids = recordTargetModel.getIds();
 		assertNotNull(ids);
@@ -141,7 +146,7 @@ public class RecordTargetModelTest {
 
 		PN name = names.get(0);
 		assertNotNull(name);
-		assertEquals(EntityNameUse.OfficialRecord, name.getUse().get(0).getCode());
+		assertEquals(EntityNameUse.Legal, name.getUse().get(0).getCode());
 
 		List<ENXP> nameParts = name.getParts();
 		assertNotNull(nameParts);

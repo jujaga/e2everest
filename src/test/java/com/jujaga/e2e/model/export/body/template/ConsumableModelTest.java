@@ -19,7 +19,6 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.RoleClassManufacturedProduct;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.template.ConsumableModel;
 import com.jujaga.emr.dao.DrugDao;
@@ -49,7 +48,7 @@ public class ConsumableModelTest {
 		assertNotNull(consumable);
 		assertNotNull(consumable.getTemplateId());
 		assertEquals(1, consumable.getTemplateId().size());
-		assertEquals(Medications.MEDICATION_IDENTIFICATION_TEMPLATE_ID, consumable.getTemplateId().get(0).getRoot());
+		assertEquals(Constants.TemplateOids.MEDICATION_IDENTIFICATION_TEMPLATE_ID, consumable.getTemplateId().get(0).getRoot());
 
 		ManufacturedProduct manufacturedProduct = consumable.getManufacturedProduct();
 		assertNotNull(manufacturedProduct);
@@ -58,6 +57,12 @@ public class ConsumableModelTest {
 		LabeledDrug labeledDrug = manufacturedProduct.getManufacturedDrugOrOtherMaterialIfManufacturedLabeledDrug();
 		assertNotNull(labeledDrug);
 		assertEquals(EntityDeterminerDetermined.Described, labeledDrug.getDeterminerCode().getCode());
+	}
+
+	@Test
+	public void consumableDrugNullTest() {
+		Consumable consumable = consumableModel.getConsumable(null);
+		assertNotNull(consumable);
 	}
 
 	@Test

@@ -1,5 +1,6 @@
 package com.jujaga.e2e.model.export.header;
 
+import org.apache.log4j.Logger;
 import org.marc.everest.datatypes.EntityNameUse;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
@@ -14,24 +15,55 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Person;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Constants.TelecomType;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.PatientExport;
+import com.jujaga.emr.dao.ProviderDao;
 import com.jujaga.emr.model.Provider;
 
 public class AuthorModel {
+	private static Logger log = Logger.getLogger(AuthorModel.class.getName());
+
 	private final Provider provider;
 
-	private SET<II> ids;
+	protected SET<II> ids;
 	private SET<TEL> telecoms;
-	private Person person;
+	protected Person person;
 	private AuthoringDevice device;
 
-	public AuthorModel(Provider provider) {
-		this.provider = provider;
-		if(this.provider != null) {
-			setIds();
-			setTelecoms();
-			setPerson();
-			setDevice();
+	protected AuthorModel(String providerNo) {
+		Provider provider = null;
+
+		try {
+			Integer providerId;providerId = Integer.parseInt(providerNo);
+			ProviderDao providerDao = PatientExport.getApplicationContext().getBean(ProviderDao.class);
+			provider = providerDao.find(providerId);
+		} catch (NumberFormatException e) {
+			log.error("Provider " + providerNo + " not found");
+		} finally {
+			if(provider == null) {
+				this.provider = new Provider();
+			} else {
+				this.provider = provider;
+			}
 		}
+
+		constructorHelper();
+	}
+
+	public AuthorModel(Provider provider) {
+		if(provider == null) {
+			this.provider = new Provider();
+		} else {
+			this.provider = provider;
+		}
+
+		constructorHelper();
+	}
+
+	private void constructorHelper() {
+		setIds();
+		setTelecoms();
+		setPerson();
+		setDevice();
 	}
 
 	public SET<II> getIds() {
@@ -86,13 +118,14 @@ public class AuthorModel {
 	private void setPerson() {
 		Person person = new Person();
 		SET<PN> names = new SET<PN>();
-		HeaderUtils.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.OfficialRecord);
-		if(!names.isEmpty()) {
-			person.setName(names);
-			this.person = person;
-		} else {
-			this.person = null;
+		HeaderUtils.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.Legal);
+		if(names.isEmpty()) {
+			PN pn = new PN();
+			pn.setNullFlavor(NullFlavor.NoInformation);
+			names.add(pn);
 		}
+		person.setName(names);
+		this.person = person;
 	}
 
 	public AuthoringDevice getDevice() {

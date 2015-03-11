@@ -40,7 +40,10 @@ public class PatientExport {
 		return loaded;
 	}
 
-	public ApplicationContext getApplicationContext() {
+	public static ApplicationContext getApplicationContext() {
+		if(context == null) {
+			context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
+		}
 		return context;
 	}
 

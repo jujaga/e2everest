@@ -11,12 +11,13 @@ import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.datatypes.interfaces.ISetComponent;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
-import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.body.BodyUtils;
 import com.jujaga.emr.model.Drug;
@@ -25,18 +26,25 @@ public class MedicationPrescriptionEventModel {
 	private Drug drug;
 
 	public EntryRelationship getEntryRelationship(Drug drug) {
-		this.drug = drug;
+		if(drug == null) {
+			this.drug = new Drug();
+		} else {
+			this.drug = drug;
+		}
+
 		EntryRelationship entryRelationship = new EntryRelationship();
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
 
 		entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
 		entryRelationship.setContextConductionInd(true);
-		entryRelationship.setTemplateId(new ArrayList<II>(Arrays.asList(new II(Medications.MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID))));
+		entryRelationship.setTemplateId(Arrays.asList(new II(Constants.TemplateOids.MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID)));
 
 		substanceAdministration.setMoodCode(x_DocumentSubstanceMood.RQO);
 		substanceAdministration.setId(getIds());
 		substanceAdministration.setCode(getCode());
 		substanceAdministration.setEffectiveTime(getEffectiveTime());
+		substanceAdministration.setConsumable(getConsumable());
+		substanceAdministration.setAuthor(getAuthor());
 
 		entryRelationship.setClinicalStatement(substanceAdministration);
 
@@ -72,5 +80,15 @@ public class MedicationPrescriptionEventModel {
 		effectiveTime.add(ivl);
 
 		return effectiveTime;
+	}
+
+	private Consumable getConsumable() {
+		return new ConsumableModel().getConsumable(drug);
+	}
+
+	private ArrayList<Author> getAuthor() {
+		ArrayList<Author> authors = new ArrayList<Author>();
+		authors.add(new AuthorParticipationModel(drug.getProviderNo()).getAuthor(drug.getWrittenDate()));
+		return authors;
 	}
 }

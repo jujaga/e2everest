@@ -26,10 +26,6 @@ public class BodyConstants {
 		public static final Integer NO_DIN_NUMBER = -1;
 		public static final String LONG_TERM = "Long Term";
 		public static final String SHORT_TERM = "Short Term";
-		public static final String MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.20";
-		public static final String MEDICATION_IDENTIFICATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.16";
-		public static final String DOSE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.8";
-		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
 
 		private Medications() {
 			SECTION_PRIORITY = SectionPriority.SHALL;

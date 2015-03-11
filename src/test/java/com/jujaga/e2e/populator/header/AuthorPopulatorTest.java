@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedAuthor;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
 import com.jujaga.e2e.populator.AbstractPopulatorTest;
 
@@ -26,6 +27,7 @@ public class AuthorPopulatorTest extends AbstractPopulatorTest {
 	public void authorProviderTest() {
 		Author author = clinicalDocument.getAuthor().get(0);
 		assertNotNull(author);
+		assertEquals(ContextControl.OverridingPropagating, author.getContextControlCode().getCode());
 		assertFalse(author.getTime().isInvalidDate());
 
 		TS now = TS.now();
@@ -41,6 +43,7 @@ public class AuthorPopulatorTest extends AbstractPopulatorTest {
 	public void authorSystemTest() {
 		Author author = clinicalDocument.getAuthor().get(1);
 		assertNotNull(author);
+		assertEquals(ContextControl.OverridingPropagating, author.getContextControlCode().getCode());
 		assertFalse(author.getTime().isInvalidDate());
 
 		TS now = TS.now();

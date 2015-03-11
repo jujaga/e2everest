@@ -32,7 +32,11 @@ public class MedicationsModel {
 	private EntryRelationship prescriptionInformation;
 
 	public MedicationsModel(Drug drug) {
-		this.drug = drug;
+		if(drug == null) {
+			this.drug = new Drug();
+		} else {
+			this.drug = drug;
+		}
 
 		setIds();
 		setCode();

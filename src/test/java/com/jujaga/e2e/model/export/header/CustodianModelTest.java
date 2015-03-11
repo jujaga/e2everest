@@ -42,6 +42,11 @@ public class CustodianModelTest {
 	}
 
 	@Test
+	public void custodianModelNullTest() {
+		assertNotNull(new CustodianModel(null));
+	}
+
+	@Test
 	public void idTest() {
 		SET<II> ids = custodianModel.getIds();
 		assertNotNull(ids);

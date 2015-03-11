@@ -19,11 +19,14 @@ public class CustodianModel {
 	private ON name;
 
 	public CustodianModel(Clinic clinic) {
-		this.clinic = clinic;
-		if(this.clinic != null) {
-			setIds();
-			setName();
+		if(clinic == null) {
+			this.clinic = new Clinic();
+		} else {
+			this.clinic = clinic;
 		}
+
+		setIds();
+		setName();
 	}
 
 	public SET<II> getIds() {

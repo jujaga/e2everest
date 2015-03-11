@@ -1,6 +1,5 @@
 package com.jujaga.e2e.model.export.template;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.marc.everest.datatypes.EN;
@@ -15,7 +14,6 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.DrugEntity;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityDeterminerDetermined;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.RoleClassManufacturedProduct;
 
-import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Drug;
@@ -35,9 +33,13 @@ public class ConsumableModel {
 
 	// TODO Add e2e namespace extension fields
 	public Consumable getConsumable(Drug drug) {
-		this.drug = drug;
+		if(drug == null) {
+			this.drug = new Drug();
+		} else {
+			this.drug = drug;
+		}
 
-		consumable.setTemplateId(new ArrayList<II>(Arrays.asList(new II(Medications.MEDICATION_IDENTIFICATION_TEMPLATE_ID))));
+		consumable.setTemplateId(Arrays.asList(new II(Constants.TemplateOids.MEDICATION_IDENTIFICATION_TEMPLATE_ID)));
 
 		ManufacturedProduct manufacturedProduct = consumable.getManufacturedProduct();
 		manufacturedProduct.setClassCode(RoleClassManufacturedProduct.ManufacturedProduct);

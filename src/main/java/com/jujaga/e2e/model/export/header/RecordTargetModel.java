@@ -40,16 +40,19 @@ public class RecordTargetModel {
 	private ArrayList<LanguageCommunication> languages;
 
 	public RecordTargetModel(Demographic demographic) {
-		this.demographic = demographic;
-		if(this.demographic != null) {
-			setIds();
-			setAddresses();
-			setTelecoms();
-			setNames();
-			setGender();
-			setBirthDate();
-			setLanguages();
+		if(demographic == null) {
+			this.demographic = new Demographic();
+		} else {
+			this.demographic = demographic;
 		}
+
+		setIds();
+		setAddresses();
+		setTelecoms();
+		setNames();
+		setGender();
+		setBirthDate();
+		setLanguages();
 	}
 
 	public SET<II> getIds() {
@@ -111,7 +114,7 @@ public class RecordTargetModel {
 
 	private void setNames() {
 		SET<PN> names = new SET<PN>();
-		HeaderUtils.addNamePart(names, demographic.getFirstName(), demographic.getLastName(), EntityNameUse.OfficialRecord);
+		HeaderUtils.addNamePart(names, demographic.getFirstName(), demographic.getLastName(), EntityNameUse.Legal);
 		if(!names.isEmpty()) {
 			this.names = names;
 		}

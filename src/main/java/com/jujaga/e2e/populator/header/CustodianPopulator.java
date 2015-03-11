@@ -15,7 +15,7 @@ class CustodianPopulator extends AbstractPopulator {
 	private final CustodianModel custodianModel;
 
 	CustodianPopulator(PatientExport patientExport) {
-		ClinicDao clinicDao = patientExport.getApplicationContext().getBean(ClinicDao.class);
+		ClinicDao clinicDao = PatientExport.getApplicationContext().getBean(ClinicDao.class);
 		Clinic clinic = clinicDao.find(Constants.Runtime.VALID_CLINIC);
 		custodianModel = new CustodianModel(clinic);
 	}

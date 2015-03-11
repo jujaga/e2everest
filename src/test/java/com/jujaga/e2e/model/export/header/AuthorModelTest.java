@@ -60,7 +60,7 @@ public class AuthorModelTest {
 		assertEquals(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_ID_OID, id.getRoot());
 		assertEquals(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME, id.getAssigningAuthorityName());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
-		assertEquals(provider.getProviderNo().toString(), id.getExtension());
+		assertEquals(provider.getPractitionerNo(), id.getExtension());
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class AuthorModelTest {
 
 		PN name = names.get(0);
 		assertNotNull(name);
-		assertEquals(EntityNameUse.OfficialRecord, name.getUse().get(0).getCode());
+		assertEquals(EntityNameUse.Legal, name.getUse().get(0).getCode());
 
 		List<ENXP> nameParts = name.getParts();
 		assertNotNull(nameParts);
@@ -152,7 +152,16 @@ public class AuthorModelTest {
 	@Test
 	public void personNullTest() {
 		Person person = nullAuthorModel.getPerson();
-		assertNull(person);
+		assertNotNull(person);
+
+		SET<PN> names = person.getName();
+		assertNotNull(names);
+		assertEquals(1, names.size());
+
+		PN name = names.get(0);
+		assertNotNull(name);
+		assertTrue(name.isNull());
+		assertEquals(NullFlavor.NoInformation, name.getNullFlavor().getCode());
 	}
 
 	@Test

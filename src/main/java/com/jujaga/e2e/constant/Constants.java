@@ -79,11 +79,6 @@ public class Constants {
 	/**
 	 * Body Constants
 	 */
-	public static class SectionSupport {
-		public static final String SECTION_SUPPORTED_NO_DATA = "No information for this section for this patient";
-		public static final String SECTION_NOT_SUPPORTED_NO_DATA = "This section is not supported by the Originating Application";
-	}
-
 	public static class CodeSystems {
 		public static final String ACT_CODE_CODESYSTEM_OID = "2.16.840.1.113883.5.4";
 		public static final String ACT_CODE_CODESYSTEM_NAME = "ActCode";
@@ -97,6 +92,19 @@ public class Constants {
 		public static final String LOINC_VERSION = "2.44";
 		public static final String OBSERVATIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.3";
 		public static final String OBSERVATIONTYPE_CA_PENDING_NAME = "ObservationType-CA-Pending";
+	}
+
+	public static class SectionSupport {
+		public static final String SECTION_SUPPORTED_NO_DATA = "No information for this section for this patient";
+		public static final String SECTION_NOT_SUPPORTED_NO_DATA = "This section is not supported by the Originating Application";
+	}
+
+	public static class TemplateOids {
+		public static final String AUTHOR_PARTICIPATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.2";
+		public static final String DOSE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.8";
+		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
+		public static final String MEDICATION_IDENTIFICATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.16";
+		public static final String MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.20";
 	}
 
 	/**

@@ -16,6 +16,8 @@ import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.interfaces.ISetComponent;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
@@ -23,7 +25,6 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.body.BodyUtils;
 import com.jujaga.e2e.model.export.template.MedicationPrescriptionEventModel;
@@ -56,7 +57,7 @@ public class MedicationPrescriptionEventModelTest {
 		assertNotNull(entryRelationship);
 		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
 		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
-		assertEquals(Medications.MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID, entryRelationship.getTemplateId().get(0).getRoot());
+		assertEquals(Constants.TemplateOids.MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID, entryRelationship.getTemplateId().get(0).getRoot());
 
 		SubstanceAdministration substanceAdministration = entryRelationship.getClinicalStatementIfSubstanceAdministration();
 		assertNotNull(substanceAdministration);
@@ -68,6 +69,12 @@ public class MedicationPrescriptionEventModelTest {
 		assertEquals(Constants.SubstanceAdministrationType.DRUG.toString(), code.getCode());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, code.getCodeSystem());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, code.getCodeSystemName());
+	}
+
+	@Test
+	public void medicationPrescriptionEventNullTest() {
+		EntryRelationship entryRelationship = mpeModel.getEntryRelationship(null);
+		assertNotNull(entryRelationship);
 	}
 
 	@Test
@@ -85,7 +92,7 @@ public class MedicationPrescriptionEventModelTest {
 	}
 
 	@Test
-	public void nullEffectiveTimeTest() {
+	public void effectiveTimeNullTest() {
 		nullDrug.setRxDate(null);
 
 		SubstanceAdministration substanceAdministration = substanceAdministrationHelper(nullDrug);
@@ -99,6 +106,36 @@ public class MedicationPrescriptionEventModelTest {
 		assertTrue(ivl.getLow().isNull());
 		assertEquals(NullFlavor.Unknown, ivl.getLow().getNullFlavor().getCode());
 		assertNull(ivl.getHigh());
+	}
+
+	@Test
+	public void consumableTest() {
+		SubstanceAdministration substanceAdministration = substanceAdministrationHelper(drug);
+		Consumable consumable = substanceAdministration.getConsumable();
+		assertNotNull(consumable);
+	}
+
+	@Test
+	public void consumableNullTest() {
+		SubstanceAdministration substanceAdministration = substanceAdministrationHelper(nullDrug);
+		Consumable consumable = substanceAdministration.getConsumable();
+		assertNotNull(consumable);
+	}
+
+	@Test
+	public void authorTest() {
+		SubstanceAdministration substanceAdministration = substanceAdministrationHelper(drug);
+		ArrayList<Author> authors = substanceAdministration.getAuthor();
+		assertNotNull(authors);
+		assertEquals(1, authors.size());
+	}
+
+	@Test
+	public void authorNullTest() {
+		SubstanceAdministration substanceAdministration = substanceAdministrationHelper(nullDrug);
+		ArrayList<Author> authors = substanceAdministration.getAuthor();
+		assertNotNull(authors);
+		assertEquals(1, authors.size());
 	}
 
 	private SubstanceAdministration substanceAdministrationHelper(Drug drug) {
