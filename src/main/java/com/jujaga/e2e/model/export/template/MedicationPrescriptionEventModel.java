@@ -34,6 +34,7 @@ public class MedicationPrescriptionEventModel {
 
 		EntryRelationship entryRelationship = new EntryRelationship();
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
 
 		entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
 		entryRelationship.setContextConductionInd(true);
@@ -45,6 +46,10 @@ public class MedicationPrescriptionEventModel {
 		substanceAdministration.setEffectiveTime(getEffectiveTime());
 		substanceAdministration.setConsumable(getConsumable());
 		substanceAdministration.setAuthor(getAuthor());
+
+		entryRelationships.add(getDose());
+
+		substanceAdministration.setEntryRelationship(entryRelationships);
 
 		entryRelationship.setClinicalStatement(substanceAdministration);
 
@@ -90,5 +95,20 @@ public class MedicationPrescriptionEventModel {
 		ArrayList<Author> authors = new ArrayList<Author>();
 		authors.add(new AuthorParticipationModel(drug.getProviderNo()).getAuthor(drug.getWrittenDate()));
 		return authors;
+	}
+
+	private EntryRelationship getDose() {
+		EntryRelationship entryRelationship = new EntryRelationship();
+		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
+
+		entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
+		entryRelationship.setContextConductionInd(true);
+		entryRelationship.setTemplateId(Arrays.asList(new II(Constants.TemplateOids.DOSE_OBSERVATION_TEMPLATE_ID)));
+
+		substanceAdministration.setMoodCode(x_DocumentSubstanceMood.RQO);
+
+		entryRelationship.setClinicalStatement(substanceAdministration);
+
+		return entryRelationship;
 	}
 }

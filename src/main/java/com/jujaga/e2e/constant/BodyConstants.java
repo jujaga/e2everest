@@ -1,6 +1,5 @@
 package com.jujaga.e2e.constant;
 
-
 public class BodyConstants {
 	private BodyConstants() {}
 

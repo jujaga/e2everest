@@ -138,6 +138,31 @@ public class MedicationPrescriptionEventModelTest {
 		assertEquals(1, authors.size());
 	}
 
+	@Test
+	public void doseStructureTest() {
+		ArrayList<EntryRelationship> entryRelationships = substanceAdministrationHelper(drug).getEntryRelationship();
+		assertNotNull(entryRelationships);
+
+		EntryRelationship entryRelationship = entryRelationships.get(0);
+		assertNotNull(entryRelationship);
+		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+		assertEquals(Constants.TemplateOids.DOSE_OBSERVATION_TEMPLATE_ID, entryRelationship.getTemplateId().get(0).getRoot());
+		
+		SubstanceAdministration substanceAdministration = entryRelationship.getClinicalStatementIfSubstanceAdministration();
+		assertNotNull(substanceAdministration);
+		assertEquals(x_DocumentSubstanceMood.RQO, substanceAdministration.getMoodCode().getCode());
+	}
+
+	@Test
+	public void doseNullTest() {
+		ArrayList<EntryRelationship> entryRelationships = substanceAdministrationHelper(nullDrug).getEntryRelationship();
+		assertNotNull(entryRelationships);
+
+		EntryRelationship entryRelationship = entryRelationships.get(0);
+		assertNotNull(entryRelationship);
+	}
+
 	private SubstanceAdministration substanceAdministrationHelper(Drug drug) {
 		EntryRelationship entryRelationship = mpeModel.getEntryRelationship(drug);
 		return entryRelationship.getClinicalStatementIfSubstanceAdministration();
