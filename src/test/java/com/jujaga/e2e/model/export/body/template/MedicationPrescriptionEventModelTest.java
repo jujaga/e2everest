@@ -64,6 +64,9 @@ public class MedicationPrescriptionEventModelTest {
 		assertEquals(x_DocumentSubstanceMood.RQO, substanceAdministration.getMoodCode().getCode());
 		assertEquals(BodyUtils.buildUniqueId(Constants.IdPrefixes.MedicationPrescriptions, drug.getId()), substanceAdministration.getId());
 
+		Consumable consumable = substanceAdministration.getConsumable();
+		assertNotNull(consumable);
+
 		CD<String> code = substanceAdministration.getCode();
 		assertNotNull(code);
 		assertEquals(Constants.SubstanceAdministrationType.DRUG.toString(), code.getCode());
@@ -148,10 +151,6 @@ public class MedicationPrescriptionEventModelTest {
 		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
 		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
 		assertEquals(Constants.TemplateOids.DOSE_OBSERVATION_TEMPLATE_ID, entryRelationship.getTemplateId().get(0).getRoot());
-		
-		SubstanceAdministration substanceAdministration = entryRelationship.getClinicalStatementIfSubstanceAdministration();
-		assertNotNull(substanceAdministration);
-		assertEquals(x_DocumentSubstanceMood.RQO, substanceAdministration.getMoodCode().getCode());
 	}
 
 	@Test

@@ -60,14 +60,13 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<Drug> list) {
 		Boolean medicationEventPopulated = false;
-		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
+		SubstanceAdministration substanceAdministration = new SubstanceAdministration(x_DocumentSubstanceMood.Eventoccurrence);
 		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
 
 		for(Drug drug : list) {
 			MedicationsModel medicationsModel = new MedicationsModel(drug);
 
 			if(!medicationEventPopulated) {
-				substanceAdministration.setMoodCode(x_DocumentSubstanceMood.Eventoccurrence);
 				substanceAdministration.setId(medicationsModel.getIds());
 				substanceAdministration.setCode(medicationsModel.getCode());
 				substanceAdministration.setStatusCode(medicationsModel.getStatusCode());

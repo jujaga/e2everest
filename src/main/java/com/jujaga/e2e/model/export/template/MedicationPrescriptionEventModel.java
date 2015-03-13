@@ -20,6 +20,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.body.BodyUtils;
+import com.jujaga.e2e.model.export.template.observation.DoseObservationModel;
 import com.jujaga.emr.model.Drug;
 
 public class MedicationPrescriptionEventModel {
@@ -33,21 +34,19 @@ public class MedicationPrescriptionEventModel {
 		}
 
 		EntryRelationship entryRelationship = new EntryRelationship();
-		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
+		SubstanceAdministration substanceAdministration = new SubstanceAdministration(x_DocumentSubstanceMood.RQO, getConsumable());
 		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
 
 		entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
 		entryRelationship.setContextConductionInd(true);
 		entryRelationship.setTemplateId(Arrays.asList(new II(Constants.TemplateOids.MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID)));
 
-		substanceAdministration.setMoodCode(x_DocumentSubstanceMood.RQO);
 		substanceAdministration.setId(getIds());
 		substanceAdministration.setCode(getCode());
 		substanceAdministration.setEffectiveTime(getEffectiveTime());
-		substanceAdministration.setConsumable(getConsumable());
 		substanceAdministration.setAuthor(getAuthor());
 
-		entryRelationships.add(getDose());
+		entryRelationships.add(new DoseObservationModel().getEntryRelationship(drug));
 
 		substanceAdministration.setEntryRelationship(entryRelationships);
 
@@ -95,20 +94,5 @@ public class MedicationPrescriptionEventModel {
 		ArrayList<Author> authors = new ArrayList<Author>();
 		authors.add(new AuthorParticipationModel(drug.getProviderNo()).getAuthor(drug.getWrittenDate()));
 		return authors;
-	}
-
-	private EntryRelationship getDose() {
-		EntryRelationship entryRelationship = new EntryRelationship();
-		SubstanceAdministration substanceAdministration = new SubstanceAdministration();
-
-		entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
-		entryRelationship.setContextConductionInd(true);
-		entryRelationship.setTemplateId(Arrays.asList(new II(Constants.TemplateOids.DOSE_OBSERVATION_TEMPLATE_ID)));
-
-		substanceAdministration.setMoodCode(x_DocumentSubstanceMood.RQO);
-
-		entryRelationship.setClinicalStatement(substanceAdministration);
-
-		return entryRelationship;
 	}
 }
