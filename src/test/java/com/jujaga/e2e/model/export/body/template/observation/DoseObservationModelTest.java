@@ -2,15 +2,21 @@ package com.jujaga.e2e.model.export.body.template.observation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.PQ;
 import org.marc.everest.datatypes.TS;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
+import org.marc.everest.datatypes.generic.PIVL;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
@@ -109,6 +115,78 @@ public class DoseObservationModelTest {
 		assertNotNull(ivl);
 		assertTrue(ivl.isNull());
 		assertEquals(NullFlavor.Unknown, ivl.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void frequencyTest() {
+		PIVL<TS> pivl = (PIVL<TS>) substanceAdministrationHelper(drug).getEffectiveTime().get(1);
+		assertNotNull(pivl);
+		// TODO Fill out the rest of this test
+	}
+
+	@Test
+	public void frequencyNullTest() {
+		PIVL<TS> pivl = (PIVL<TS>) substanceAdministrationHelper(nullDrug).getEffectiveTime().get(1);
+		assertNotNull(pivl);
+		assertTrue(pivl.isNull());
+		assertEquals(NullFlavor.Unknown, pivl.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void routeTest() {
+		CE<String> route = substanceAdministrationHelper(drug).getRouteCode();
+		assertNotNull(route);
+		assertEquals(drug.getRoute().toUpperCase(), route.getCode());
+		assertEquals(Constants.CodeSystems.ROUTE_OF_ADMINISTRATION_OID, route.getCodeSystem());
+		assertEquals(Constants.CodeSystems.ROUTE_OF_ADMINISTRATION_NAME, route.getCodeSystemName());
+	}
+
+	@Test
+	public void routeNullTest() {
+		CE<String> route = substanceAdministrationHelper(nullDrug).getRouteCode();
+		assertNull(route);
+	}
+
+	@Test
+	public void doseQuantityTest() {
+		IVL<PQ> ivl = substanceAdministrationHelper(drug).getDoseQuantity();
+		assertNotNull(ivl);
+		assertEquals(new PQ(new BigDecimal(drug.getTakeMin().toString()), null), ivl.getLow());
+		assertEquals(new PQ(new BigDecimal(drug.getTakeMax().toString()), null), ivl.getHigh());
+
+		drug.setUnitName("te st");
+
+		ivl = substanceAdministrationHelper(drug).getDoseQuantity();
+		assertNotNull(ivl);
+		assertEquals(new PQ(new BigDecimal(drug.getTakeMin().toString()), "te_st"), ivl.getLow());
+		assertEquals(new PQ(new BigDecimal(drug.getTakeMax().toString()), "te_st"), ivl.getHigh());
+	}
+
+	@Test
+	public void doseQuantityNullTest() {
+		nullDrug.setTakeMin(null);
+		nullDrug.setTakeMax(null);
+
+		IVL<PQ> ivl = substanceAdministrationHelper(nullDrug).getDoseQuantity();
+		assertNotNull(ivl);
+		assertTrue(ivl.isNull());
+		assertEquals(NullFlavor.NoInformation, ivl.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void formTest() {
+		CE<String> form = substanceAdministrationHelper(drug).getAdministrationUnitCode();
+		assertNotNull(form);
+		assertEquals(null, form.getCode()); // TODO Replace with formCodeMap
+		assertEquals(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_OID, form.getCodeSystem());
+		assertEquals(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_NAME, form.getCodeSystemName());
+		assertEquals(drug.getDrugForm(), form.getDisplayName());
+	}
+
+	@Test
+	public void formNullTest() {
+		CE<String> form = substanceAdministrationHelper(nullDrug).getAdministrationUnitCode();
+		assertNull(form);
 	}
 
 	private SubstanceAdministration substanceAdministrationHelper(Drug drug) {

@@ -82,6 +82,8 @@ public class Constants {
 	public static class CodeSystems {
 		public static final String ACT_CODE_CODESYSTEM_OID = "2.16.840.1.113883.5.4";
 		public static final String ACT_CODE_CODESYSTEM_NAME = "ActCode";
+		public static final String ADMINISTERABLE_DRUG_FORM_OID = "2.16.840.1.113883.1.11.14570";
+		public static final String ADMINISTERABLE_DRUG_FORM_NAME = "AdministerableDrugForm";
 		public static final String ADMINISTRATIVE_GENDER_OID = "2.16.840.1.113883.5.1";
 		public static final String ATC_OID = "2.16.840.1.113883.6.73";
 		public static final String ATC_NAME = "whoATC";
@@ -92,6 +94,8 @@ public class Constants {
 		public static final String LOINC_VERSION = "2.44";
 		public static final String OBSERVATIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.3";
 		public static final String OBSERVATIONTYPE_CA_PENDING_NAME = "ObservationType-CA-Pending";
+		public static final String ROUTE_OF_ADMINISTRATION_OID = "2.16.840.1.113883.5.112";
+		public static final String ROUTE_OF_ADMINISTRATION_NAME = "RouteOfAdministration";
 	}
 
 	public static class SectionSupport {

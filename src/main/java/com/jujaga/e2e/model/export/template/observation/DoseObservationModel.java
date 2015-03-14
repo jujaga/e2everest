@@ -10,6 +10,7 @@ import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.PQ;
 import org.marc.everest.datatypes.TS;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.PIVL;
 import org.marc.everest.datatypes.interfaces.ISetComponent;
@@ -49,6 +50,9 @@ public class DoseObservationModel {
 
 		substanceAdministration.setText(getDoseInstructions());
 		substanceAdministration.setEffectiveTime(doseTimes);
+		substanceAdministration.setRouteCode(getRoute());
+		substanceAdministration.setDoseQuantity(getDoseQuantity());
+		substanceAdministration.setAdministrationUnitCode(getForm());
 
 		entryRelationship.setClinicalStatement(substanceAdministration);
 
@@ -114,5 +118,55 @@ public class DoseObservationModel {
 		}
 
 		return pivl;
+	}
+
+	private CE<String> getRoute() {
+		CE<String> code = null;
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getRoute())) {
+			code = new CE<String>(drug.getRoute().toUpperCase(), Constants.CodeSystems.ROUTE_OF_ADMINISTRATION_OID);
+			code.setCodeSystemName(Constants.CodeSystems.ROUTE_OF_ADMINISTRATION_NAME);
+		}
+
+		return code;
+	}
+
+	private IVL<PQ> getDoseQuantity() {
+		IVL<PQ> dose = new IVL<PQ>();
+		PQ low = null;
+		PQ high = null;
+		String unit = null;
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getUnitName())) {
+			unit = drug.getUnitName().replaceAll("\\s", "_");
+		}
+		if(drug.getTakeMin() != null) {
+			low = new PQ(new BigDecimal(drug.getTakeMin().toString()), unit);
+		}
+		if(drug.getTakeMax() != null) {
+			high = new PQ(new BigDecimal(drug.getTakeMax().toString()), unit);
+		}
+
+		if(low != null || high != null) {
+			dose.setLow(low);
+			dose.setHigh(high);
+		} else {
+			dose.setNullFlavor(NullFlavor.NoInformation);
+		}
+
+		return dose;
+	}
+
+	private CE<String> getForm() {
+		CE<String> code = null;
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getDrugForm())) {
+			// TODO Implement formCodeMap
+			code = new CE<String>(null, Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_OID);
+			code.setCodeSystemName(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_NAME);
+			code.setDisplayName(drug.getDrugForm());
+		}
+
+		return code;
 	}
 }
