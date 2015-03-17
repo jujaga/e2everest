@@ -68,7 +68,7 @@ public class DoseObservationModelTest {
 
 	@Test
 	public void doseObservationNullTest() {
-		EntryRelationship entryRelationship = doseObservationModel.getEntryRelationship(nullDrug);
+		EntryRelationship entryRelationship = doseObservationModel.getEntryRelationship(null);
 		assertNotNull(entryRelationship);
 
 		SubstanceAdministration substanceAdministration = entryRelationship.getClinicalStatementIfSubstanceAdministration();
