@@ -98,6 +98,12 @@ public class Constants {
 		public static final String ROUTE_OF_ADMINISTRATION_NAME = "RouteOfAdministration";
 	}
 
+	public static class ObservationOids {
+		public static final String DATE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.4";
+		public static final String ORDER_INDICATOR_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.37";
+		public static final String UNBOUND_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.32";
+	}
+
 	public static class SectionSupport {
 		public static final String SECTION_SUPPORTED_NO_DATA = "No information for this section for this patient";
 		public static final String SECTION_NOT_SUPPORTED_NO_DATA = "This section is not supported by the Originating Application";

@@ -162,7 +162,7 @@ public class DoseObservationModel {
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getDrugForm())) {
 			// TODO Implement formCodeMap
-			code = new CE<String>(null, Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_OID);
+			code = new CE<String>("formCodeMap", Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_OID);
 			code.setCodeSystemName(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_NAME);
 			code.setDisplayName(drug.getDrugForm());
 		}

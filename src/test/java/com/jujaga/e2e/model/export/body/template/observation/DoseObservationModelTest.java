@@ -177,7 +177,7 @@ public class DoseObservationModelTest {
 	public void formTest() {
 		CE<String> form = substanceAdministrationHelper(drug).getAdministrationUnitCode();
 		assertNotNull(form);
-		assertEquals(null, form.getCode()); // TODO Replace with formCodeMap
+		assertEquals("formCodeMap", form.getCode()); // TODO Replace with formCodeMap
 		assertEquals(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_OID, form.getCodeSystem());
 		assertEquals(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_NAME, form.getCodeSystemName());
 		assertEquals(drug.getDrugForm(), form.getDisplayName());

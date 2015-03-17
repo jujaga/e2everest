@@ -1,6 +1,9 @@
 package com.jujaga.e2e.model.export.template.observation;
 
+import java.util.Arrays;
+
 import org.marc.everest.datatypes.ED;
+import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
@@ -13,6 +16,7 @@ public class UnboundObservationModel extends AbstractObservationModel {
 	public EntryRelationship getEntryRelationship(String value) {
 		entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.SUBJ);
 		entryRelationship.setContextConductionInd(true);
+		entryRelationship.setTemplateId(Arrays.asList(new II(Constants.ObservationOids.UNBOUND_OBSERVATION_TEMPLATE_ID)));
 
 		observation.setMoodCode(x_ActMoodDocumentObservation.Eventoccurrence);
 		observation.getCode().setCodeEx(Constants.ObservationType.UNBOUND.toString());

@@ -24,6 +24,7 @@ public class UnboundObservationModelTest {
 		assertNotNull(entryRelationship);
 		assertEquals(x_ActRelationshipEntryRelationship.SUBJ, entryRelationship.getTypeCode().getCode());
 		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+		assertEquals(Constants.ObservationOids.UNBOUND_OBSERVATION_TEMPLATE_ID, entryRelationship.getTemplateId().get(0).getRoot());
 
 		Observation observation = entryRelationship.getClinicalStatementIfObservation();
 		assertNotNull(observation);
@@ -43,6 +44,7 @@ public class UnboundObservationModelTest {
 		assertNotNull(entryRelationship);
 		assertEquals(x_ActRelationshipEntryRelationship.SUBJ, entryRelationship.getTypeCode().getCode());
 		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+		assertEquals(Constants.ObservationOids.UNBOUND_OBSERVATION_TEMPLATE_ID, entryRelationship.getTemplateId().get(0).getRoot());
 
 		Observation observation = entryRelationship.getClinicalStatementIfObservation();
 		assertNotNull(observation);
