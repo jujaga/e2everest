@@ -15,6 +15,10 @@ public class Constants {
 		ProblemList, RiskFactors, Referrals, SocialHistory, SubstanceUse
 	}
 
+	public static enum RoleClass {
+		ROL, PAT
+	}
+
 	public static enum TelecomType {
 		EMAIL, TELEPHONE
 	}
@@ -94,12 +98,15 @@ public class Constants {
 		public static final String LOINC_VERSION = "2.44";
 		public static final String OBSERVATIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.3";
 		public static final String OBSERVATIONTYPE_CA_PENDING_NAME = "ObservationType-CA-Pending";
+		public static final String ROLE_CLASS_OID = "2.16.840.1.113883.3.3068.10.8.30";
+		public static final String ROLE_CLASS_NAME = "RoleClass";
 		public static final String ROUTE_OF_ADMINISTRATION_OID = "2.16.840.1.113883.5.112";
 		public static final String ROUTE_OF_ADMINISTRATION_NAME = "RouteOfAdministration";
 	}
 
 	public static class ObservationOids {
 		public static final String DATE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.4";
+		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
 		public static final String ORDER_INDICATOR_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.37";
 		public static final String UNBOUND_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.32";
 	}

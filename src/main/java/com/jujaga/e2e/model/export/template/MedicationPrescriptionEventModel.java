@@ -21,6 +21,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.body.BodyUtils;
 import com.jujaga.e2e.model.export.template.observation.DoseObservationModel;
+import com.jujaga.e2e.model.export.template.observation.InstructionObservationModel;
 import com.jujaga.e2e.model.export.template.observation.OrderIndicatorObservationModel;
 import com.jujaga.emr.model.Drug;
 
@@ -49,6 +50,7 @@ public class MedicationPrescriptionEventModel {
 
 		entryRelationships.add(getDoseInstructions());
 		entryRelationships.add(getPRN());
+		entryRelationships.add(getInstructionsToPatient());
 
 		substanceAdministration.setEntryRelationship(entryRelationships);
 
@@ -104,5 +106,9 @@ public class MedicationPrescriptionEventModel {
 
 	private EntryRelationship getPRN() {
 		return new OrderIndicatorObservationModel().getEntryRelationship(drug.getPrn());
+	}
+
+	private EntryRelationship getInstructionsToPatient() {
+		return new InstructionObservationModel().getEntryRelationship(drug.getSpecial_instruction());
 	}
 }
