@@ -105,13 +105,10 @@ public class DoseObservationModel {
 		PIVL<TS> pivl = new PIVL<TS>();
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getFreqCode())) {
-			// TODO Figure out how to output frequency instead of period
-			/*RTO<INT, PQ> rto = new RTO<INT, PQ>();
-			rto.setNumerator(new INT(2));
-			rto.setDenominator(new PQ(new BigDecimal(1), "d"));
-			pivl.setFrequency(rto);
-			pivl.setInstitutionSpecified(false);*/
-			pivl.setNullFlavor(NullFlavor.Unknown);
+			// TODO Complete mapping proposal for frequency -> period
+			PQ pq = new PQ(new BigDecimal(1), "d");
+			pivl.setPeriod(pq);
+			pivl.setInstitutionSpecified(true);
 			pivl.setOriginalText(new ED(drug.getFreqCode()));
 		} else {
 			pivl.setNullFlavor(NullFlavor.Unknown);

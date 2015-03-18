@@ -51,6 +51,13 @@ public class AuthorModelTest {
 	}
 
 	@Test
+	public void nullProviderModelTest() {
+		Provider provider = null;
+		AuthorModel authorModel = new AuthorModel(provider);
+		assertNotNull(authorModel);
+	}
+
+	@Test
 	public void idTest() {
 		SET<II> ids = authorModel.getIds();
 		assertNotNull(ids);
