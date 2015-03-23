@@ -2,13 +2,20 @@ package com.jujaga.e2e.constant;
 
 import org.marc.everest.datatypes.generic.CE;
 
-// E2E constants and other hard-coded numbers/string will go here
 public class Constants {
 	private Constants() {}
 
 	/**
 	 * Enumerations
 	 */
+	public static enum FormCodes {
+		AER, BAR, BARSOAP, CAP, CRM, DISK, DOUCHE, DROP, ECTAB, ELIXIR, ENEMA,
+		ENTCAP, ERCAP, ERSUSP, ERTAB, FOAM, GASINHL, GEL, GELAPL, GRAN, GUM,
+		LTN, MDINHL, OINT, ORTROCHE, PAD, PASTE, PATCH, PELLET, PILL, POWD,
+		RINSE, SHMP, SLTAB, SOL, SPRYADAPT, SUPP, SUSP, SWAB, SYRUP, TAB, TINC,
+		TPASTE, VAGSUPP, VAGTAB, WAFER
+	}
+
 	public static enum IdPrefixes {
 		AdvanceDirectives, Alerts, Allergies, ClinicalMeasuredObservations, Encounters,
 		FamilyHistory, Immunizations, Medications, Lab, LabOBR, MedicationPrescriptions,
@@ -28,8 +35,8 @@ public class Constants {
 	}
 
 	public static enum ObservationType {
-		UNBOUND, ICD9CODE, INSTRUCT, REASON, PRNIND, COMMENT, DATEOBS, SEV, ALRGRP,
-		CLINSTAT, RECLINK, TRTNOTE, REACTOBS, NXTENCREAS, OUTCOBS
+		ALRGRP, CLINSTAT, COMMENT, DATEOBS, ICD9CODE, INSTRUCT, NXTENCREAS,
+		OUTCOBS, PRNIND, REACTOBS, REASON, RECLINK, SEV, TRTNOTE, UNBOUND
 	}
 
 	/**

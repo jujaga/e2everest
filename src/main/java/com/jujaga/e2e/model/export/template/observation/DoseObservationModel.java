@@ -21,6 +21,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelations
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.model.export.template.ConsumableModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Drug;
@@ -157,9 +158,9 @@ public class DoseObservationModel {
 	private CE<String> getForm() {
 		CE<String> code = null;
 
-		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getDrugForm())) {
-			// TODO Implement formCodeMap
-			code = new CE<String>("formCodeMap", Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_OID);
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getDrugForm()) &&
+				Mappings.formCode.containsKey(drug.getDrugForm())) {
+			code = new CE<String>(Mappings.formCode.get(drug.getDrugForm()), Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_OID);
 			code.setCodeSystemName(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_NAME);
 			code.setDisplayName(drug.getDrugForm());
 		}

@@ -26,6 +26,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.model.export.template.observation.DoseObservationModel;
 import com.jujaga.emr.dao.DrugDao;
 import com.jujaga.emr.model.Drug;
@@ -177,7 +178,7 @@ public class DoseObservationModelTest {
 	public void formTest() {
 		CE<String> form = substanceAdministrationHelper(drug).getAdministrationUnitCode();
 		assertNotNull(form);
-		assertEquals("formCodeMap", form.getCode()); // TODO Replace with formCodeMap
+		assertEquals(Mappings.formCode.get(drug.getDrugForm()), form.getCode());
 		assertEquals(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_OID, form.getCodeSystem());
 		assertEquals(Constants.CodeSystems.ADMINISTERABLE_DRUG_FORM_NAME, form.getCodeSystemName());
 		assertEquals(drug.getDrugForm(), form.getDisplayName());
