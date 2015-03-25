@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jujaga.e2e</groupId>
 	<artifactId>e2everest</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>e2everest</name>
 	<url>https://github.com/jujaga/e2everest</url>
 	<description>A Proof of Concept E2E Everest Implementation
