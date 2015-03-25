@@ -30,6 +30,10 @@ public class Constants {
 		EMAIL, TELEPHONE
 	}
 
+	public static enum TimeUnit {
+		d, h, mo, wk
+	}
+
 	public static enum SubstanceAdministrationType {
 		DRUG, IMMUNIZ, ANTIGEN
 	}

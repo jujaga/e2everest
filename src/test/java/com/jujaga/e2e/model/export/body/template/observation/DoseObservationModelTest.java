@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.PQ;
+import org.marc.everest.datatypes.SetOperator;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
@@ -122,7 +123,19 @@ public class DoseObservationModelTest {
 	public void frequencyTest() {
 		PIVL<TS> pivl = (PIVL<TS>) substanceAdministrationHelper(drug).getEffectiveTime().get(1);
 		assertNotNull(pivl);
-		// TODO Fill out the rest of this test
+		assertEquals(new PQ(BigDecimal.ONE, Constants.TimeUnit.d.toString()), pivl.getPeriod());
+		assertEquals(SetOperator.Intersect, pivl.getOperator());
+		assertTrue(pivl.getInstitutionSpecified());
+	}
+
+	@Test
+	public void frequencyInvalidTest() {
+		drug.setFreqCode("test");
+
+		PIVL<TS> pivl = (PIVL<TS>) substanceAdministrationHelper(drug).getEffectiveTime().get(1);
+		assertNotNull(pivl);
+		assertTrue(pivl.isNull());
+		assertEquals(NullFlavor.Other, pivl.getNullFlavor().getCode());
 	}
 
 	@Test

@@ -30,7 +30,7 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 
 		if(entries.isEmpty()) { // HL7 Level 2
 			if(bodyConstants.SECTION_PRIORITY == SectionPriority.SHALL) {
-				// TODO Determine how required empty sections should look
+				// TODO Handle nullFlavor cascade for Conversion document conformance
 				/*Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
 				entry.setClinicalStatement(populateNullFlavorClinicalStatement());
 
@@ -63,7 +63,7 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 		if(texts.isEmpty()) {
 			section.setTemplateId(Arrays.asList(new II(bodyConstants.WITHOUT_ENTRIES_TEMPLATE_ID)));
 			section.setTitle(bodyConstants.WITHOUT_ENTRIES_TITLE);
-			section.setText(new SD(new StructDocTextNode(Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA)));
+			section.setText(new SD(new StructDocTextNode(bodyConstants.ENTRY_NO_TEXT)));
 		} else {
 			StructDocElementNode list = new StructDocElementNode("list");
 			for(String text : texts) {

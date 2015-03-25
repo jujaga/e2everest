@@ -83,7 +83,9 @@ public class EverestUtils {
 
 	// Temporary Everest Bugfixes
 	private static String everestBugFixes(String output) {
-		return output.replaceAll("delimeter", "delimiter");
+		// TODO Ask MARC-HI about equivalent SuppressXsiNil toggle
+		String result = output.replaceAll("xsi:nil=\"true\" ", "");
+		return result.replaceAll("delimeter", "delimiter");
 	}
 
 	// Pretty Print XML

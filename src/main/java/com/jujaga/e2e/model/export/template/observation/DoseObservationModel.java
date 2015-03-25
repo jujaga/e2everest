@@ -9,9 +9,9 @@ import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.PQ;
-import org.marc.everest.datatypes.SetOperator;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CE;
+import org.marc.everest.datatypes.generic.CS;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.PIVL;
 import org.marc.everest.datatypes.interfaces.ISetComponent;
@@ -104,20 +104,21 @@ public class DoseObservationModel {
 	}
 
 	private ISetComponent<TS> getFrequency() {
-		PIVL<TS> pivl = new PIVL<TS>();
+		ISetComponent<TS> iSetComponent;
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getFreqCode())) {
-			// TODO Complete mapping proposal for frequency -> period
-			PQ pq = new PQ(new BigDecimal(4), "h");
-			pivl.setPeriod(pq);
-			pivl.setOperator(SetOperator.Intersect);
-			pivl.setInstitutionSpecified(true);
-			pivl.setOriginalText(new ED(drug.getFreqCode()));
+			if(Mappings.frequencyInterval.containsKey(drug.getFreqCode())) {
+				iSetComponent = Mappings.frequencyInterval.get(drug.getFreqCode());
+			} else {
+				iSetComponent = new PIVL<TS>();
+				iSetComponent.setNullFlavor(new CS<NullFlavor>(NullFlavor.Other));
+			}
 		} else {
-			pivl.setNullFlavor(NullFlavor.Unknown);
+			iSetComponent = new PIVL<TS>();
+			iSetComponent.setNullFlavor(new CS<NullFlavor>(NullFlavor.Unknown));
 		}
 
-		return pivl;
+		return iSetComponent;
 	}
 
 	private CE<String> getRoute() {

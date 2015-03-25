@@ -16,7 +16,7 @@ public class BodyConstants {
 		public String CODE;
 		public String CODE_SYSTEM;
 		public String ENTRY_TEMPLATE_ID;
-		public String ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
+		public String ENTRY_NO_TEXT;
 	}
 
 	public static class Medications extends AbstractBodyConstants {
@@ -35,6 +35,7 @@ public class BodyConstants {
 			CODE = "10160-0";
 			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
 			ENTRY_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.18";
+			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
 		}
 
 		public static AbstractBodyConstants getConstants() {
