@@ -9,6 +9,7 @@ import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.PQ;
+import org.marc.everest.datatypes.SetOperator;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
@@ -107,8 +108,9 @@ public class DoseObservationModel {
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getFreqCode())) {
 			// TODO Complete mapping proposal for frequency -> period
-			PQ pq = new PQ(new BigDecimal(1), "d");
+			PQ pq = new PQ(new BigDecimal(4), "h");
 			pivl.setPeriod(pq);
+			pivl.setOperator(SetOperator.Intersect);
 			pivl.setInstitutionSpecified(true);
 			pivl.setOriginalText(new ED(drug.getFreqCode()));
 		} else {

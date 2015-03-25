@@ -83,7 +83,6 @@ public class EverestUtils {
 
 	// Temporary Everest Bugfixes
 	private static String everestBugFixes(String output) {
-		// TODO Notify MARC-HI of delimeter/delimiter typo
 		return output.replaceAll("delimeter", "delimiter");
 	}
 

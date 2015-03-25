@@ -119,7 +119,7 @@ public class Constants {
 	}
 
 	public static class SectionSupport {
-		public static final String SECTION_SUPPORTED_NO_DATA = "No information for this section for this patient";
+		public static final String SECTION_SUPPORTED_NO_DATA = "No information on this section for this patient";
 		public static final String SECTION_NOT_SUPPORTED_NO_DATA = "This section is not supported by the Originating Application";
 	}
 
@@ -142,6 +142,7 @@ public class Constants {
 
 	public static class Runtime {
 		public static final String SPRING_APPLICATION_CONTEXT = "spring-config.xml";
+		public static final Integer EMPTY_DEMOGRAPHIC = 2;
 		public static final Integer VALID_CLINIC = 123456;
 		public static final Integer VALID_DEMOGRAPHIC = 1;
 		public static final Integer VALID_PROVIDER = 999998;

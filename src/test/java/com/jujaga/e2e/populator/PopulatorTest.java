@@ -15,6 +15,20 @@ public class PopulatorTest {
 	private static final Integer INVALID_DEMOGRAPHIC = 0;
 
 	@Test
+	public void emptyEmrExportPopulatorTest() {
+		PatientExport patientExport = new PatientExport(Constants.Runtime.EMPTY_DEMOGRAPHIC);
+		CE<String> code = Constants.EMRConversionDocument.CODE;
+		II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
+
+		AbstractPopulator populator = new EmrExportPopulator(patientExport, code, templateId);
+		populator.populate();
+		assertNotNull(populator);
+
+		ClinicalDocument clinicalDocument = populator.getClinicalDocument();
+		assertNotNull(clinicalDocument);
+	}
+
+	@Test
 	public void invalidEmrExportPopulatorTest() {
 		PatientExport patientExport = new PatientExport(INVALID_DEMOGRAPHIC);
 		CE<String> code = Constants.EMRConversionDocument.CODE;

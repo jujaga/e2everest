@@ -7,6 +7,7 @@ import java.util.List;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.SD;
 import org.marc.everest.datatypes.doc.StructDocElementNode;
+import org.marc.everest.datatypes.doc.StructDocTextNode;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component3;
@@ -27,14 +28,22 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 	public void populate() {
 		Component3 component = makeSectionComponent();
 
-		if(!entries.isEmpty()) { // HL7 Level 3
-			component.getSection().setEntry(entries);
-			clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
-		} else { // HL7 Level 2
-			component.getSection().setEntry(null);
-			if(bodyConstants.SECTION_PRIORITY == SectionPriority.SHALL) { 
+		if(entries.isEmpty()) { // HL7 Level 2
+			if(bodyConstants.SECTION_PRIORITY == SectionPriority.SHALL) {
+				// TODO Determine how required empty sections should look
+				/*Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
+				entry.setClinicalStatement(populateNullFlavorClinicalStatement());
+
+				ArrayList<Entry> nullEntries = new ArrayList<Entry>();
+				nullEntries.add(entry);
+
+				component.getSection().setEntry(nullEntries);*/
+				populateNullFlavorClinicalStatement();
 				clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
 			}
+		} else { // HL7 Level 3
+			component.getSection().setEntry(entries);
+			clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
 		}
 	}
 
@@ -43,20 +52,28 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 	abstract public List<String> populateText();
 
 	private Component3 makeSectionComponent() {
+		List<String> texts = populateText();
 		Component3 component = new Component3();
 		component.setTypeCode(ActRelationshipHasComponent.HasComponent);
 		component.setContextConductionInd(true);
 
-		StructDocElementNode list = new StructDocElementNode("list");
-		for(String text : populateText()) {
-			list.addElement("item", text);
-		}
-
 		Section section = new Section();
-		section.setTemplateId(Arrays.asList(new II(bodyConstants.WITH_ENTRIES_TEMPLATE_ID)));
 		section.setCode(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_NAME, null));
-		section.setTitle(bodyConstants.WITH_ENTRIES_TITLE);
-		section.setText(new SD(list));
+
+		if(texts.isEmpty()) {
+			section.setTemplateId(Arrays.asList(new II(bodyConstants.WITHOUT_ENTRIES_TEMPLATE_ID)));
+			section.setTitle(bodyConstants.WITHOUT_ENTRIES_TITLE);
+			section.setText(new SD(new StructDocTextNode(Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA)));
+		} else {
+			StructDocElementNode list = new StructDocElementNode("list");
+			for(String text : texts) {
+				list.addElement("item", text);
+			}
+
+			section.setTemplateId(Arrays.asList(new II(bodyConstants.WITH_ENTRIES_TEMPLATE_ID)));
+			section.setTitle(bodyConstants.WITH_ENTRIES_TITLE);
+			section.setText(new SD(list));
+		}
 
 		component.setSection(section);
 
