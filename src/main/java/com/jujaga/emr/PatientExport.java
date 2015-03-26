@@ -8,18 +8,22 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.DrugDao;
+import com.jujaga.emr.dao.DxresearchDao;
 import com.jujaga.emr.model.Demographic;
 import com.jujaga.emr.model.Drug;
+import com.jujaga.emr.model.Dxresearch;
 
 public class PatientExport {
 	private static ApplicationContext context = null;
 
 	private DemographicDao demographicDao = null;
 	private DrugDao drugDao = null;
+	private DxresearchDao dxResearchDao = null;
 
 	private Boolean loaded = false;
 	private Demographic demographic = null;
 	private List<Drug> drugs = null;
+	private List<Dxresearch> problems = null;
 
 	public PatientExport() {
 		if(context == null) {
@@ -33,12 +37,14 @@ public class PatientExport {
 		}
 		demographicDao = context.getBean(DemographicDao.class);
 		drugDao = context.getBean(DrugDao.class);
+		dxResearchDao = context.getBean(DxresearchDao.class);
 		loaded = loadPatient(demographicNo);
 	}
 
 	private Boolean loadPatient(Integer demographicNo) {
 		demographic = demographicDao.find(demographicNo);
 		drugs = drugDao.findByDemographicId(demographicNo);
+		problems = dxResearchDao.getDxResearchItemsByPatient(demographicNo);
 		return demographic != null;
 	}
 
@@ -56,5 +62,9 @@ public class PatientExport {
 
 	public List<Drug> getMedications() {
 		return drugs;
+	}
+
+	public List<Dxresearch> getProblems() {
+		return problems;
 	}
 }

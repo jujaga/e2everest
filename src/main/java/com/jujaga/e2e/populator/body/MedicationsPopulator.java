@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.marc.everest.datatypes.BL;
+import org.marc.everest.datatypes.II;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
@@ -21,13 +22,13 @@ import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Drug;
 
 public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
-	private List<Drug> allDrugs;
-	private Map<Integer, ArrayList<Drug>> mapDrugs;
+	private List<Drug> allDrugs = null;
+	private Map<Integer, ArrayList<Drug>> mapDrugs = null;
 
 	MedicationsPopulator(PatientExport patientExport) {
 		bodyConstants = Medications.getConstants();
 		mapDrugs = new HashMap<Integer, ArrayList<Drug>>();
-		allDrugs = (List<Drug>) patientExport.getMedications();
+		allDrugs = patientExport.getMedications();
 		Collections.reverse(allDrugs); // Order recent drugs first
 
 		for(Drug drug : allDrugs) {
@@ -50,6 +51,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 	public void populate() {
 		for(List<Drug> medication : mapDrugs.values()) {
 			Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
+			entry.setTemplateId(Arrays.asList(new II(bodyConstants.ENTRY_TEMPLATE_ID)));
 			entry.setClinicalStatement(populateClinicalStatement(medication));
 			entries.add(entry);
 		}

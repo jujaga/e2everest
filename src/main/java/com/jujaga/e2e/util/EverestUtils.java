@@ -76,7 +76,7 @@ public class EverestUtils {
 
 			return output;
 		} catch (XMLStreamException e) {
-			e.printStackTrace();
+			log.error(e.toString());
 			return null;
 		}
 	}

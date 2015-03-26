@@ -4,15 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Section;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
-import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
 import com.jujaga.e2e.constant.BodyConstants.Medications;
@@ -35,16 +30,7 @@ public class MedicationsPopulatorTest extends AbstractBodyPopulatorTest {
 
 	@Test
 	public void medicationsEntryStructureTest() {
-		Section section = component.getSection();
-		assertNotNull(section);
-
-		ArrayList<Entry> entries = section.getEntry();
-		assertNotNull(entries);
-
-		Entry entry = entries.get(0);
-		assertNotNull(entry);
-		assertEquals(x_ActRelationshipEntry.DRIV, entry.getTypeCode().getCode());
-		assertTrue(entry.getContextConductionInd().toBoolean());
+		entryStructureTest();
 	}
 
 	@Test

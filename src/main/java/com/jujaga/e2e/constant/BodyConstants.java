@@ -45,5 +45,28 @@ public class BodyConstants {
 			return bodyConstants;
 		}
 	}
+
+	public static class Problems extends AbstractBodyConstants {
+		protected static AbstractBodyConstants bodyConstants = null;
+
+		private Problems() {
+			SECTION_PRIORITY = SectionPriority.SHALL;
+			WITH_ENTRIES_TITLE = "Problems & Conditions - Problem List [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Problems & Conditions - Problem List [without entries]";
+			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.21.1";
+			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.21";
+			CODE = "11450-4";
+			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			ENTRY_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.15";
+			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
+		}
+
+		public static AbstractBodyConstants getConstants() {
+			if(bodyConstants == null) {
+				bodyConstants = new Problems();
+			}
+			return bodyConstants;
+		}
+	}
 }
 

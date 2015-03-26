@@ -10,8 +10,10 @@ import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component3;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Section;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 
 import com.jujaga.e2e.constant.BodyConstants.AbstractBodyConstants;
 import com.jujaga.e2e.constant.Constants;
@@ -58,5 +60,19 @@ public abstract class AbstractBodyPopulatorTest {
 		Section section = component.getSection();
 		assertNotNull(section);
 		assertEquals(count.intValue(), section.getEntry().size());
+	}
+
+	protected void entryStructureTest() {
+		Section section = component.getSection();
+		assertNotNull(section);
+
+		ArrayList<Entry> entries = section.getEntry();
+		assertNotNull(entries);
+
+		Entry entry = entries.get(0);
+		assertNotNull(entry);
+		assertEquals(x_ActRelationshipEntry.DRIV, entry.getTypeCode().getCode());
+		assertTrue(entry.getTemplateId().contains(new II(bodyConstants.ENTRY_TEMPLATE_ID)));
+		assertTrue(entry.getContextConductionInd().toBoolean());
 	}
 }
