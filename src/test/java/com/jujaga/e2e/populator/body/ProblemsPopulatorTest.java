@@ -41,5 +41,8 @@ public class ProblemsPopulatorTest extends AbstractBodyPopulatorTest {
 
 		Observation observation = (Observation) clinicalStatement;
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+		assertNotNull(observation.getId());
+		assertNotNull(observation.getCode());
+		assertNotNull(observation.getStatusCode());
 	}
 }

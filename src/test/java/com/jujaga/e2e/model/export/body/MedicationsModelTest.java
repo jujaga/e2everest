@@ -21,6 +21,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.jujaga.e2e.constant.BodyConstants;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.DrugDao;
@@ -91,6 +92,7 @@ public class MedicationsModelTest {
 		assertEquals(Constants.SubstanceAdministrationType.DRUG.toString(), code.getCode());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, code.getCodeSystem());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, code.getCodeSystemName());
+		assertEquals(BodyConstants.Medications.DRUG_THERAPY_ACT_NAME, code.getDisplayName());
 	}
 
 	@Test
@@ -101,6 +103,7 @@ public class MedicationsModelTest {
 		assertEquals(Constants.SubstanceAdministrationType.DRUG.toString(), code.getCode());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, code.getCodeSystem());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, code.getCodeSystemName());
+		assertEquals(BodyConstants.Medications.DRUG_THERAPY_ACT_NAME, code.getDisplayName());
 	}
 
 	@Test

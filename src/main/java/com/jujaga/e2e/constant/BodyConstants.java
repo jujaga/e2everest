@@ -23,6 +23,7 @@ public class BodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
 
 		public static final Integer NO_DIN_NUMBER = -1;
+		public static final String DRUG_THERAPY_ACT_NAME = "Drug Therapy";
 		public static final String LONG_TERM = "Long Term";
 		public static final String SHORT_TERM = "Short Term";
 
@@ -48,6 +49,9 @@ public class BodyConstants {
 
 	public static class Problems extends AbstractBodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
+
+		public static final String SNOMED_CT_DIAGNOSIS_CODE = "282291009";
+		public static final String SNOMED_CT_DIAGNOSIS_NAME = "Diagnosis";
 
 		private Problems() {
 			SECTION_PRIORITY = SectionPriority.SHALL;

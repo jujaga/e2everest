@@ -10,6 +10,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 
+import com.jujaga.e2e.constant.BodyConstants;
 import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.template.ConsumableModel;
@@ -98,6 +99,7 @@ public class MedicationsModel {
 	private void setCode() {
 		this.code = new CD<String>(Constants.SubstanceAdministrationType.DRUG.toString(), Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID);
 		this.code.setCodeSystemName(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME);
+		this.code.setDisplayName(BodyConstants.Medications.DRUG_THERAPY_ACT_NAME);
 	}
 
 	public ActStatus getStatusCode() {

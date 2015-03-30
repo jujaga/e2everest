@@ -13,6 +13,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 
 import com.jujaga.e2e.constant.BodyConstants.Problems;
+import com.jujaga.e2e.model.export.body.ProblemsModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Dxresearch;
 
@@ -46,7 +47,11 @@ public class ProblemsPopulator extends AbstractBodyPopulator<Dxresearch> {
 
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<Dxresearch> problem) {
+		ProblemsModel problemsModel = new ProblemsModel(problem.get(0));
 		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+		observation.setId(problemsModel.getIds());
+		observation.setCode(problemsModel.getCode());
+		observation.setStatusCode(problemsModel.getStatusCode());
 		return observation;
 	}
 
@@ -58,10 +63,10 @@ public class ProblemsPopulator extends AbstractBodyPopulator<Dxresearch> {
 	@Override
 	public List<String> populateText() {
 		List<String> list = new ArrayList<String>();
-		/*for(Dxresearch problem : problems) {
-			MedicationsModel medicationsModel = new MedicationsModel(medication.get(0));
-			list.add(medicationsModel.getTextSummary());
-		}*/
+		for(Dxresearch problem : problems) {
+			ProblemsModel problemsModel = new ProblemsModel(problem);
+			list.add(problemsModel.getTextSummary());
+		}
 
 		return list;
 	}

@@ -113,6 +113,8 @@ public class Constants {
 		public static final String ROLE_CLASS_NAME = "RoleClass";
 		public static final String ROUTE_OF_ADMINISTRATION_OID = "2.16.840.1.113883.5.112";
 		public static final String ROUTE_OF_ADMINISTRATION_NAME = "RouteOfAdministration";
+		public static final String SNOMED_CT_OID = "2.16.840.1.113883.6.69";
+		public static final String SNOMED_CT_NAME = "SNOMED-CT";
 	}
 
 	public static class ObservationOids {
