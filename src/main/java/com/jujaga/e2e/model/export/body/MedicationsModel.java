@@ -107,7 +107,8 @@ public class MedicationsModel {
 	}
 
 	private void setStatusCode() {
-		if(drug.getLongTerm() || isActiveDrug(drug.getEndDate())) {
+		if(drug.getArchived() != null && !drug.getArchived() &&
+				drug.getLongTerm() || isActiveDrug(drug.getEndDate())) {
 			this.statusCode = ActStatus.Active;
 		} else {
 			this.statusCode = ActStatus.Completed;

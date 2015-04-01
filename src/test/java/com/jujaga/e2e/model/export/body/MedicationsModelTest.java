@@ -128,7 +128,15 @@ public class MedicationsModelTest {
 		drug2.setLongTerm(false);
 		MedicationsModel medicationsModel2 = new MedicationsModel(drug2);
 
-		ActStatus status2 = medicationsModel2.getStatusCode();
+		ActStatus status = medicationsModel2.getStatusCode();
+		assertNotNull(status);
+		assertEquals(ActStatus.Completed, status);
+
+		Drug drug3 = dao.findByDemographicId(Constants.Runtime.VALID_DEMOGRAPHIC).get(0);
+		drug3.setArchived(true);
+		MedicationsModel medicationsModel3 = new MedicationsModel(drug3);
+
+		ActStatus status2 = medicationsModel3.getStatusCode();
 		assertNotNull(status2);
 		assertEquals(ActStatus.Completed, status2);
 	}

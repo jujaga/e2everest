@@ -1,7 +1,9 @@
 package com.jujaga.e2e.model.export.body;
 
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 
@@ -17,6 +19,7 @@ public class ProblemsModel {
 	private SET<II> ids;
 	private CD<String> code;
 	private ActStatus statusCode;
+	private IVL<TS> effectiveTime;
 
 	public ProblemsModel(Dxresearch problem) {
 		if(problem == null) {
@@ -28,6 +31,7 @@ public class ProblemsModel {
 		setIds();
 		setCode();
 		setStatusCode();
+		setEffectiveTime();
 	}
 
 	public String getTextSummary() {
@@ -69,5 +73,19 @@ public class ProblemsModel {
 		} else {
 			this.statusCode = ActStatus.Completed;
 		}
+	}
+
+	public IVL<TS> getEffectiveTime() {
+		return effectiveTime;
+	}
+
+	private void setEffectiveTime() {
+		IVL<TS> ivl = null;
+		TS startTime = BodyUtils.buildTSFromDate(problem.getStartDate());
+		if(startTime != null) {
+			ivl = new IVL<TS>(startTime, null);
+		}
+
+		this.effectiveTime = ivl;
 	}
 }

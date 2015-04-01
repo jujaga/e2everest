@@ -52,6 +52,7 @@ public class ProblemsPopulator extends AbstractBodyPopulator<Dxresearch> {
 		observation.setId(problemsModel.getIds());
 		observation.setCode(problemsModel.getCode());
 		observation.setStatusCode(problemsModel.getStatusCode());
+		observation.setEffectiveTime(problemsModel.getEffectiveTime());
 		return observation;
 	}
 

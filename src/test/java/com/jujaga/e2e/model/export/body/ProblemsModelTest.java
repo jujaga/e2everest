@@ -3,6 +3,7 @@ package com.jujaga.e2e.model.export.body;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.log4j.Level;
@@ -10,7 +11,9 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.springframework.context.ApplicationContext;
@@ -29,7 +32,7 @@ public class ProblemsModelTest {
 	private static ProblemsModel problemsModel;
 
 	private static Dxresearch nullProblem;
-	private static ProblemsModel nullproblemsModel;
+	private static ProblemsModel nullProblemsModel;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -40,7 +43,7 @@ public class ProblemsModelTest {
 		problemsModel = new ProblemsModel(problem);
 
 		nullProblem = new Dxresearch();
-		nullproblemsModel = new ProblemsModel(nullProblem);
+		nullProblemsModel = new ProblemsModel(nullProblem);
 	}
 
 	@Test
@@ -56,7 +59,7 @@ public class ProblemsModelTest {
 
 	@Test
 	public void textSummaryNullTest() {
-		String text = nullproblemsModel.getTextSummary();
+		String text = nullProblemsModel.getTextSummary();
 		assertNotNull(text);
 	}
 
@@ -75,7 +78,7 @@ public class ProblemsModelTest {
 
 	@Test
 	public void idNullTest() {
-		SET<II> ids = nullproblemsModel.getIds();
+		SET<II> ids = nullProblemsModel.getIds();
 		assertNotNull(ids);
 	}
 
@@ -92,7 +95,7 @@ public class ProblemsModelTest {
 
 	@Test
 	public void codeNullTest() {
-		CD<String> code = nullproblemsModel.getCode();
+		CD<String> code = nullProblemsModel.getCode();
 		assertNotNull(code);
 
 		assertEquals(BodyConstants.Problems.SNOMED_CT_DIAGNOSIS_CODE, code.getCode());
@@ -121,8 +124,21 @@ public class ProblemsModelTest {
 
 	@Test
 	public void statusCodeNullTest() {
-		ActStatus status = nullproblemsModel.getStatusCode();
+		ActStatus status = nullProblemsModel.getStatusCode();
 		assertNotNull(status);
 		assertEquals(ActStatus.Completed, status);
+	}
+
+	@Test
+	public void effectiveTimeTest() {
+		IVL<TS> ivl = problemsModel.getEffectiveTime();
+		assertNotNull(ivl);
+		assertEquals(BodyUtils.buildTSFromDate(problem.getStartDate()), ivl.getLow());
+	}
+
+	@Test
+	public void effectiveTimeNullTest() {
+		IVL<TS> ivl = nullProblemsModel.getEffectiveTime();
+		assertNull(ivl);
 	}
 }
