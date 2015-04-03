@@ -1,6 +1,5 @@
 package com.jujaga.e2e.model.export.header;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -150,15 +149,29 @@ public class RecordTargetModel {
 	}
 
 	private void setBirthDate() {
-		String dob = demographic.getYearOfBirth() + demographic.getMonthOfBirth() + demographic.getDateOfBirth();
 		TS birthDate = new TS();
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		try {
-			cal.setTime(sdf.parse(dob));
-			birthDate.setDateValue(cal);
-			birthDate.setDateValuePrecision(TS.DAY);
-		} catch (ParseException e) {
+
+		if(demographic.getYearOfBirth() != null && demographic.getMonthOfBirth() != null &&
+				demographic.getDateOfBirth() != null) {
+			try {
+				if(Integer.parseInt(demographic.getYearOfBirth()) >= 0 &&
+						Integer.parseInt(demographic.getMonthOfBirth()) >= 1 &&
+						Integer.parseInt(demographic.getMonthOfBirth()) <= 12 &&
+						Integer.parseInt(demographic.getDateOfBirth()) >= 1 &&
+						Integer.parseInt(demographic.getDateOfBirth()) <= 31) {
+					String dob = demographic.getYearOfBirth() + demographic.getMonthOfBirth() + demographic.getDateOfBirth();
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(sdf.parse(dob));
+					birthDate.setDateValue(cal);
+					birthDate.setDateValuePrecision(TS.DAY);
+				} else {
+					throw new NumberFormatException();
+				}
+			} catch (Exception e) {
+				birthDate.setNullFlavor(NullFlavor.Other);
+			}
+		} else {
 			birthDate.setNullFlavor(NullFlavor.NoInformation);
 		}
 
