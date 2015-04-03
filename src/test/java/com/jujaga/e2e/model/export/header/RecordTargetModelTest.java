@@ -204,9 +204,25 @@ public class RecordTargetModelTest {
 	}
 
 	@Test
-	public void birthDateInvalidTest() {
+	public void birthDatePartialTest() {
 		Demographic demographic2 = dao.find(Constants.Runtime.VALID_DEMOGRAPHIC);
 		demographic2.setDateOfBirth("40");
+		RecordTargetModel recordTargetModel2 = new RecordTargetModel(demographic2);
+
+		TS birthDate = recordTargetModel2.getBirthDate();
+		assertNotNull(birthDate);
+
+		Calendar cal = birthDate.getDateValue();
+		assertNotNull(cal);
+		assertEquals(Integer.parseInt(demographic2.getYearOfBirth()), cal.get(Calendar.YEAR));
+		// Month starts counting from 0, not 1
+		assertEquals(Integer.parseInt(demographic2.getMonthOfBirth())-1, cal.get(Calendar.MONTH));
+	}
+
+	@Test
+	public void birthDateInvalidTest() {
+		Demographic demographic2 = dao.find(Constants.Runtime.VALID_DEMOGRAPHIC);
+		demographic2.setMonthOfBirth("40");
 		RecordTargetModel recordTargetModel2 = new RecordTargetModel(demographic2);
 
 		TS birthDate = recordTargetModel2.getBirthDate();

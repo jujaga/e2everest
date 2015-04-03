@@ -151,20 +151,28 @@ public class RecordTargetModel {
 	private void setBirthDate() {
 		TS birthDate = new TS();
 
-		if(demographic.getYearOfBirth() != null && demographic.getMonthOfBirth() != null &&
-				demographic.getDateOfBirth() != null) {
+		if(demographic.getYearOfBirth() != null && demographic.getMonthOfBirth() != null) {
 			try {
 				if(Integer.parseInt(demographic.getYearOfBirth()) >= 0 &&
 						Integer.parseInt(demographic.getMonthOfBirth()) >= 1 &&
-						Integer.parseInt(demographic.getMonthOfBirth()) <= 12 &&
-						Integer.parseInt(demographic.getDateOfBirth()) >= 1 &&
-						Integer.parseInt(demographic.getDateOfBirth()) <= 31) {
-					String dob = demographic.getYearOfBirth() + demographic.getMonthOfBirth() + demographic.getDateOfBirth();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+						Integer.parseInt(demographic.getMonthOfBirth()) <= 12) {
 					Calendar cal = Calendar.getInstance();
-					cal.setTime(sdf.parse(dob));
+
+					if(demographic.getDateOfBirth() != null &&
+							Integer.parseInt(demographic.getDateOfBirth()) >= 1 &&
+							Integer.parseInt(demographic.getDateOfBirth()) <= 31) {
+						String dob = demographic.getYearOfBirth() + demographic.getMonthOfBirth() + demographic.getDateOfBirth();
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+						cal.setTime(sdf.parse(dob));
+						birthDate.setDateValuePrecision(TS.DAY);
+					} else {
+						String mob = demographic.getYearOfBirth() + demographic.getMonthOfBirth();
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+						cal.setTime(sdf.parse(mob));
+						birthDate.setDateValuePrecision(TS.MONTH);
+					}
+
 					birthDate.setDateValue(cal);
-					birthDate.setDateValuePrecision(TS.DAY);
 				} else {
 					throw new NumberFormatException();
 				}
