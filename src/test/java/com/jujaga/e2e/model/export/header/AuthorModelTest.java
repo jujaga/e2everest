@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.ENXP;
@@ -41,6 +43,7 @@ public class AuthorModelTest {
 
 	@BeforeClass
 	public static void beforeClass() {
+		Logger.getRootLogger().setLevel(Level.FATAL);
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
 		dao = context.getBean(ProviderDao.class);
 		provider = dao.find(Constants.Runtime.VALID_PROVIDER);

@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.II;
@@ -26,6 +28,7 @@ public class AuthorParticipationModelTest {
 
 	@BeforeClass
 	public static void beforeClass() {
+		Logger.getRootLogger().setLevel(Level.FATAL);
 		date = new Date();
 	}
 
