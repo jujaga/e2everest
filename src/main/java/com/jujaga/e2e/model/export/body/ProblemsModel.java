@@ -1,14 +1,18 @@
 package com.jujaga.e2e.model.export.body;
 
+import java.util.ArrayList;
+
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 
 import com.jujaga.e2e.constant.BodyConstants;
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Dxresearch;
 
@@ -20,6 +24,7 @@ public class ProblemsModel {
 	private CD<String> code;
 	private ActStatus statusCode;
 	private IVL<TS> effectiveTime;
+	private ArrayList<Author> authors;
 
 	public ProblemsModel(Dxresearch problem) {
 		if(problem == null) {
@@ -32,6 +37,7 @@ public class ProblemsModel {
 		setCode();
 		setStatusCode();
 		setEffectiveTime();
+		setAuthor();
 	}
 
 	public String getTextSummary() {
@@ -87,5 +93,14 @@ public class ProblemsModel {
 		}
 
 		this.effectiveTime = ivl;
+	}
+
+	public ArrayList<Author> getAuthor() {
+		return authors;
+	}
+
+	private void setAuthor() {
+		authors = new ArrayList<Author>();
+		authors.add(new AuthorParticipationModel(BodyUtils.getDemographicProviderNo(problem.getDemographicNo())).getAuthor(problem.getUpdateDate()));
 	}
 }

@@ -33,7 +33,7 @@ public class AuthorModel {
 		Provider provider = null;
 
 		try {
-			Integer providerId;providerId = Integer.parseInt(providerNo);
+			Integer providerId = Integer.parseInt(providerNo);
 			ProviderDao providerDao = new PatientExport().getApplicationContext().getBean(ProviderDao.class);
 			provider = providerDao.find(providerId);
 		} catch (NumberFormatException e) {

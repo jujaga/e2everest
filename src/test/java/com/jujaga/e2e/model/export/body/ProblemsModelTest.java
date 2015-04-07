@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
@@ -15,6 +17,7 @@ import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -140,5 +143,19 @@ public class ProblemsModelTest {
 	public void effectiveTimeNullTest() {
 		IVL<TS> ivl = nullProblemsModel.getEffectiveTime();
 		assertNull(ivl);
+	}
+
+	@Test
+	public void authorTest() {
+		ArrayList<Author> authors = problemsModel.getAuthor();
+		assertNotNull(authors);
+		assertEquals(1, authors.size());
+	}
+
+	@Test
+	public void authorNullTest() {
+		ArrayList<Author> authors = nullProblemsModel.getAuthor();
+		assertNotNull(authors);
+		assertEquals(1, authors.size());
 	}
 }
