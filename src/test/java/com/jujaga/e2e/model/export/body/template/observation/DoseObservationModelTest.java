@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,6 +43,7 @@ public class DoseObservationModelTest {
 
 	@BeforeClass
 	public static void beforeClass() {
+		Logger.getRootLogger().setLevel(Level.FATAL);
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
 		dao = context.getBean(DrugDao.class);
 		doseObservationModel = new DoseObservationModel();
