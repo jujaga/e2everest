@@ -1,5 +1,6 @@
 package com.jujaga.e2e.model.export.body;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -48,9 +49,14 @@ public class MedicationsModel {
 		setPrescriptionInformation();
 	}
 
-	private boolean isActiveDrug(Date date) {
+	private Boolean isActiveDrug(Date date) {
 		try {
-			if(new Date().before(date)) {
+			// Add a day to date to mark drugs ending "today" as still active
+			Calendar c = Calendar.getInstance();
+			c.setTime(date);
+			c.add(Calendar.DATE, 1);
+
+			if(new Date().before(c.getTime())) {
 				return true;
 			}
 		} catch (NullPointerException e) {

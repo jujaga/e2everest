@@ -114,7 +114,7 @@ public class MedicationsModelTest {
 
 		Drug drug2 = dao.findByDemographicId(Constants.Runtime.VALID_DEMOGRAPHIC).get(0);
 		drug2.setLongTerm(false);
-		drug2.setEndDate(new Date(Long.MAX_VALUE));
+		drug2.setEndDate(new Date());
 		MedicationsModel medicationsModel2 = new MedicationsModel(drug2);
 
 		ActStatus status2 = medicationsModel2.getStatusCode();
