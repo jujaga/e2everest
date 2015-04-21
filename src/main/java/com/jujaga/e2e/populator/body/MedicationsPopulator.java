@@ -75,9 +75,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 				substanceAdministration.setConsumable(medicationsModel.getConsumable());
 
 				entryRelationships.add(medicationsModel.getRecordType());
-				if(medicationsModel.getLastReviewDate() != null) {
-					entryRelationships.add(medicationsModel.getLastReviewDate());
-				}
+				entryRelationships.add(medicationsModel.getLastReviewDate());
 
 				medicationEventPopulated = true;
 			}

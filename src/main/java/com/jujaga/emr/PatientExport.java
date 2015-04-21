@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
+import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.DrugDao;
 import com.jujaga.emr.dao.DxresearchDao;
@@ -54,6 +56,15 @@ public class PatientExport {
 
 	public ApplicationContext getApplicationContext() {
 		return context;
+	}
+
+	// TODO Replace this mock with a fully functional icd9Dao DB variant
+	public String getICD9Description(String code) {
+		if(!EverestUtils.isNullorEmptyorWhitespace(code) && Mappings.icd9Map.containsKey(code)) {
+			return Mappings.icd9Map.get(code);
+		} else {
+			return null;
+		}
 	}
 
 	public Demographic getDemographic() {

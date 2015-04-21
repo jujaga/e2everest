@@ -12,12 +12,15 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -108,6 +111,18 @@ public class ProblemsModelTest {
 	}
 
 	@Test
+	public void textTest() {
+		ED text = problemsModel.getText();
+		assertNotNull(text);
+	}
+
+	@Test
+	public void textNullTest() {
+		ED text = nullProblemsModel.getText();
+		assertNull(text);
+	}
+
+	@Test
 	public void statusCodeActiveTest() {
 		ActStatus status = problemsModel.getStatusCode();
 		assertNotNull(status);
@@ -146,6 +161,22 @@ public class ProblemsModelTest {
 	}
 
 	@Test
+	public void valueTest() {
+		CD<String> value = problemsModel.getValue();
+		assertNotNull(value);
+		assertTrue(value.isNull());
+		assertEquals(NullFlavor.Unknown, value.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void valueNullTest() {
+		CD<String> value = nullProblemsModel.getValue();
+		assertNotNull(value);
+		assertTrue(value.isNull());
+		assertEquals(NullFlavor.Unknown, value.getNullFlavor().getCode());
+	}
+
+	@Test
 	public void authorTest() {
 		ArrayList<Author> authors = problemsModel.getAuthor();
 		assertNotNull(authors);
@@ -157,5 +188,17 @@ public class ProblemsModelTest {
 		ArrayList<Author> authors = nullProblemsModel.getAuthor();
 		assertNotNull(authors);
 		assertEquals(1, authors.size());
+	}
+
+	@Test
+	public void lastReviewDateTest() {
+		EntryRelationship entryRelationship = problemsModel.getDiagnosisDate();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void lastReviewDateNullTest() {
+		EntryRelationship entryRelationship = nullProblemsModel.getDiagnosisDate();
+		assertNull(entryRelationship);
 	}
 }

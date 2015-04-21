@@ -46,6 +46,17 @@ public class Mappings {
 		languageCode = Collections.unmodifiableMap(map);
 	}
 
+	// Mock icd9 description mapping
+	public static final Map<String, String> icd9Map;
+	static {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("428", "HEART FAILURE*");
+		map.put("401", "ESSENTIAL HYPERTENSION*");
+		map.put("250", "DIABETES MELLITUS*");
+		map.put("491", "CHRONIC BRONCHITIS*");
+		icd9Map = Collections.unmodifiableMap(map);
+	}
+
 	public static final Map <String, String> formCode;
 	static {
 		Map<String, String> map = new HashMap<String, String>();

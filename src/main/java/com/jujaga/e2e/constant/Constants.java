@@ -104,6 +104,8 @@ public class Constants {
 		public static final String ATC_NAME = "whoATC";
 		public static final String DIN_OID = "2.16.840.1.113883.5.1105";
 		public static final String DIN_NAME = "HC-DIN";
+		public static final String ICD9_OID = "2.16.840.1.113883.6.42";
+		public static final String ICD9_NAME = "ICD9";
 		public static final String LOINC_OID = "2.16.840.1.113883.6.1";
 		public static final String LOINC_NAME = "LOINC";
 		public static final String LOINC_VERSION = "2.44";
@@ -121,6 +123,7 @@ public class Constants {
 		public static final String DATE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.4";
 		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
 		public static final String ORDER_INDICATOR_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.37";
+		public static final String SECONDARY_CODE_ICD9_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.28";
 		public static final String UNBOUND_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.32";
 	}
 

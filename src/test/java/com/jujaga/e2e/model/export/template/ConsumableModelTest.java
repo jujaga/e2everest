@@ -1,4 +1,4 @@
-package com.jujaga.e2e.model.export.body.template;
+package com.jujaga.e2e.model.export.template;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
