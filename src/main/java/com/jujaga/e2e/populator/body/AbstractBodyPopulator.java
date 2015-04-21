@@ -60,7 +60,7 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 		Section section = new Section();
 		section.setCode(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_NAME, null));
 
-		if(texts.isEmpty()) {
+		if(texts == null || texts.isEmpty()) {
 			section.setTemplateId(Arrays.asList(new II(bodyConstants.WITHOUT_ENTRIES_TEMPLATE_ID)));
 			section.setTitle(bodyConstants.WITHOUT_ENTRIES_TITLE);
 			section.setText(new SD(new StructDocTextNode(bodyConstants.ENTRY_NO_TEXT)));

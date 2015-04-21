@@ -14,7 +14,10 @@ import com.jujaga.emr.PatientExport;
 
 public class DocumentBodyPopulator extends AbstractPopulator {
 	public DocumentBodyPopulator(PatientExport patientExport) {
+		populators.add(new AdvanceDirectivesPopulator(patientExport));
+		populators.add(new LabsPopulator(patientExport));
 		populators.add(new MedicationsPopulator(patientExport));
+		populators.add(new OrdersAndRequestsPopulator(patientExport));
 		populators.add(new ProblemsPopulator(patientExport));
 	}
 
