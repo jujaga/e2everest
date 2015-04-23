@@ -1,15 +1,16 @@
 package com.jujaga.e2e.populator.body;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 
 import com.jujaga.e2e.constant.BodyConstants.AdvanceDirectives;
-import com.jujaga.emr.PatientExport;
 
 public class AdvanceDirectivesPopulator extends AbstractBodyPopulator<AdvanceDirectivesPopulator> {
-	AdvanceDirectivesPopulator(PatientExport patientExport) {
+	AdvanceDirectivesPopulator() {
 		bodyConstants = AdvanceDirectives.getConstants();
+		populateClinicalStatement(Arrays.asList(this));
 	}
 
 	@Override
