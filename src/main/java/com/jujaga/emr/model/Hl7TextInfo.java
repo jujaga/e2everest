@@ -22,7 +22,7 @@ public class Hl7TextInfo implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "lab_no")
-	private int labNumber;
+	private Integer labNumber;
 	@Column(name = "sex")
 	private String sex;
 	@Column(name = "health_no")
@@ -30,7 +30,7 @@ public class Hl7TextInfo implements Serializable {
 	@Column(name = "result_status")
 	private String resultStatus;
 	@Column(name = "final_result_count")
-	private int finalResultCount;
+	private Integer finalResultCount;
 	@Column(name = "obr_date")
 	private String obrDate;
 	private String priority;
@@ -63,11 +63,11 @@ public class Hl7TextInfo implements Serializable {
 		this.id = id;
 	}
 
-	public int getLabNumber() {
+	public Integer getLabNumber() {
 		return labNumber;
 	}
 
-	public void setLabNumber(int labNumber) {
+	public void setLabNumber(Integer labNumber) {
 		this.labNumber = labNumber;
 	}
 
@@ -95,11 +95,11 @@ public class Hl7TextInfo implements Serializable {
 		this.resultStatus = resultStatus;
 	}
 
-	public int getFinalResultCount() {
+	public Integer getFinalResultCount() {
 		return finalResultCount;
 	}
 
-	public void setFinalResultCount(int finalResultCount) {
+	public void setFinalResultCount(Integer finalResultCount) {
 		this.finalResultCount = finalResultCount;
 	}
 

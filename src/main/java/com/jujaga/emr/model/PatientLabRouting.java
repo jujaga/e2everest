@@ -25,7 +25,7 @@ public class PatientLabRouting implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "lab_no")
-	private int labNo;
+	private Integer labNo;
 	@Column(name = "lab_type")
 	private String labType;
 	@Column(name = "demographic_no")
@@ -47,11 +47,11 @@ public class PatientLabRouting implements Serializable {
 		this.id = id;
 	}
 
-	public int getLabNo() {
+	public Integer getLabNo() {
 		return labNo;
 	}
 
-	public void setLabNo(int labNo) {
+	public void setLabNo(Integer labNo) {
 		this.labNo = labNo;
 	}
 
