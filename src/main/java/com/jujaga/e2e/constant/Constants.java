@@ -159,6 +159,7 @@ public class Constants {
 		public static final Integer EMPTY_DEMOGRAPHIC = 2;
 		public static final Integer VALID_CLINIC = 123456;
 		public static final Integer VALID_DEMOGRAPHIC = 1;
+		public static final Integer VALID_LAB_NO = 9;
 		public static final Integer VALID_PROVIDER = 999998;
 	}
 }

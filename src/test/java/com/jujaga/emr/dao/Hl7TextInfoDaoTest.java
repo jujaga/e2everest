@@ -1,6 +1,7 @@
 package com.jujaga.emr.dao;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,5 +28,15 @@ public class Hl7TextInfoDaoTest {
 		Hl7TextInfo entity = (Hl7TextInfo) EntityModelUtils.generateTestDataForModelClass(new Hl7TextInfo());
 		hl7TextInfoDao.persist(entity);
 		assertNotNull(entity.getId());
+	}
+
+	@Test
+	public void findLabIdTest() {
+		Hl7TextInfo hl7TextInfo = hl7TextInfoDao.findLabId(Constants.Runtime.VALID_LAB_NO);
+		assertNotNull(hl7TextInfo);
+
+		Integer invalidLabNo = 0;
+		Hl7TextInfo hl7TextInfo2 = hl7TextInfoDao.findLabId(invalidLabNo);
+		assertNull(hl7TextInfo2);
 	}
 }

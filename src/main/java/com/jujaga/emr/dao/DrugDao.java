@@ -20,7 +20,7 @@ public class DrugDao extends AbstractDao<Drug> {
 
 	@SuppressWarnings("unchecked")
 	public List<Drug> findByDemographicId(Integer demographicId, Boolean archived) {
-		String sqlCommand = "SELECT x FROM Drug x WHERE x.demographicId=?1" + (archived == null ? "" : " and x.archived=?2");
+		String sqlCommand = "SELECT x FROM " + modelClass.getName() + " x WHERE x.demographicId=?1" + (archived == null ? "" : " AND x.archived=?2");
 		Query query = entityManager.createQuery(sqlCommand);
 		query.setParameter(1, demographicId);
 		if (archived != null) {

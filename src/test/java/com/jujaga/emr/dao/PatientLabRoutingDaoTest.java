@@ -1,6 +1,9 @@
 package com.jujaga.emr.dao;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,6 +17,7 @@ import com.jujaga.emr.util.EntityModelUtils;
 public class PatientLabRoutingDaoTest {
 	private static ApplicationContext context;
 	private static PatientLabRoutingDao patientLabRoutingDao;
+	private static final String HL7 = "HL7";
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -27,5 +31,12 @@ public class PatientLabRoutingDaoTest {
 		PatientLabRouting entity = (PatientLabRouting) EntityModelUtils.generateTestDataForModelClass(new PatientLabRouting());
 		patientLabRoutingDao.persist(entity);
 		assertNotNull(entity.getId());
+	}
+
+	@Test
+	public void findByDemographicAndLabTypeTest() {
+		List<PatientLabRouting> patientLabRoutings = patientLabRoutingDao.findByDemographicAndLabType(Constants.Runtime.VALID_DEMOGRAPHIC, HL7);
+		assertNotNull(patientLabRoutings);
+		assertEquals(1, patientLabRoutings.size());
 	}
 }
