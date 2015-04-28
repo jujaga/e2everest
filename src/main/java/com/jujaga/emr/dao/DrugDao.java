@@ -26,8 +26,6 @@ public class DrugDao extends AbstractDao<Drug> {
 		if (archived != null) {
 			query.setParameter(2, archived);
 		}
-
-		List<Drug> results = query.getResultList();
-		return (results);
+		return query.getResultList();
 	}
 }

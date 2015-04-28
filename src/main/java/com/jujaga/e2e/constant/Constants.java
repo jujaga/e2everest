@@ -22,8 +22,22 @@ public class Constants {
 		ProblemList, RiskFactors, Referrals, SocialHistory, SubstanceUse
 	}
 
+	public static enum MeasurementsExtKeys {
+		abnormal, accession, datetime, identifier, labname, lab_no, maximum,
+		minimum, name, olis_status, other_id, range, request_datetime, unit
+	}
+
+	public static enum ObservationType {
+		ALRGRP, CLINSTAT, COMMENT, DATEOBS, ICD9CODE, INSTRUCT, NXTENCREAS,
+		OUTCOBS, PRNIND, REACTOBS, REASON, RECLINK, SEV, TRTNOTE, UNBOUND
+	}
+
 	public static enum RoleClass {
 		ROL, PAT
+	}
+
+	public static enum SubstanceAdministrationType {
+		DRUG, IMMUNIZ, ANTIGEN
 	}
 
 	public static enum TelecomType {
@@ -32,15 +46,6 @@ public class Constants {
 
 	public static enum TimeUnit {
 		d, h, mo, wk
-	}
-
-	public static enum SubstanceAdministrationType {
-		DRUG, IMMUNIZ, ANTIGEN
-	}
-
-	public static enum ObservationType {
-		ALRGRP, CLINSTAT, COMMENT, DATEOBS, ICD9CODE, INSTRUCT, NXTENCREAS,
-		OUTCOBS, PRNIND, REACTOBS, REASON, RECLINK, SEV, TRTNOTE, UNBOUND
 	}
 
 	/**
@@ -160,6 +165,7 @@ public class Constants {
 		public static final Integer VALID_CLINIC = 123456;
 		public static final Integer VALID_DEMOGRAPHIC = 1;
 		public static final Integer VALID_LAB_NO = 9;
+		public static final Integer VALID_LAB_MEASUREMENT = 26;
 		public static final Integer VALID_PROVIDER = 999998;
 	}
 }

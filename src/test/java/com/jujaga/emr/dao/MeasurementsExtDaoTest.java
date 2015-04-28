@@ -1,6 +1,9 @@
 package com.jujaga.emr.dao;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,5 +30,19 @@ public class MeasurementsExtDaoTest {
 		MeasurementsExt entity = (MeasurementsExt) EntityModelUtils.generateTestDataForModelClass(new MeasurementsExt());
 		measurementsExtDao.persist(entity);
 		assertNotNull(entity.getId());
+	}
+
+	@Test
+	public void getMeasurementsExtByMeasurementIdAndKeyValTest() {
+		MeasurementsExt measurementsExt = measurementsExtDao.getMeasurementsExtByMeasurementIdAndKeyVal(Constants.Runtime.VALID_LAB_MEASUREMENT, Constants.MeasurementsExtKeys.lab_no.toString());
+		assertNotNull(measurementsExt);
+		assertEquals(Constants.Runtime.VALID_LAB_NO.toString(), measurementsExt.getVal());
+	}
+
+	@Test
+	public void getMeasurementsExtByMeasurementIdTest() {
+		List<MeasurementsExt> measurementsExts = measurementsExtDao.getMeasurementsExtByMeasurementId(Constants.Runtime.VALID_LAB_MEASUREMENT);
+		assertNotNull(measurementsExts);
+		assertEquals(12, measurementsExts.size());
 	}
 }
