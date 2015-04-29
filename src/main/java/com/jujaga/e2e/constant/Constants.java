@@ -84,11 +84,11 @@ public class Constants {
 		public static final String FEMALE_ADMINISTRATIVE_GENDER_DESCRIPTION = "Female";
 		public static final String UNDIFFERENTIATED_ADMINISTRATIVE_GENDER_DESCRIPTION = "Undifferentiated";
 
-		public static final String BC_PHN_OID_ASSIGNING_AUTHORITY_NAME = "BC-PHN";
+		public static final String BC_PHN_OID_ASSIGNING_AUTHORITY_NAME = "BC Patient Health Number";
 		public static final String BC_PHN_OID = "2.16.840.1.113883.4.50";
 
 		public static final String BC_MINISTRY_OF_HEALTH_PRACTITIONER_ID_OID = "2.16.840.1.113883.3.40.2.11";
-		public static final String BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME = "BCMOH";
+		public static final String BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME = "BC MSP Provider License Number";
 
 		public static final String HUMANLANGUAGE_ENGLISH_CODE = "EN";
 		public static final String HUMANLANGUAGE_FRENCH_CODE = "FR";

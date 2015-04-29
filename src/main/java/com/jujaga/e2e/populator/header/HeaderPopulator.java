@@ -58,7 +58,7 @@ public class HeaderPopulator extends AbstractPopulator {
 		clinicalDocument.setCode(code);
 
 		// title
-		clinicalDocument.setTitle("PITO E2E-DTC Record of ".concat(demographic.getFirstName()).concat(" ").concat(demographic.getLastName()));
+		clinicalDocument.setTitle("E2E-DTC Record of ".concat(demographic.getFirstName()).concat(" ").concat(demographic.getLastName()));
 
 		// effectiveTime
 		clinicalDocument.setEffectiveTime(new GregorianCalendar(), TS.MINUTE);

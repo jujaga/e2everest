@@ -75,8 +75,8 @@ public class BodyConstants {
 
 		private Medications() {
 			SECTION_PRIORITY = SectionPriority.SHALL;
-			WITH_ENTRIES_TITLE = "Medications & Prescriptions - Medication List [with entries]";
-			WITHOUT_ENTRIES_TITLE = "Medications & Prescriptions - Medication List [without entries]";
+			WITH_ENTRIES_TITLE = "Medications and Prescriptions - Medication List [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Medications and Prescriptions - Medication List [without entries]";
 			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.19.1";
 			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.19";
 			CODE = "10160-0";
@@ -98,8 +98,8 @@ public class BodyConstants {
 
 		private OrdersAndRequests() {
 			SECTION_PRIORITY = SectionPriority.SHALL;
-			WITH_ENTRIES_TITLE = "Orders & Requests [with entries]";
-			WITHOUT_ENTRIES_TITLE = "Orders & Requests [without entries]";
+			WITH_ENTRIES_TITLE = "Orders and Requests [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Orders and Requests [without entries]";
 			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.20.1";
 			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.20";
 			CODE = "REQS";
@@ -124,8 +124,8 @@ public class BodyConstants {
 
 		private Problems() {
 			SECTION_PRIORITY = SectionPriority.SHALL;
-			WITH_ENTRIES_TITLE = "Problems & Conditions - Problem List [with entries]";
-			WITHOUT_ENTRIES_TITLE = "Problems & Conditions - Problem List [without entries]";
+			WITH_ENTRIES_TITLE = "Problems and Conditions - Problem List [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Problems and Conditions - Problem List [without entries]";
 			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.21.1";
 			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.21";
 			CODE = "11450-4";

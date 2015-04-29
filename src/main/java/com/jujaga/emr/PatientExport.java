@@ -1,6 +1,7 @@
 package com.jujaga.emr;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,23 +96,19 @@ public class PatientExport {
 
 		// Gather and filter Measurements based on existence of lab_no field
 		List<Measurement> rawMeasurements = measurementDao.findByDemographicNo(demographicNo);
-		List<Measurement> tempMeasurements = new ArrayList<Measurement>();
+		List<LabComponent> allLabComponents = new ArrayList<LabComponent>();
 		for(Measurement entry : rawMeasurements) {
 			MeasurementsExt isFromLab = measurementsExtDao.getMeasurementsExtByMeasurementIdAndKeyVal(entry.getId(), Constants.MeasurementsExtKeys.lab_no.toString());
-			if(isFromLab != null && isValidLabMeasurement(tempRouting, isFromLab.getVal())) {
-				tempMeasurements.add(entry);
-			}
-		}
 
-		// Gather MeasurementsExt and pair with Measurements into LabComponents
-		List<LabComponent> allLabComponents = new ArrayList<LabComponent>();
-		for(Measurement measurement : tempMeasurements) {
-			List<MeasurementsExt> tempMeasurementsExts = measurementsExtDao.getMeasurementsExtByMeasurementId(measurement.getId());
-			Map<String, String> map = new HashMap<String, String>();
-			for(MeasurementsExt extElement : tempMeasurementsExts) {
-				map.put(extElement.getKeyVal(), extElement.getVal());
+			if(isFromLab != null && isValidLabMeasurement(tempRouting, isFromLab.getVal())) {
+				// Gather MeasurementsExt and pair with Measurements into LabComponents
+				List<MeasurementsExt> tempMeasurementsExts = measurementsExtDao.getMeasurementsExtByMeasurementId(entry.getId());
+				Map<String, String> map = new HashMap<String, String>();
+				for(MeasurementsExt extElement : tempMeasurementsExts) {
+					map.put(extElement.getKeyVal(), extElement.getVal());
+				}
+				allLabComponents.add(new LabComponent(entry, Collections.unmodifiableMap(map)));
 			}
-			allLabComponents.add(new LabComponent(measurement, map));
 		}
 
 		// Create Lab Observations
@@ -227,7 +224,7 @@ public class PatientExport {
 	}
 
 	// Supporting Lab Grouping Subclasses
-	public static class Lab {
+	public class Lab {
 		private Hl7TextInfo hl7TextInfo;
 		private List<LabOrganizer> labOrganizer = new ArrayList<LabOrganizer>();
 
@@ -244,7 +241,7 @@ public class PatientExport {
 		}
 	}
 
-	public static class LabOrganizer {
+	public class LabOrganizer {
 		private Integer id;
 		private List<LabComponent> labComponent = new ArrayList<LabComponent>();
 
@@ -261,7 +258,7 @@ public class PatientExport {
 		}
 	}
 
-	public static class LabComponent {
+	public class LabComponent {
 		private Measurement measurement = null;
 		private Map<String, String> measurementsMap = null;
 
