@@ -1,7 +1,9 @@
 package com.jujaga.emr;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -65,6 +67,7 @@ public class PatientExport {
 		loaded = loadPatient(demographicNo);
 	}
 
+	// TODO Add try/catch blocks for safer execution
 	private Boolean loadPatient(Integer demographicNo) {
 		demographic = demographicDao.find(demographicNo);
 		drugs = drugDao.findByDemographicId(demographicNo);
@@ -75,22 +78,22 @@ public class PatientExport {
 	}
 
 	private List<Lab> assembleLabs(Integer demographicNo) {
-		// Gather hl7TextInfo labs
+		// Gather Hl7TextInfo labs
 		List<PatientLabRouting> tempRouting = patientLabRoutingDao.findByDemographicAndLabType(demographicNo, "HL7");
-		List<Hl7TextInfo> tempLabs = new ArrayList<Hl7TextInfo>();
+		List<Hl7TextInfo> allHl7TextInfo = new ArrayList<Hl7TextInfo>();
 		for(PatientLabRouting routing : tempRouting) {
 			Hl7TextInfo temp = hl7TextInfoDao.findLabId(routing.getLabNo());
 			if(temp != null) {
-				tempLabs.add(temp);
+				allHl7TextInfo.add(temp);
 			}
 		}
 
 		// Short circuit if no labs
-		if(tempLabs.isEmpty()) {
+		if(allHl7TextInfo.isEmpty()) {
 			return null;
 		}
 
-		// Gather and filter measurements based on existence of lab_no field
+		// Gather and filter Measurements based on existence of lab_no field
 		List<Measurement> rawMeasurements = measurementDao.findByDemographicNo(demographicNo);
 		List<Measurement> tempMeasurements = new ArrayList<Measurement>();
 		for(Measurement entry : rawMeasurements) {
@@ -100,72 +103,62 @@ public class PatientExport {
 			}
 		}
 
-		// Gather measurementsExt
-		List<List<MeasurementsExt>> tempMeasurementsExt = new ArrayList<List<MeasurementsExt>>();
-		for(Measurement entry : tempMeasurements) {
-			List<MeasurementsExt> tempMeasurementsExtElement = measurementsExtDao.getMeasurementsExtByMeasurementId(entry.getId());
-			tempMeasurementsExt.add(tempMeasurementsExtElement);
+		// Gather MeasurementsExt and pair with Measurements into LabComponents
+		List<LabComponent> allLabComponents = new ArrayList<LabComponent>();
+		for(Measurement measurement : tempMeasurements) {
+			List<MeasurementsExt> tempMeasurementsExts = measurementsExtDao.getMeasurementsExtByMeasurementId(measurement.getId());
+			Map<String, String> map = new HashMap<String, String>();
+			for(MeasurementsExt extElement : tempMeasurementsExts) {
+				map.put(extElement.getKeyVal(), extElement.getVal());
+			}
+			allLabComponents.add(new LabComponent(measurement, map));
 		}
 
-		// Create Lab Objects
+		// Create Lab Observations
 		List<Lab> allLabs = new ArrayList<Lab>();
+		for(Hl7TextInfo labReport : allHl7TextInfo) {
+			Lab labObservation = new Lab(labReport);
 
-		// Group Measurements into Lab Objects
-		for(Hl7TextInfo labReport : tempLabs) {
-			Lab labObj = new Lab();
-			labObj.hl7TextInfo = labReport;
-
-			// Group Measurements by Lab Number
-			int labNumber = labReport.getLabNumber();
-			List<Measurement> labMeasurementAll = new ArrayList<Measurement>();
-			List<List<MeasurementsExt>> labMeasurementsExtAll = new ArrayList<List<MeasurementsExt>>();
-
-			for(int i=0; i < tempMeasurementsExt.size(); i++) {
-				List<MeasurementsExt> entry = tempMeasurementsExt.get(i);
-				String entryLabNo = getLabExtValue(entry, Constants.MeasurementsExtKeys.lab_no.toString());
-
-				// Add related entries to correct Lab
-				if(labNumber == Integer.valueOf(entryLabNo)) {
-					labMeasurementsExtAll.add(entry);
-					entry.get(0).getMeasurementId();
-					Measurement entryMeasurement = tempMeasurements.get(i);
-					labMeasurementAll.add(entryMeasurement);
+			// Get LabComponents in this Lab Observation
+			Integer labNumber = labReport.getLabNumber();
+			List<LabComponent> tempLabComponents = new ArrayList<LabComponent>();
+			for(LabComponent labComponent : allLabComponents) {
+				String componentLabNumber = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.lab_no.toString());
+				if(Integer.valueOf(componentLabNumber) == labNumber) {
+					tempLabComponents.add(labComponent);
 				}
 			}
 
-			// Group Measurements into Organizer Groups
-			int prevGroup = 0;
-			LabGroup tempGroup = new LabGroup(prevGroup);
-			for(int i=0; i < labMeasurementsExtAll.size(); i++) {
-				String temp = getLabExtValue(labMeasurementsExtAll.get(i), Constants.MeasurementsExtKeys.other_id.toString());
-				if(temp != null && !temp.isEmpty()) {
-					int currGroup = parseOtherID(temp)[0];
+			// Cluster LabComponents into LabOrganizers
+			Integer prevOrganizer = 0;
+			LabOrganizer tempLabOrganizer = new LabOrganizer(prevOrganizer);
+			for(LabComponent labComponent : tempLabComponents) {
+				String rawOtherId = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.other_id.toString());
+				if(!EverestUtils.isNullorEmptyorWhitespace(rawOtherId)) {
+					Integer currOrganizer = parseOtherID(rawOtherId)[0];
 
-					// Create New Group
-					if(prevGroup != currGroup) {
-						labObj.group.add(tempGroup);
-						prevGroup = currGroup;
-						tempGroup = new LabGroup(prevGroup);
+					// Create New LabOrganizer Group
+					if(prevOrganizer != currOrganizer) {
+						labObservation.getLabOrganizer().add(tempLabOrganizer);
+						prevOrganizer = currOrganizer;
+						tempLabOrganizer = new LabOrganizer(prevOrganizer);
 					}
 				}
 
-				// Add current measurement to Organizer Group
-				tempGroup.measurement.add(labMeasurementAll.get(i));
-				tempGroup.measurementsExt.add(labMeasurementsExtAll.get(i));
+				// Add current LabComponent to LabOrganizer
+				tempLabOrganizer.getLabComponent().add(labComponent);
 			}
 
-			// Save final Group
-			labObj.group.add(tempGroup);
-
-			// Save Lab Object
-			allLabs.add(labObj);
+			// Save final LabOrganizer and Lab Observation
+			labObservation.getLabOrganizer().add(tempLabOrganizer);
+			allLabs.add(labObservation);
 		}
 
 		return allLabs;
 	}
 
 	private Boolean isValidLabMeasurement(List<PatientLabRouting> routing, String lab_no) {
-		int labNo = Integer.parseInt(lab_no);
+		Integer labNo = Integer.parseInt(lab_no);
 		for(PatientLabRouting entry : routing) {
 			if(entry.getLabNo() == labNo) {
 				return true;
@@ -235,37 +228,54 @@ public class PatientExport {
 
 	// Supporting Lab Grouping Subclasses
 	public static class Lab {
-		public Hl7TextInfo hl7TextInfo;
-		public List<LabGroup> group = new ArrayList<LabGroup>();
+		private Hl7TextInfo hl7TextInfo;
+		private List<LabOrganizer> labOrganizer = new ArrayList<LabOrganizer>();
+
+		public Lab(Hl7TextInfo hl7TextInfo) {
+			this.hl7TextInfo = hl7TextInfo;
+		}
 
 		public Hl7TextInfo getHl7TextInfo() {
 			return hl7TextInfo;
 		}
 
-		public List<LabGroup> getGroup() {
-			return group;
+		public List<LabOrganizer> getLabOrganizer() {
+			return labOrganizer;
 		}
 	}
 
-	public static class LabGroup {
-		public int id;
-		public List<Measurement> measurement = new ArrayList<Measurement>();
-		public List<List<MeasurementsExt>> measurementsExt = new ArrayList<List<MeasurementsExt>>();
+	public static class LabOrganizer {
+		private Integer id;
+		private List<LabComponent> labComponent = new ArrayList<LabComponent>();
 
-		public LabGroup(int id) {
+		public LabOrganizer(Integer id) {
 			this.id = id;
 		}
 
-		public int getGroupId() {
+		public Integer getGroupId() {
 			return id;
 		}
 
-		public List<Measurement> getMeasurement() {
+		public List<LabComponent> getLabComponent() {
+			return labComponent;
+		}
+	}
+
+	public static class LabComponent {
+		private Measurement measurement = null;
+		private Map<String, String> measurementsMap = null;
+
+		public LabComponent(Measurement measurement, Map<String, String> measurementsMap) {
+			this.measurement = measurement;
+			this.measurementsMap = measurementsMap;
+		}
+
+		public Measurement getMeasurement() {
 			return measurement;
 		}
 
-		public List<List<MeasurementsExt>> getMeasurementsExt() {
-			return measurementsExt;
+		public Map<String, String> getMeasurementsMap() {
+			return measurementsMap;
 		}
 	}
 }
