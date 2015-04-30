@@ -14,6 +14,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Section;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.constant.BodyConstants.AbstractBodyConstants;
 import com.jujaga.e2e.constant.Constants;
@@ -65,6 +66,7 @@ public abstract class AbstractBodyPopulatorTest {
 	protected void entryStructureTest() {
 		Section section = component.getSection();
 		assertNotNull(section);
+		assertEquals(x_BasicConfidentialityKind.Normal, section.getConfidentialityCode().getCode());
 
 		ArrayList<Entry> entries = section.getEntry();
 		assertNotNull(entries);

@@ -13,7 +13,6 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 
-import com.jujaga.e2e.constant.BodyConstants;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.model.export.template.observation.DateObservationModel;
@@ -81,9 +80,8 @@ public class ProblemsModel {
 	}
 
 	private void setCode() {
-		this.code = new CD<String>(BodyConstants.Problems.SNOMED_CT_DIAGNOSIS_CODE, Constants.CodeSystems.SNOMED_CT_OID);
-		this.code.setCodeSystemName(Constants.CodeSystems.SNOMED_CT_NAME);
-		this.code.setDisplayName(BodyConstants.Problems.SNOMED_CT_DIAGNOSIS_NAME);
+		this.code = new CD<String>();
+		this.code.setNullFlavor(NullFlavor.NoInformation);
 	}
 
 	public ED getText() {

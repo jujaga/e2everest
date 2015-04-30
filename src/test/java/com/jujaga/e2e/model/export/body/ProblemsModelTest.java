@@ -25,7 +25,6 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.jujaga.e2e.constant.BodyConstants;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.DxresearchDao;
@@ -92,22 +91,16 @@ public class ProblemsModelTest {
 	public void codeTest() {
 		CD<String> code = problemsModel.getCode();
 		assertNotNull(code);
-
-		assertEquals(BodyConstants.Problems.SNOMED_CT_DIAGNOSIS_CODE, code.getCode());
-		assertEquals(Constants.CodeSystems.SNOMED_CT_OID, code.getCodeSystem());
-		assertEquals(Constants.CodeSystems.SNOMED_CT_NAME, code.getCodeSystemName());
-		assertEquals(BodyConstants.Problems.SNOMED_CT_DIAGNOSIS_NAME, code.getDisplayName());
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
 	}
 
 	@Test
 	public void codeNullTest() {
 		CD<String> code = nullProblemsModel.getCode();
 		assertNotNull(code);
-
-		assertEquals(BodyConstants.Problems.SNOMED_CT_DIAGNOSIS_CODE, code.getCode());
-		assertEquals(Constants.CodeSystems.SNOMED_CT_OID, code.getCodeSystem());
-		assertEquals(Constants.CodeSystems.SNOMED_CT_NAME, code.getCodeSystemName());
-		assertEquals(BodyConstants.Problems.SNOMED_CT_DIAGNOSIS_NAME, code.getDisplayName());
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
 	}
 
 	@Test

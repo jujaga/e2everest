@@ -28,21 +28,25 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 	MedicationsPopulator(PatientExport patientExport) {
 		bodyConstants = Medications.getConstants();
 		mapDrugs = new HashMap<Integer, ArrayList<Drug>>();
-		allDrugs = patientExport.getMedications();
+		if(patientExport.isLoaded()) {
+			allDrugs = patientExport.getMedications();
+		}
 		Collections.reverse(allDrugs); // Order recent drugs first
 
-		for(Drug drug : allDrugs) {
-			Integer din;
-			try {
-				din = Integer.parseInt(drug.getRegionalIdentifier());
-			} catch (NumberFormatException e) {
-				din = Medications.NO_DIN_NUMBER;
-			}
+		if(allDrugs != null) {
+			for(Drug drug : allDrugs) {
+				Integer din;
+				try {
+					din = Integer.parseInt(drug.getRegionalIdentifier());
+				} catch (NumberFormatException e) {
+					din = Medications.NO_DIN_NUMBER;
+				}
 
-			if(mapDrugs.containsKey(din)) {
-				mapDrugs.get(din).add(drug);
-			} else {
-				mapDrugs.put(din, new ArrayList<Drug>(Arrays.asList(drug)));
+				if(mapDrugs.containsKey(din)) {
+					mapDrugs.get(din).add(drug);
+				} else {
+					mapDrugs.put(din, new ArrayList<Drug>(Arrays.asList(drug)));
+				}
 			}
 		}
 	}

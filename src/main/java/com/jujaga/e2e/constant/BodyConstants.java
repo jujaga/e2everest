@@ -119,9 +119,6 @@ public class BodyConstants {
 	public static class Problems extends AbstractBodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
 
-		public static final String SNOMED_CT_DIAGNOSIS_CODE = "282291009";
-		public static final String SNOMED_CT_DIAGNOSIS_NAME = "Diagnosis";
-
 		private Problems() {
 			SECTION_PRIORITY = SectionPriority.SHALL;
 			WITH_ENTRIES_TITLE = "Problems and Conditions - Problem List [with entries]";

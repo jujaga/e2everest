@@ -19,17 +19,21 @@ import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Dxresearch;
 
 public class ProblemsPopulator extends AbstractBodyPopulator<Dxresearch> {
-	private List<Dxresearch> allProblems;
-	private List<Dxresearch> problems;
+	private List<Dxresearch> allProblems = null;
+	private List<Dxresearch> problems = null;
 
 	ProblemsPopulator(PatientExport patientExport) {
 		bodyConstants = Problems.getConstants();
-		allProblems = patientExport.getProblems();
+		if(patientExport.isLoaded()) {
+			allProblems = patientExport.getProblems();
+		}
 		problems = new ArrayList<Dxresearch>();
 
-		for(Dxresearch problem : allProblems) {
-			if(problem.getStatus() != 'D' && problem.getCodingSystem().equalsIgnoreCase("icd9")) {
-				this.problems.add(problem);
+		if(allProblems != null) {
+			for(Dxresearch problem : allProblems) {
+				if(problem.getStatus() != 'D' && problem.getCodingSystem().equalsIgnoreCase("icd9")) {
+					this.problems.add(problem);
+				}
 			}
 		}
 	}

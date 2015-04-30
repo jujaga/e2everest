@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
@@ -26,16 +25,14 @@ public class LabsPopulatorTest extends AbstractBodyPopulatorTest {
 
 	@Test
 	public void problemsEntryCountTest() {
-		entryCountTest(0);
+		entryCountTest(1);
 	}
 
-	@Ignore
 	@Test
 	public void problemsEntryStructureTest() {
 		entryStructureTest();
 	}
 
-	@Ignore
 	@Test
 	public void problemsClinicalStatementTest() {
 		ClinicalStatement clinicalStatement = component.getSection().getEntry().get(0).getClinicalStatement();
@@ -46,6 +43,5 @@ public class LabsPopulatorTest extends AbstractBodyPopulatorTest {
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
 		assertNotNull(observation.getId());
 		assertNotNull(observation.getCode());
-		assertNotNull(observation.getStatusCode());
 	}
 }

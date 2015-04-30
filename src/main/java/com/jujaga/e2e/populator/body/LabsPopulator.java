@@ -1,23 +1,57 @@
 package com.jujaga.e2e.populator.body;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.marc.everest.datatypes.BL;
+import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 
 import com.jujaga.e2e.constant.BodyConstants.Labs;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.PatientExport.Lab;
 
 public class LabsPopulator extends AbstractBodyPopulator<Lab> {
+	private List<Lab> labs = null;
+
 	LabsPopulator(PatientExport patientExport) {
 		bodyConstants = Labs.getConstants();
-		patientExport.isLoaded();
-		populateClinicalStatement(patientExport.getLabs());
+		if(patientExport.isLoaded()) {
+			labs = patientExport.getLabs();
+		}
+	}
+
+	@Override
+	public void populate() {
+		if(labs != null) {
+			for(Lab lab : labs) {
+				Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
+				entry.setTemplateId(Arrays.asList(new II(bodyConstants.ENTRY_TEMPLATE_ID)));
+				entry.setClinicalStatement(populateClinicalStatement(Arrays.asList(lab)));
+				entries.add(entry);
+			}
+		}
+
+		super.populate();
 	}
 
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<Lab> list) {
-		return null;
+		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
+
+		observation.setId(new SET<II>());
+		observation.setCode("test");
+
+		observation.setEntryRelationship(entryRelationships);
+		return observation;
 	}
 
 	@Override
@@ -27,6 +61,7 @@ public class LabsPopulator extends AbstractBodyPopulator<Lab> {
 
 	@Override
 	public List<String> populateText() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

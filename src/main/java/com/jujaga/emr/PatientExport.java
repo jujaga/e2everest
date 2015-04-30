@@ -68,14 +68,35 @@ public class PatientExport {
 		loaded = loadPatient(demographicNo);
 	}
 
-	// TODO Add try/catch blocks for safer execution
 	private Boolean loadPatient(Integer demographicNo) {
 		demographic = demographicDao.find(demographicNo);
-		drugs = drugDao.findByDemographicId(demographicNo);
-		problems = dxResearchDao.getDxResearchItemsByPatient(demographicNo);
-		labs = assembleLabs(demographicNo);
+		if(demographic == null) {
+			log.error("Demographic ".concat(demographicNo.toString()).concat(" can't be loaded"));
+			return false;
+		}
 
-		return demographic != null;
+		try {
+			labs = assembleLabs(demographicNo);
+		} catch (Exception e) {
+			log.error("loadPatient - Failed to load Labs", e);
+			labs = null;
+		}
+
+		try {
+			drugs = drugDao.findByDemographicId(demographicNo);
+		} catch (Exception e) {
+			log.error("loadPatient - Failed to load Medications", e);
+			drugs = null;
+		}
+
+		try {
+			problems = dxResearchDao.getDxResearchItemsByPatient(demographicNo);
+		} catch (Exception e) {
+			log.error("loadPatient - Failed to load Problems", e);
+			problems = null;
+		}
+
+		return true;
 	}
 
 	private List<Lab> assembleLabs(Integer demographicNo) {
@@ -98,9 +119,9 @@ public class PatientExport {
 		List<Measurement> rawMeasurements = measurementDao.findByDemographicNo(demographicNo);
 		List<LabComponent> allLabComponents = new ArrayList<LabComponent>();
 		for(Measurement entry : rawMeasurements) {
-			MeasurementsExt isFromLab = measurementsExtDao.getMeasurementsExtByMeasurementIdAndKeyVal(entry.getId(), Constants.MeasurementsExtKeys.lab_no.toString());
+			MeasurementsExt labNo = measurementsExtDao.getMeasurementsExtByMeasurementIdAndKeyVal(entry.getId(), Constants.MeasurementsExtKeys.lab_no.toString());
 
-			if(isFromLab != null && isValidLabMeasurement(tempRouting, isFromLab.getVal())) {
+			if(isValidLabMeasurement(tempRouting, labNo)) {
 				// Gather MeasurementsExt and pair with Measurements into LabComponents
 				List<MeasurementsExt> tempMeasurementsExts = measurementsExtDao.getMeasurementsExtByMeasurementId(entry.getId());
 				Map<String, String> map = new HashMap<String, String>();
@@ -154,11 +175,13 @@ public class PatientExport {
 		return allLabs;
 	}
 
-	private Boolean isValidLabMeasurement(List<PatientLabRouting> routing, String lab_no) {
-		Integer labNo = Integer.parseInt(lab_no);
-		for(PatientLabRouting entry : routing) {
-			if(entry.getLabNo() == labNo) {
-				return true;
+	private Boolean isValidLabMeasurement(List<PatientLabRouting> routing, MeasurementsExt lab_no) {
+		if(lab_no != null) {
+			Integer labNo = Integer.parseInt(lab_no.getVal());
+			for(PatientLabRouting entry : routing) {
+				if(entry.getLabNo() == labNo) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -212,15 +235,6 @@ public class PatientExport {
 		} else {
 			return null;
 		}
-	}
-
-	public String getLabExtValue(List<MeasurementsExt> measurementExt, String keyval) {
-		for (MeasurementsExt entry : measurementExt) {
-			if(entry.getKeyVal().equals(keyval)) {
-				return entry.getVal();
-			}
-		}
-		return null;
 	}
 
 	// Supporting Lab Grouping Subclasses

@@ -14,6 +14,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component3;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Section;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.constant.BodyConstants.AbstractBodyConstants;
 import com.jujaga.e2e.constant.BodyConstants.SectionPriority;
@@ -60,23 +61,26 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 		Section section = new Section();
 		section.setCode(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_NAME, null));
 
-		if(texts == null || texts.isEmpty()) {
+		if(entries.isEmpty()) {
 			section.setTemplateId(Arrays.asList(new II(bodyConstants.WITHOUT_ENTRIES_TEMPLATE_ID)));
 			section.setTitle(bodyConstants.WITHOUT_ENTRIES_TITLE);
+		} else {
+			section.setTemplateId(Arrays.asList(new II(bodyConstants.WITH_ENTRIES_TEMPLATE_ID)));
+			section.setTitle(bodyConstants.WITH_ENTRIES_TITLE);
+			section.setConfidentialityCode(x_BasicConfidentialityKind.Normal);
+		}
+
+		if(texts == null || texts.isEmpty()) {
 			section.setText(new SD(new StructDocTextNode(bodyConstants.ENTRY_NO_TEXT)));
 		} else {
 			StructDocElementNode list = new StructDocElementNode("list");
 			for(String text : texts) {
 				list.addElement("item", text);
 			}
-
-			section.setTemplateId(Arrays.asList(new II(bodyConstants.WITH_ENTRIES_TEMPLATE_ID)));
-			section.setTitle(bodyConstants.WITH_ENTRIES_TITLE);
 			section.setText(new SD(list));
 		}
 
 		component.setSection(section);
-
 		return component;
 	}
 }
