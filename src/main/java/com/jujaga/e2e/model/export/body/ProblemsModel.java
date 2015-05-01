@@ -22,9 +22,8 @@ import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Dxresearch;
 
 public class ProblemsModel {
-	//private static Logger log = Logger.getLogger(ProblemsModel.class.getName());
-
 	private Dxresearch problem;
+
 	private SET<II> ids;
 	private CD<String> code;
 	private ED text;

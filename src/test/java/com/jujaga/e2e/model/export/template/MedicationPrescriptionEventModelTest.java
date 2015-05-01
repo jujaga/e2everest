@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.SetOperator;
 import org.marc.everest.datatypes.TS;
@@ -29,7 +30,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.body.BodyUtils;
-import com.jujaga.e2e.model.export.template.MedicationPrescriptionEventModel;
 import com.jujaga.emr.dao.DrugDao;
 import com.jujaga.emr.model.Drug;
 
@@ -65,7 +65,11 @@ public class MedicationPrescriptionEventModelTest {
 		SubstanceAdministration substanceAdministration = entryRelationship.getClinicalStatementIfSubstanceAdministration();
 		assertNotNull(substanceAdministration);
 		assertEquals(x_DocumentSubstanceMood.RQO, substanceAdministration.getMoodCode().getCode());
-		assertEquals(BodyUtils.buildUniqueId(Constants.IdPrefixes.MedicationPrescriptions, drug.getId()), substanceAdministration.getId());
+
+		II id = substanceAdministration.getId().get(0);
+		assertNotNull(id);
+		assertTrue(id.getExtension().contains(Constants.IdPrefixes.MedicationPrescriptions.toString()));
+		assertTrue(id.getExtension().contains(drug.getId().toString()));
 
 		Consumable consumable = substanceAdministration.getConsumable();
 		assertNotNull(consumable);

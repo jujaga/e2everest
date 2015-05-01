@@ -118,7 +118,7 @@ public class AuthorModel {
 	private void setPerson() {
 		Person person = new Person();
 		SET<PN> names = new SET<PN>();
-		HeaderUtils.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.Legal);
+		HeaderUtils.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.OfficialRecord);
 		if(names.isEmpty()) {
 			PN pn = new PN();
 			pn.setNullFlavor(NullFlavor.NoInformation);

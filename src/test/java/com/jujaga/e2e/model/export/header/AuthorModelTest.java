@@ -150,7 +150,7 @@ public class AuthorModelTest {
 
 		PN name = names.get(0);
 		assertNotNull(name);
-		assertEquals(EntityNameUse.Legal, name.getUse().get(0).getCode());
+		assertEquals(EntityNameUse.OfficialRecord, name.getUse().get(0).getCode());
 
 		List<ENXP> nameParts = name.getParts();
 		assertNotNull(nameParts);

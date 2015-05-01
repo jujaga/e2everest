@@ -75,6 +75,7 @@ public class MedicationsModelTest {
 		assertEquals(Constants.EMR.EMR_OID, id.getRoot());
 		assertEquals(Constants.EMR.EMR_VERSION, id.getAssigningAuthorityName());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
+		assertTrue(id.getExtension().contains(Constants.IdPrefixes.Medications.toString()));
 		assertTrue(id.getExtension().contains(drug.getId().toString()));
 	}
 

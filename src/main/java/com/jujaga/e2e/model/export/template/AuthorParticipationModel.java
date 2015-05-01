@@ -3,20 +3,48 @@ package com.jujaga.e2e.model.export.template;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.marc.everest.datatypes.ENXP;
+import org.marc.everest.datatypes.EntityNameUse;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.PN;
 import org.marc.everest.datatypes.TS;
+import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedAuthor;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Person;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.body.BodyUtils;
 import com.jujaga.e2e.model.export.header.AuthorModel;
+import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.model.Provider;
 
 public class AuthorParticipationModel extends AuthorModel {
+	public AuthorParticipationModel() {
+		super(new Provider());
+	}
+
 	public AuthorParticipationModel(String providerNo) {
 		super(providerNo);
+	}
+
+	public Author getAuthor(Date date, String authorName) {
+		this.person = new Person();
+		SET<PN> names = new SET<PN>();
+		PN pn = null;
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(authorName)) {
+			pn = new PN(EntityNameUse.OfficialRecord, Arrays.asList(new ENXP(authorName)));
+		} else {
+			pn = new PN();
+			pn.setNullFlavor(NullFlavor.NoInformation);
+		}
+		names.add(pn);
+		person.setName(names);
+
+		return getAuthor(date);
 	}
 
 	public Author getAuthor(Date date) {

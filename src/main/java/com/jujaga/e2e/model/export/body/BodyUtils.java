@@ -1,5 +1,6 @@
 package com.jujaga.e2e.model.export.body;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -11,6 +12,7 @@ import org.marc.everest.datatypes.generic.SET;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Constants.IdPrefixes;
+import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.model.Demographic;
@@ -43,6 +45,22 @@ public class BodyUtils {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(date);
 		return new TS(calendar, TS.DAY);
+	}
+
+	public static Date stringToDate(String dateString) {
+		String[] formatStrings = {"yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm", "yyyy-MM-dd"};
+		Integer i = 0;
+		while(i < formatStrings.length) {
+			try {
+				return new SimpleDateFormat(formatStrings[i]).parse(dateString);
+			} catch (Exception e) {
+				i++;
+			}
+		}
+		if(!EverestUtils.isNullorEmptyorWhitespace(dateString)) {
+			log.warn("stringToDate - Can't parse ".concat(dateString));
+		}
+		return null;
 	}
 
 	public static String getDemographicProviderNo(Integer demographicNo) {

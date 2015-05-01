@@ -78,6 +78,7 @@ public class ProblemsModelTest {
 		assertEquals(Constants.EMR.EMR_OID, id.getRoot());
 		assertEquals(Constants.EMR.EMR_VERSION, id.getAssigningAuthorityName());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
+		assertTrue(id.getExtension().contains(Constants.IdPrefixes.ProblemList.toString()));
 		assertTrue(id.getExtension().contains(problem.getDxresearchNo().toString()));
 	}
 

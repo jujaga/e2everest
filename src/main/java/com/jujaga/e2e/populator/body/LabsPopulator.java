@@ -6,15 +6,14 @@ import java.util.List;
 
 import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.II;
-import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 
 import com.jujaga.e2e.constant.BodyConstants.Labs;
+import com.jujaga.e2e.model.export.body.LabsModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.PatientExport.Lab;
 
@@ -44,13 +43,15 @@ public class LabsPopulator extends AbstractBodyPopulator<Lab> {
 
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<Lab> list) {
+		LabsModel labsModel = new LabsModel(list.get(0));
 		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
-		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
 
-		observation.setId(new SET<II>());
-		observation.setCode("test");
+		observation.setId(labsModel.getIds());
+		observation.setCode(labsModel.getCode());
+		observation.setText(labsModel.getText());
+		observation.setAuthor(labsModel.getAuthor());
+		observation.setEntryRelationship(labsModel.getResultOrganizers());
 
-		observation.setEntryRelationship(entryRelationships);
 		return observation;
 	}
 
@@ -61,7 +62,14 @@ public class LabsPopulator extends AbstractBodyPopulator<Lab> {
 
 	@Override
 	public List<String> populateText() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> list = new ArrayList<String>();
+		if(labs != null) {
+			for(Lab lab : labs) {
+				LabsModel labsModel = new LabsModel(lab);
+				list.add(labsModel.getTextSummary());
+			}
+		}
+
+		return list;
 	}
 }

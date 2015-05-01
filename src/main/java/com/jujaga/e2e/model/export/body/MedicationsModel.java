@@ -23,8 +23,8 @@ import com.jujaga.emr.model.Drug;
 
 public class MedicationsModel {
 	private static Logger log = Logger.getLogger(MedicationsModel.class.getName());
-
 	private Drug drug;
+
 	private SET<II> ids;
 	private CD<String> code;
 	private ActStatus statusCode;

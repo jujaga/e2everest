@@ -238,7 +238,7 @@ public class PatientExport {
 	}
 
 	// Supporting Lab Grouping Subclasses
-	public class Lab {
+	public static class Lab {
 		private Hl7TextInfo hl7TextInfo;
 		private List<LabOrganizer> labOrganizer = new ArrayList<LabOrganizer>();
 
@@ -255,7 +255,7 @@ public class PatientExport {
 		}
 	}
 
-	public class LabOrganizer {
+	public static class LabOrganizer {
 		private Integer id;
 		private List<LabComponent> labComponent = new ArrayList<LabComponent>();
 
@@ -272,7 +272,7 @@ public class PatientExport {
 		}
 	}
 
-	public class LabComponent {
+	public static class LabComponent {
 		private Measurement measurement = null;
 		private Map<String, String> measurementsMap = null;
 

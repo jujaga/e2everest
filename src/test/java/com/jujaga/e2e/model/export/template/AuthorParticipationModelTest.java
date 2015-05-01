@@ -34,7 +34,8 @@ public class AuthorParticipationModelTest {
 
 	@Test
 	public void authorParticipationStructureTest() {
-		Author author = new AuthorParticipationModel(Constants.Runtime.VALID_PROVIDER.toString()).getAuthor(date);
+		String test = "test";
+		Author author = new AuthorParticipationModel().getAuthor(date, test);
 		assertNotNull(author);
 		assertEquals(ContextControl.OverridingPropagating, author.getContextControlCode().getCode());
 		assertTrue(author.getTemplateId().contains(new II(Constants.TemplateOids.AUTHOR_PARTICIPATION_TEMPLATE_ID)));
@@ -52,6 +53,38 @@ public class AuthorParticipationModelTest {
 
 	@Test
 	public void authorParticipationNullTest() {
+		Author author = new AuthorParticipationModel().getAuthor(null, null);
+		assertNotNull(author);
+		assertEquals(ContextControl.OverridingPropagating, author.getContextControlCode().getCode());
+		assertTrue(author.getTemplateId().contains(new II(Constants.TemplateOids.AUTHOR_PARTICIPATION_TEMPLATE_ID)));
+		assertTrue(author.getTime().isNull());
+		assertEquals(NullFlavor.Unknown, author.getTime().getNullFlavor().getCode());
+
+		AssignedAuthor assignedAuthor = author.getAssignedAuthor();
+		assertNotNull(assignedAuthor);
+		assertNotNull(assignedAuthor.getAssignedAuthorChoiceIfAssignedPerson());
+	}
+
+	@Test
+	public void authorParticipationProviderStructureTest() {
+		Author author = new AuthorParticipationModel(Constants.Runtime.VALID_PROVIDER.toString()).getAuthor(date);
+		assertNotNull(author);
+		assertEquals(ContextControl.OverridingPropagating, author.getContextControlCode().getCode());
+		assertTrue(author.getTemplateId().contains(new II(Constants.TemplateOids.AUTHOR_PARTICIPATION_TEMPLATE_ID)));
+
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		TS now = new TS(calendar, TS.DAY);
+		assertFalse(author.getTime().isInvalidDate());
+		assertTrue(author.getTime().toString().contains(now.toString()));
+
+		AssignedAuthor assignedAuthor = author.getAssignedAuthor();
+		assertNotNull(assignedAuthor);
+		assertNotNull(assignedAuthor.getAssignedAuthorChoiceIfAssignedPerson());
+	}
+
+	@Test
+	public void authorParticipationProviderNullTest() {
 		Author author = new AuthorParticipationModel(null).getAuthor(null);
 		assertNotNull(author);
 		assertEquals(ContextControl.OverridingPropagating, author.getContextControlCode().getCode());
