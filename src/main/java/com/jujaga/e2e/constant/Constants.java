@@ -148,6 +148,8 @@ public class Constants {
 		public static final String MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.20";
 		public static final String ORDER_EVENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.14";
 		public static final String PROBLEMS_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.15";
+		public static final String RESULT_COMPONENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.25";
+		public static final String RESULT_ORGANIZER_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.26";
 	}
 
 	/**
@@ -162,6 +164,7 @@ public class Constants {
 	public static class Runtime {
 		public static final String SPRING_APPLICATION_CONTEXT = "spring-config.xml";
 		public static final Integer EMPTY_DEMOGRAPHIC = 2;
+		public static final Integer INVALID_VALUE = -1;
 		public static final Integer VALID_CLINIC = 123456;
 		public static final Integer VALID_DEMOGRAPHIC = 1;
 		public static final Integer VALID_LAB_NO = 9;

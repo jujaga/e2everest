@@ -68,7 +68,6 @@ public class BodyConstants {
 	public static class Medications extends AbstractBodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
 
-		public static final Integer NO_DIN_NUMBER = -1;
 		public static final String DRUG_THERAPY_ACT_NAME = "Drug Therapy";
 		public static final String LONG_TERM = "Long Term";
 		public static final String SHORT_TERM = "Short Term";

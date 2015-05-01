@@ -1,6 +1,7 @@
 package com.jujaga.e2e.model.export.body;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
@@ -12,8 +13,10 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
+import com.jujaga.e2e.model.export.template.ResultOrganizerModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.Lab;
+import com.jujaga.emr.PatientExport.LabOrganizer;
 import com.jujaga.emr.model.Hl7TextInfo;
 
 public class LabsModel {
@@ -41,6 +44,7 @@ public class LabsModel {
 		setResultOrganizers();
 	}
 
+	// TODO Complete textSummary output
 	public String getTextSummary() {
 		StringBuilder sb = new StringBuilder();
 
@@ -85,8 +89,8 @@ public class LabsModel {
 	}
 
 	private void setAuthor() {
-		authors = new ArrayList<Author>();
-		authors.add(new AuthorParticipationModel().getAuthor(BodyUtils.stringToDate(hl7TextInfo.getObrDate()), hl7TextInfo.getRequestingProvider()));
+		this.authors = new ArrayList<Author>();
+		this.authors.add(new AuthorParticipationModel().getAuthor(BodyUtils.stringToDate(hl7TextInfo.getObrDate()), hl7TextInfo.getRequestingProvider()));
 	}
 
 	public ArrayList<EntryRelationship> getResultOrganizers() {
@@ -95,6 +99,14 @@ public class LabsModel {
 
 	private void setResultOrganizers() {
 		this.resultOrganizers = new ArrayList<EntryRelationship>();
-		// TODO Loop through ResultOrganizers via LabOrganizerModel
+
+		List<LabOrganizer> labOrganizers = lab.getLabOrganizer();
+		if(labOrganizers.isEmpty()) {
+			this.resultOrganizers.add(new ResultOrganizerModel().getEntryRelationship(null));
+		} else {
+			for(LabOrganizer labOrganizer : labOrganizers) {
+				this.resultOrganizers.add(new ResultOrganizerModel().getEntryRelationship(labOrganizer));
+			}
+		}
 	}
 }

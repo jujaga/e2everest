@@ -16,6 +16,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
+import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.BodyConstants.Medications;
 import com.jujaga.e2e.model.export.body.MedicationsModel;
 import com.jujaga.emr.PatientExport;
@@ -39,7 +40,7 @@ public class MedicationsPopulator extends AbstractBodyPopulator<Drug> {
 				try {
 					din = Integer.parseInt(drug.getRegionalIdentifier());
 				} catch (NumberFormatException e) {
-					din = Medications.NO_DIN_NUMBER;
+					din = Constants.Runtime.INVALID_VALUE;
 				}
 
 				if(mapDrugs.containsKey(din)) {

@@ -12,7 +12,6 @@ import org.marc.everest.datatypes.generic.SET;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Constants.IdPrefixes;
-import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.model.Demographic;
@@ -30,10 +29,8 @@ public class BodyUtils {
 		StringBuilder sb = new StringBuilder();
 		sb.append(prefix).append("-").append(id.toString());
 
-		II ii = new II();
-		ii.setRoot(Constants.EMR.EMR_OID);
+		II ii = new II(Constants.EMR.EMR_OID, sb.toString());
 		ii.setAssigningAuthorityName(Constants.EMR.EMR_VERSION);
-		ii.setExtension(sb.toString());
 		return new SET<II>(ii);
 	}
 
@@ -57,9 +54,8 @@ public class BodyUtils {
 				i++;
 			}
 		}
-		if(!EverestUtils.isNullorEmptyorWhitespace(dateString)) {
-			log.warn("stringToDate - Can't parse ".concat(dateString));
-		}
+
+		log.warn("stringToDate - Can't parse dateString");
 		return null;
 	}
 

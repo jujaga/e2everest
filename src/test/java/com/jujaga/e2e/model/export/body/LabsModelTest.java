@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
@@ -26,6 +25,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.Lab;
+import com.jujaga.emr.PatientExport.LabOrganizer;
 import com.jujaga.emr.dao.Hl7TextInfoDao;
 import com.jujaga.emr.model.Hl7TextInfo;
 
@@ -45,6 +45,8 @@ public class LabsModelTest {
 		dao = context.getBean(Hl7TextInfoDao.class);
 		hl7TextInfo = dao.findLabId(Constants.Runtime.VALID_LAB_NO);
 		Lab lab = new Lab(hl7TextInfo);
+		lab.getLabOrganizer().add(new LabOrganizer(Constants.Runtime.INVALID_VALUE, null));
+		lab.getLabOrganizer().add(new LabOrganizer(Constants.Runtime.INVALID_VALUE, null));
 		labsModel = new LabsModel(lab);
 
 		nullHl7TextInfo = new Hl7TextInfo();
@@ -132,7 +134,6 @@ public class LabsModelTest {
 		assertEquals(1, authors.size());
 	}
 
-	@Ignore
 	@Test
 	public void resultOrganizersTest() {
 		ArrayList<EntryRelationship> resultOrganizers = labsModel.getResultOrganizers();
@@ -140,7 +141,6 @@ public class LabsModelTest {
 		assertEquals(2, resultOrganizers.size());
 	}
 
-	@Ignore
 	@Test
 	public void resultOrganizersNullTest() {
 		ArrayList<EntryRelationship> resultOrganizers = nullLabsModel.getResultOrganizers();

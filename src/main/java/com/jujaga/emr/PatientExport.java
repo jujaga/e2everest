@@ -149,7 +149,7 @@ public class PatientExport {
 
 			// Cluster LabComponents into LabOrganizers
 			Integer prevOrganizer = 0;
-			LabOrganizer tempLabOrganizer = new LabOrganizer(prevOrganizer);
+			LabOrganizer tempLabOrganizer = new LabOrganizer(prevOrganizer, labReport.getReportStatus());
 			for(LabComponent labComponent : tempLabComponents) {
 				String rawOtherId = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.other_id.toString());
 				if(!EverestUtils.isNullorEmptyorWhitespace(rawOtherId)) {
@@ -159,7 +159,7 @@ public class PatientExport {
 					if(prevOrganizer != currOrganizer) {
 						labObservation.getLabOrganizer().add(tempLabOrganizer);
 						prevOrganizer = currOrganizer;
-						tempLabOrganizer = new LabOrganizer(prevOrganizer);
+						tempLabOrganizer = new LabOrganizer(prevOrganizer, labReport.getReportStatus());
 					}
 				}
 
@@ -257,14 +257,20 @@ public class PatientExport {
 
 	public static class LabOrganizer {
 		private Integer id;
+		private String reportStatus;
 		private List<LabComponent> labComponent = new ArrayList<LabComponent>();
 
-		public LabOrganizer(Integer id) {
+		public LabOrganizer(Integer id, String reportStatus) {
 			this.id = id;
+			this.reportStatus = reportStatus;
 		}
 
 		public Integer getGroupId() {
 			return id;
+		}
+
+		public String getReportStatus() {
+			return reportStatus;
 		}
 
 		public List<LabComponent> getLabComponent() {
