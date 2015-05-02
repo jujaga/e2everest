@@ -17,9 +17,7 @@ import org.marc.everest.datatypes.generic.PIVL;
 import org.marc.everest.datatypes.interfaces.ISetComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.AdministrativeGender;
 
-public class Mappings {
-	private Mappings() {}
-
+public abstract class Mappings {
 	public static final Map<String, AdministrativeGender> genderCode;
 	static {
 		Map<String, AdministrativeGender> map = new HashMap<String, AdministrativeGender>();

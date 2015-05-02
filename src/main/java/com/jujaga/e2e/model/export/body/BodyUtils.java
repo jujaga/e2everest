@@ -16,10 +16,8 @@ import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.model.Demographic;
 
-public class BodyUtils {
+public abstract class BodyUtils {
 	private static Logger log = Logger.getLogger(BodyUtils.class.getName());
-
-	private BodyUtils() {}
 
 	public static SET<II> buildUniqueId(IdPrefixes prefix, Integer id) {
 		if(id == null) {

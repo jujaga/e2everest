@@ -8,9 +8,7 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.populator.EmrExportPopulator;
 import com.jujaga.emr.PatientExport;
 
-public class E2ECreator {
-	private E2ECreator() {}
-
+public abstract class E2ECreator {
 	public static ClinicalDocument createEmrConversionDocument(Integer demographicNo) {
 		PatientExport patientExport = new PatientExport(demographicNo);
 		CE<String> code = Constants.EMRConversionDocument.CODE;

@@ -13,14 +13,12 @@ import org.marc.everest.datatypes.TelecommunicationsAddressUse;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.LanguageCommunication;
 
-import com.jujaga.e2e.constant.Constants.TelecomType;
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Constants.TelecomType;
 import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 
-class HeaderUtils {
-	private HeaderUtils() {}
-
+abstract class HeaderUtils {
 	static void addAddressPart(ArrayList<ADXP> addrParts, String value, AddressPartType addressPartType) {
 		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
 			ADXP addrPart = new ADXP(value, addressPartType);

@@ -11,4 +11,9 @@ public class E2ECreatorTest {
 	public void createEmrConversionDocumentTest() {
 		assertNotNull(E2ECreator.createEmrConversionDocument(Constants.Runtime.VALID_DEMOGRAPHIC));
 	}
+
+	@Test
+	public void emptyCreateEmrConversionDocumentTest() {
+		assertNotNull(E2ECreator.createEmrConversionDocument(Constants.Runtime.EMPTY_DEMOGRAPHIC));
+	}
 }

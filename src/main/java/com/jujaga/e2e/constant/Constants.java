@@ -2,9 +2,7 @@ package com.jujaga.e2e.constant;
 
 import org.marc.everest.datatypes.generic.CE;
 
-public class Constants {
-	private Constants() {}
-
+public abstract class Constants {
 	/**
 	 * Enumerations
 	 */

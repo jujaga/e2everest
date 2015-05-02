@@ -12,8 +12,6 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.emr.PatientExport;
 
 public class PopulatorTest {
-	private static final Integer INVALID_DEMOGRAPHIC = 0;
-
 	@Test
 	public void emptyEmrExportPopulatorTest() {
 		PatientExport patientExport = new PatientExport(Constants.Runtime.EMPTY_DEMOGRAPHIC);
@@ -30,7 +28,7 @@ public class PopulatorTest {
 
 	@Test
 	public void invalidEmrExportPopulatorTest() {
-		PatientExport patientExport = new PatientExport(INVALID_DEMOGRAPHIC);
+		PatientExport patientExport = new PatientExport(Constants.Runtime.INVALID_VALUE);
 		CE<String> code = Constants.EMRConversionDocument.CODE;
 		II templateId = new II(Constants.EMRConversionDocument.TEMPLATE_ID);
 
