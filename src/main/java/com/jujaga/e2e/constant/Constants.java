@@ -2,7 +2,11 @@ package com.jujaga.e2e.constant;
 
 import org.marc.everest.datatypes.generic.CE;
 
-public abstract class Constants {
+public class Constants {
+	Constants() {
+		throw new UnsupportedOperationException();
+	}
+
 	/**
 	 * Enumerations
 	 */

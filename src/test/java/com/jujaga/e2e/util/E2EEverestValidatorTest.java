@@ -20,6 +20,11 @@ public class E2EEverestValidatorTest {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}
 
+	@Test(expected=UnsupportedOperationException.class)
+	public void instantiationTest() {
+		new E2EEverestValidator();
+	}
+
 	@Test
 	public void isValidCDATest() {
 		XmlIts1Formatter fmtr = new XmlIts1Formatter();

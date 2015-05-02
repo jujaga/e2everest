@@ -19,6 +19,11 @@ public class EverestUtilsTest {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}
 
+	@Test(expected=UnsupportedOperationException.class)
+	public void instantiationTest() {
+		new EverestUtils();
+	}
+
 	@Test
 	public void isNullorEmptyorWhitespaceTest() {
 		assertTrue(EverestUtils.isNullorEmptyorWhitespace(null));

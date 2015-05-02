@@ -23,8 +23,12 @@ import org.marc.everest.xml.XMLStateStreamWriter;
 import com.jujaga.e2e.constant.Constants;
 
 // General Everest Utility Functions
-public abstract class EverestUtils {
+public class EverestUtils {
 	private static Logger log = Logger.getLogger(EverestUtils.class.getName());
+
+	EverestUtils() {
+		throw new UnsupportedOperationException();
+	}
 
 	// Check String for Null, Empty or Whitespace
 	public static Boolean isNullorEmptyorWhitespace(String obj) {

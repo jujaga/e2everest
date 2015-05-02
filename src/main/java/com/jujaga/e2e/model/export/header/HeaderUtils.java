@@ -18,7 +18,11 @@ import com.jujaga.e2e.constant.Constants.TelecomType;
 import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 
-abstract class HeaderUtils {
+class HeaderUtils {
+	HeaderUtils() {
+		throw new UnsupportedOperationException();
+	}
+
 	static void addAddressPart(ArrayList<ADXP> addrParts, String value, AddressPartType addressPartType) {
 		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
 			ADXP addrPart = new ADXP(value, addressPartType);
