@@ -1,7 +1,6 @@
 package com.jujaga.emr;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,17 +117,13 @@ public class PatientExport {
 		// Gather and filter Measurements based on existence of lab_no field
 		List<Measurement> rawMeasurements = measurementDao.findByDemographicNo(demographicNo);
 		List<LabComponent> allLabComponents = new ArrayList<LabComponent>();
-		for(Measurement entry : rawMeasurements) {
-			MeasurementsExt labNo = measurementsExtDao.getMeasurementsExtByMeasurementIdAndKeyVal(entry.getId(), Constants.MeasurementsExtKeys.lab_no.toString());
+		for(Measurement measurement : rawMeasurements) {
+			MeasurementsExt labNo = measurementsExtDao.getMeasurementsExtByMeasurementIdAndKeyVal(measurement.getId(), Constants.MeasurementsExtKeys.lab_no.toString());
 
+			// Gather MeasurementsExt and pair with Measurements into LabComponents
 			if(isValidLabMeasurement(tempRouting, labNo)) {
-				// Gather MeasurementsExt and pair with Measurements into LabComponents
-				List<MeasurementsExt> tempMeasurementsExts = measurementsExtDao.getMeasurementsExtByMeasurementId(entry.getId());
-				Map<String, String> map = new HashMap<String, String>();
-				for(MeasurementsExt extElement : tempMeasurementsExts) {
-					map.put(extElement.getKeyVal(), extElement.getVal());
-				}
-				allLabComponents.add(new LabComponent(entry, Collections.unmodifiableMap(map)));
+				List<MeasurementsExt> measurementsExts = measurementsExtDao.getMeasurementsExtByMeasurementId(measurement.getId());
+				allLabComponents.add(new LabComponent(measurement, measurementsExts));
 			}
 		}
 
@@ -239,11 +234,13 @@ public class PatientExport {
 
 	// Supporting Lab Grouping Subclasses
 	public static class Lab {
-		private Hl7TextInfo hl7TextInfo;
+		private Hl7TextInfo hl7TextInfo = new Hl7TextInfo();
 		private List<LabOrganizer> labOrganizer = new ArrayList<LabOrganizer>();
 
 		public Lab(Hl7TextInfo hl7TextInfo) {
-			this.hl7TextInfo = hl7TextInfo;
+			if(hl7TextInfo != null) {
+				this.hl7TextInfo = hl7TextInfo;
+			}
 		}
 
 		public Hl7TextInfo getHl7TextInfo() {
@@ -256,8 +253,8 @@ public class PatientExport {
 	}
 
 	public static class LabOrganizer {
-		private Integer id;
-		private String reportStatus;
+		private Integer id = Constants.Runtime.INVALID_VALUE;
+		private String reportStatus = null;
 		private List<LabComponent> labComponent = new ArrayList<LabComponent>();
 
 		public LabOrganizer(Integer id, String reportStatus) {
@@ -279,12 +276,24 @@ public class PatientExport {
 	}
 
 	public static class LabComponent {
-		private Measurement measurement = null;
-		private Map<String, String> measurementsMap = null;
+		private Measurement measurement = new Measurement();
+		private Map<String, String> measurementsMap = new HashMap<String, String>();
 
-		public LabComponent(Measurement measurement, Map<String, String> measurementsMap) {
-			this.measurement = measurement;
-			this.measurementsMap = measurementsMap;
+		public LabComponent(Measurement measurement, List<MeasurementsExt> measurementsExt) {
+			if(measurement != null) {
+				this.measurement = measurement;
+			}
+			if(measurementsExt != null) {
+				mapMeasurementsExt(measurementsExt);
+			}
+		}
+
+		private void mapMeasurementsExt(List<MeasurementsExt> measurementsExts) {
+			if(measurementsExts != null) {
+				for(MeasurementsExt extElement : measurementsExts) {
+					this.measurementsMap.put(extElement.getKeyVal(), extElement.getVal());
+				}
+			}
 		}
 
 		public Measurement getMeasurement() {

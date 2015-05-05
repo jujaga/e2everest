@@ -101,7 +101,7 @@ public class ProblemsModel {
 	}
 
 	private void setStatusCode() {
-		if(problem.getStatus() != null && problem.getStatus() == 'A') {
+		if(problem.getStatus() != null && problem.getStatus().equals('A')) {
 			this.statusCode = ActStatus.Active;
 		} else {
 			this.statusCode = ActStatus.Completed;

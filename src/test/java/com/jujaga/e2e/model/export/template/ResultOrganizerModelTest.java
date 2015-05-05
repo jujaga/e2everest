@@ -25,12 +25,12 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.emr.PatientExport.LabOrganizer;
 
 public class ResultOrganizerModelTest {
-	private static ResultOrganizerModel labOrganizerModel;
+	private static ResultOrganizerModel resultOrganizerModel;
 
 	@BeforeClass
 	public static void beforeClass() {
 		Logger.getRootLogger().setLevel(Level.FATAL);
-		labOrganizerModel = new ResultOrganizerModel();
+		resultOrganizerModel = new ResultOrganizerModel();
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class ResultOrganizerModelTest {
 	}
 
 	private Organizer resultOrganizerStructureTestHelper(LabOrganizer labOrganizer) {
-		EntryRelationship entryRelationship = labOrganizerModel.getEntryRelationship(labOrganizer);
+		EntryRelationship entryRelationship = resultOrganizerModel.getEntryRelationship(labOrganizer);
 		assertNotNull(entryRelationship);
 		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
 		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
@@ -88,11 +88,7 @@ public class ResultOrganizerModelTest {
 
 		ArrayList<Component4> labComponents = organizer.getComponent();
 		assertNotNull(labComponents);
-		if(labOrganizer != null) {
-			assertEquals(labOrganizer.getLabComponent().size(), labComponents.size());
-		} else {
-			//assertEquals(1, labComponents.size());
-		}
+		assertEquals(1, labComponents.size());
 
 		return organizer;
 	}

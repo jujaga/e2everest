@@ -2,6 +2,7 @@ package com.jujaga.e2e.model.export.template;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
@@ -17,6 +18,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelations
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.body.BodyUtils;
+import com.jujaga.emr.PatientExport.LabComponent;
 import com.jujaga.emr.PatientExport.LabOrganizer;
 
 public class ResultOrganizerModel {
@@ -73,16 +75,14 @@ public class ResultOrganizerModel {
 	private ArrayList<Component4> getResultComponents() {
 		ArrayList<Component4> resultComponents = new ArrayList<Component4>();
 
-		/* TODO Loop across all available labComponent elements
 		List<LabComponent> labComponents = labOrganizer.getLabComponent();
 		if(labComponents.isEmpty()) {
-			resultComponents.add(new ResultComponentModel().getEntryRelationship(null));
+			resultComponents.add(new ResultComponentModel().getComponent(null));
 		} else {
 			for(LabComponent labComponent : labComponents) {
-				resultComponents.add(new ResultComponentModel().getEntryRelationship(labComponent));
+				resultComponents.add(new ResultComponentModel().getComponent(labComponent));
 			}
 		}
-		 */
 
 		return resultComponents;
 	}
