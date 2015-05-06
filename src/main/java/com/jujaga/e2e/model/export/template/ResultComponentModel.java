@@ -1,19 +1,29 @@
 package com.jujaga.e2e.model.export.template;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
+import org.marc.everest.datatypes.ANY;
 import org.marc.everest.datatypes.BL;
+import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.PQ;
+import org.marc.everest.datatypes.ST;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.CS;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ObservationInterpretation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 
+import com.jujaga.e2e.constant.BodyConstants.Labs;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.LabComponent;
@@ -35,9 +45,11 @@ public class ResultComponentModel {
 		observation.setMoodCode(x_ActMoodDocumentObservation.Eventoccurrence);
 		observation.setId(getIds());
 		observation.setCode(getCode());
-		// Text
-		// EffectiveTime
+		observation.setText(getText());
 		observation.setStatusCode(getStatusCode());
+		observation.setEffectiveTime(getTime());
+		observation.setValue(getValue());
+		observation.setInterpretationCode(getInterpretationCode());
 
 		component.setClinicalStatement(observation);
 		return component;
@@ -52,6 +64,7 @@ public class ResultComponentModel {
 			ii.setRoot(Constants.EMR.EMR_OID);
 			ii.setExtension(accession);
 		}
+
 		return new SET<II>(ii);
 	}
 
@@ -65,7 +78,17 @@ public class ResultComponentModel {
 			code.setCodeSystem(Constants.CodeSystems.PCLOCD_OID);
 			code.setCodeSystemName(Constants.CodeSystems.PCLOCD_NAME);
 		}
+
 		return code;
+	}
+
+	private ED getText() {
+		String name = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.name.toString());
+		if(!EverestUtils.isNullorEmptyorWhitespace(name)) {
+			return new ED(name);
+		}
+
+		return null;
 	}
 
 	private CS<ActStatus> getStatusCode() {
@@ -78,6 +101,55 @@ public class ResultComponentModel {
 		} else {
 			actStatus.setCodeEx(ActStatus.Completed);
 		}
+
 		return actStatus;
+	}
+
+	private IVL<TS> getTime() {
+		String datetime = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.datetime.toString());
+		IVL<TS> ivl = null;
+		TS startTime = EverestUtils.buildTSFromDate(EverestUtils.stringToDate(datetime));
+		if(startTime != null) {
+			ivl = new IVL<TS>(startTime, null);
+		}
+
+		return ivl;
+	}
+
+	private ANY getValue() {
+		String dataField = labComponent.getMeasurement().getDataField();
+		String unit = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.unit.toString());
+		ANY value = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(dataField)) {
+			if(!EverestUtils.isNullorEmptyorWhitespace(unit)) {
+				try {
+					value = new PQ(new BigDecimal(dataField), unit.replaceAll("\\s","_"));
+				} catch (NumberFormatException e) {
+					value = new ST(dataField.concat(" ").concat(unit));
+				}
+			} else {
+				value = new ST(dataField);
+			}
+		}
+
+		return value;
+	}
+
+	private SET<CE<ObservationInterpretation>> getInterpretationCode() {
+		String abnormal = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.abnormal.toString());
+		SET<CE<ObservationInterpretation>> interpretationCodes = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(abnormal)) {
+			CE<ObservationInterpretation> interpretation = new CE<ObservationInterpretation>();
+			if(abnormal.equalsIgnoreCase("A")) {
+				interpretation.setCodeEx(ObservationInterpretation.Abnormal);
+				interpretation.setDisplayName(Labs.ABNORMAL);
+			} else {
+				interpretation.setCodeEx(ObservationInterpretation.Normal);
+				interpretation.setDisplayName(Labs.NORMAL);
+			}
+			interpretationCodes = new SET<CE<ObservationInterpretation>>(interpretation);
+		}
+
+		return interpretationCodes;
 	}
 }

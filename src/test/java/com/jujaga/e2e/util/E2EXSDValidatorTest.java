@@ -23,6 +23,11 @@ public class E2EXSDValidatorTest {
 		assertFalse(s.isEmpty());
 	}
 
+	@Test(expected=UnsupportedOperationException.class)
+	public void instantiationTest() {
+		new E2EXSDValidator();
+	}
+
 	@Test
 	public void isWellFormedXMLTest() {
 		assertTrue(E2EXSDValidator.isWellFormedXML(s));

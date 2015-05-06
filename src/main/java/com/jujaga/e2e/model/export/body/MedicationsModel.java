@@ -95,7 +95,7 @@ public class MedicationsModel {
 	}
 
 	private void setIds() {
-		this.ids = BodyUtils.buildUniqueId(Constants.IdPrefixes.Medications, drug.getId());
+		this.ids = EverestUtils.buildUniqueId(Constants.IdPrefixes.Medications, drug.getId());
 	}
 
 	public CD<String> getCode() {

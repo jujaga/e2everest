@@ -15,8 +15,8 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.model.export.body.BodyUtils;
 import com.jujaga.e2e.model.export.template.observation.DateObservationModel;
+import com.jujaga.e2e.util.EverestUtils;
 
 public class DateObservationModelTest {
 	@Test
@@ -32,7 +32,7 @@ public class DateObservationModelTest {
 		Observation observation = entryRelationship.getClinicalStatementIfObservation();
 		assertNotNull(observation);
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
-		assertEquals(BodyUtils.buildTSFromDate(date), observation.getEffectiveTime().getLow());
+		assertEquals(EverestUtils.buildTSFromDate(date), observation.getEffectiveTime().getLow());
 
 		CD<String> code = observation.getCode();
 		assertNotNull(code);

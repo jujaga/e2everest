@@ -16,7 +16,6 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Person;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.model.export.body.BodyUtils;
 import com.jujaga.e2e.model.export.header.AuthorModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Provider;
@@ -48,7 +47,7 @@ public class AuthorParticipationModel extends AuthorModel {
 	}
 
 	public Author getAuthor(Date date) {
-		TS time = BodyUtils.buildTSFromDate(date);
+		TS time = EverestUtils.buildTSFromDate(date);
 		if(time == null) {
 			time = new TS();
 			time.setNullFlavor(NullFlavor.Unknown);

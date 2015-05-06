@@ -76,10 +76,10 @@ public class RecordTargetModel {
 
 	private void setAddresses() {
 		ArrayList<ADXP> addrParts = new ArrayList<ADXP>();
-		HeaderUtils.addAddressPart(addrParts, demographic.getAddress(), AddressPartType.Delimiter);
-		HeaderUtils.addAddressPart(addrParts, demographic.getCity(), AddressPartType.City);
-		HeaderUtils.addAddressPart(addrParts, demographic.getProvince(), AddressPartType.State);
-		HeaderUtils.addAddressPart(addrParts, demographic.getPostal(), AddressPartType.PostalCode);
+		EverestUtils.addAddressPart(addrParts, demographic.getAddress(), AddressPartType.Delimiter);
+		EverestUtils.addAddressPart(addrParts, demographic.getCity(), AddressPartType.City);
+		EverestUtils.addAddressPart(addrParts, demographic.getProvince(), AddressPartType.State);
+		EverestUtils.addAddressPart(addrParts, demographic.getPostal(), AddressPartType.PostalCode);
 		if(!addrParts.isEmpty()) {
 			CS<PostalAddressUse> use = new CS<PostalAddressUse>(PostalAddressUse.HomeAddress);
 			AD addr = new AD(use, addrParts);
@@ -96,9 +96,9 @@ public class RecordTargetModel {
 
 	private void setTelecoms() {
 		SET<TEL> telecoms = new SET<TEL>();
-		HeaderUtils.addTelecomPart(telecoms, demographic.getPhone(), TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
-		HeaderUtils.addTelecomPart(telecoms, demographic.getPhone2(), TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
-		HeaderUtils.addTelecomPart(telecoms, demographic.getEmail(), TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
+		EverestUtils.addTelecomPart(telecoms, demographic.getPhone(), TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
+		EverestUtils.addTelecomPart(telecoms, demographic.getPhone2(), TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
+		EverestUtils.addTelecomPart(telecoms, demographic.getEmail(), TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
 		if(!telecoms.isEmpty()) {
 			this.telecoms = telecoms;
 		}
@@ -113,7 +113,7 @@ public class RecordTargetModel {
 
 	private void setNames() {
 		SET<PN> names = new SET<PN>();
-		HeaderUtils.addNamePart(names, demographic.getFirstName(), demographic.getLastName(), EntityNameUse.Legal);
+		EverestUtils.addNamePart(names, demographic.getFirstName(), demographic.getLastName(), EntityNameUse.Legal);
 		if(!names.isEmpty()) {
 			this.names = names;
 		}
@@ -192,7 +192,7 @@ public class RecordTargetModel {
 
 	private void setLanguages() {
 		ArrayList<LanguageCommunication> languages = new ArrayList<LanguageCommunication>();
-		HeaderUtils.addLanguagePart(languages, demographic.getOfficialLanguage());
+		EverestUtils.addLanguagePart(languages, demographic.getOfficialLanguage());
 		if(!languages.isEmpty()) {
 			this.languages = languages;
 		}

@@ -71,7 +71,7 @@ public class ProblemsModel {
 	}
 
 	private void setIds() {
-		this.ids = BodyUtils.buildUniqueId(Constants.IdPrefixes.ProblemList, problem.getDxresearchNo());
+		this.ids = EverestUtils.buildUniqueId(Constants.IdPrefixes.ProblemList, problem.getDxresearchNo());
 	}
 
 	public CD<String> getCode() {
@@ -114,7 +114,7 @@ public class ProblemsModel {
 
 	private void setEffectiveTime() {
 		IVL<TS> ivl = null;
-		TS startTime = BodyUtils.buildTSFromDate(problem.getStartDate());
+		TS startTime = EverestUtils.buildTSFromDate(problem.getStartDate());
 		if(startTime != null) {
 			ivl = new IVL<TS>(startTime, null);
 		}
@@ -137,7 +137,7 @@ public class ProblemsModel {
 
 	private void setAuthor() {
 		authors = new ArrayList<Author>();
-		authors.add(new AuthorParticipationModel(BodyUtils.getDemographicProviderNo(problem.getDemographicNo())).getAuthor(problem.getUpdateDate()));
+		authors.add(new AuthorParticipationModel(EverestUtils.getDemographicProviderNo(problem.getDemographicNo())).getAuthor(problem.getUpdateDate()));
 	}
 
 	public EntryRelationship getSecondaryCodeICD9() {

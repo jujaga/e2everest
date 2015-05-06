@@ -18,6 +18,10 @@ import org.xml.sax.XMLReader;
 public class E2EXSDValidator {
 	private static Logger log = Logger.getLogger(E2EXSDValidator.class.getName());
 
+	E2EXSDValidator() {
+		throw new UnsupportedOperationException();
+	}
+
 	public static Boolean isWellFormedXML(String xmlstring) {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(false);

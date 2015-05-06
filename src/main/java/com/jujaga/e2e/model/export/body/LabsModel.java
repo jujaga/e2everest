@@ -60,7 +60,7 @@ public class LabsModel {
 	}
 
 	private void setIds() {
-		this.ids = BodyUtils.buildUniqueId(Constants.IdPrefixes.Lab, hl7TextInfo.getId());
+		this.ids = EverestUtils.buildUniqueId(Constants.IdPrefixes.Lab, hl7TextInfo.getId());
 	}
 
 	public CD<String> getCode() {
@@ -90,7 +90,7 @@ public class LabsModel {
 
 	private void setAuthor() {
 		this.authors = new ArrayList<Author>();
-		this.authors.add(new AuthorParticipationModel().getAuthor(BodyUtils.stringToDate(hl7TextInfo.getObrDate()), hl7TextInfo.getRequestingProvider()));
+		this.authors.add(new AuthorParticipationModel().getAuthor(EverestUtils.stringToDate(hl7TextInfo.getObrDate()), hl7TextInfo.getRequestingProvider()));
 	}
 
 	public ArrayList<EntryRelationship> getResultOrganizers() {

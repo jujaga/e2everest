@@ -17,7 +17,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActClassDocumentEntryOrganize
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.model.export.body.BodyUtils;
+import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.LabComponent;
 import com.jujaga.emr.PatientExport.LabOrganizer;
 
@@ -48,7 +48,7 @@ public class ResultOrganizerModel {
 
 	private SET<II> getIds() {
 		if(labOrganizer.getGroupId() != null) {
-			return BodyUtils.buildUniqueId(Constants.IdPrefixes.LabOBR, labOrganizer.getGroupId());
+			return EverestUtils.buildUniqueId(Constants.IdPrefixes.LabOBR, labOrganizer.getGroupId());
 		} else {
 			return null;
 		}

@@ -1,7 +1,5 @@
 package com.jujaga.e2e.director;
 
-import static org.junit.Assert.assertNull;
-
 import org.junit.Test;
 
 public class E2EParserTest {
@@ -10,8 +8,8 @@ public class E2EParserTest {
 		new E2EParser();
 	}
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void parseEmrConversionDocumentTest() {
-		assertNull(E2EParser.parseEmrConversionDocument());
+		E2EParser.parseEmrConversionDocument();
 	}
 }

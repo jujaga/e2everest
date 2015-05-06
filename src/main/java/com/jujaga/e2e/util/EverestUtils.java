@@ -2,6 +2,11 @@ package com.jujaga.e2e.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -14,15 +19,32 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.marc.everest.datatypes.ADXP;
+import org.marc.everest.datatypes.AddressPartType;
+import org.marc.everest.datatypes.ENXP;
+import org.marc.everest.datatypes.EntityNamePartType;
+import org.marc.everest.datatypes.EntityNameUse;
+import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.PN;
+import org.marc.everest.datatypes.TEL;
+import org.marc.everest.datatypes.TS;
+import org.marc.everest.datatypes.TelecommunicationsAddressUse;
+import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.formatters.interfaces.IFormatterGraphResult;
 import org.marc.everest.formatters.xml.datatypes.r1.DatatypeFormatter;
 import org.marc.everest.formatters.xml.its1.XmlIts1Formatter;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.LanguageCommunication;
 import org.marc.everest.xml.XMLStateStreamWriter;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Constants.IdPrefixes;
+import com.jujaga.e2e.constant.Constants.TelecomType;
+import com.jujaga.e2e.constant.Mappings;
+import com.jujaga.emr.PatientExport;
+import com.jujaga.emr.dao.DemographicDao;
+import com.jujaga.emr.model.Demographic;
 
-// General Everest Utility Functions
 public class EverestUtils {
 	private static Logger log = Logger.getLogger(EverestUtils.class.getName());
 
@@ -30,6 +52,9 @@ public class EverestUtils {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * General Everest Utility Functions
+	 */
 	// Check String for Null, Empty or Whitespace
 	public static Boolean isNullorEmptyorWhitespace(String obj) {
 		return obj == null || obj.isEmpty() || obj.trim().isEmpty();
@@ -110,5 +135,111 @@ public class EverestUtils {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Header Utility Functions
+	 */
+	// Add an address to the addrParts list
+	public static void addAddressPart(ArrayList<ADXP> addrParts, String value, AddressPartType addressPartType) {
+		if(!isNullorEmptyorWhitespace(value)) {
+			ADXP addrPart = new ADXP(value, addressPartType);
+			addrParts.add(addrPart);
+		}
+	}
+
+	// Add a telecom element to the telecoms set
+	public static void addTelecomPart(SET<TEL> telecoms, String value, TelecommunicationsAddressUse telecomAddressUse, TelecomType telecomType) {
+		if(!isNullorEmptyorWhitespace(value)) {
+			switch(telecomType) {
+			case TELEPHONE:
+				telecoms.add(new TEL(Constants.DocumentHeader.TEL_PREFIX + value.replaceAll("-", ""), telecomAddressUse));
+				break;
+			case EMAIL:
+				telecoms.add(new TEL(Constants.DocumentHeader.EMAIL_PREFIX + value, telecomAddressUse));
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	// Add a name to the names set
+	public static void addNamePart(SET<PN> names, String firstName, String lastName, EntityNameUse entityNameUse) {
+		ArrayList<ENXP> name = new ArrayList<ENXP>();
+		if(!isNullorEmptyorWhitespace(firstName)) {
+			name.add(new ENXP(firstName, EntityNamePartType.Given));
+		}
+		if(!isNullorEmptyorWhitespace(lastName)) {
+			name.add(new ENXP(lastName, EntityNamePartType.Family));
+		}
+		if(!name.isEmpty()) {
+			names.add(new PN(entityNameUse, name));
+		}
+	}
+
+	// Add a language to the languages list
+	public static void addLanguagePart(ArrayList<LanguageCommunication> languages, String value) {
+		if(!isNullorEmptyorWhitespace(value) && Mappings.languageCode.containsKey(value)) {
+			LanguageCommunication language = new LanguageCommunication();
+			language.setLanguageCode(Mappings.languageCode.get(value));
+			languages.add(language);
+		}
+	}
+
+	/**
+	 * Body Utility Functions
+	 */
+	// Create Prefix-number id object
+	public static SET<II> buildUniqueId(IdPrefixes prefix, Integer id) {
+		if(id == null) {
+			id = 0;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(prefix).append("-").append(id.toString());
+
+		II ii = new II(Constants.EMR.EMR_OID, sb.toString());
+		ii.setAssigningAuthorityName(Constants.EMR.EMR_VERSION);
+		return new SET<II>(ii);
+	}
+
+	// Create a TS object from a Java Date
+	public static TS buildTSFromDate(Date date) {
+		if(date == null) {
+			return null;
+		}
+
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		return new TS(calendar, TS.DAY);
+	}
+
+	// Create a Date object from dateString
+	public static Date stringToDate(String dateString) {
+		String[] formatStrings = {"yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm", "yyyy-MM-dd"};
+		Integer i = 0;
+		while(i < formatStrings.length) {
+			try {
+				return new SimpleDateFormat(formatStrings[i]).parse(dateString);
+			} catch (Exception e) {
+				i++;
+			}
+		}
+
+		log.warn("stringToDate - Can't parse dateString");
+		return null;
+	}
+
+	// Find the provider of a given demographicNo
+	public static String getDemographicProviderNo(Integer demographicNo) {
+		try {
+			DemographicDao demographicDao = new PatientExport().getApplicationContext().getBean(DemographicDao.class);
+			Demographic demographic = demographicDao.find(demographicNo);
+			return demographic.getProviderNo();
+		} catch (Exception e) {
+			log.error("Demographic " + demographicNo + " not found");
+			return null;
+		}
 	}
 }

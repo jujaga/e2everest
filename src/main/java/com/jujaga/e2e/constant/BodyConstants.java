@@ -47,6 +47,9 @@ public class BodyConstants {
 	public static class Labs extends AbstractBodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
 
+		public static final String ABNORMAL = "Abnormal";
+		public static final String NORMAL = "Normal";
+
 		private Labs() {
 			SECTION_PRIORITY = SectionPriority.SHALL;
 			WITH_ENTRIES_TITLE = "Laboratory Results and Reports [with entries]";

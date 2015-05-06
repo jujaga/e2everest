@@ -101,9 +101,9 @@ public class AuthorModel {
 
 	private void setTelecoms() {
 		SET<TEL> telecoms = new SET<TEL>();
-		HeaderUtils.addTelecomPart(telecoms, provider.getPhone(), TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
-		HeaderUtils.addTelecomPart(telecoms, provider.getWorkPhone(), TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
-		HeaderUtils.addTelecomPart(telecoms, provider.getEmail(), TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
+		EverestUtils.addTelecomPart(telecoms, provider.getPhone(), TelecommunicationsAddressUse.Home, TelecomType.TELEPHONE);
+		EverestUtils.addTelecomPart(telecoms, provider.getWorkPhone(), TelecommunicationsAddressUse.WorkPlace, TelecomType.TELEPHONE);
+		EverestUtils.addTelecomPart(telecoms, provider.getEmail(), TelecommunicationsAddressUse.Home, TelecomType.EMAIL);
 		if(!telecoms.isEmpty()) {
 			this.telecoms = telecoms;
 		} else {
@@ -118,7 +118,7 @@ public class AuthorModel {
 	private void setPerson() {
 		Person person = new Person();
 		SET<PN> names = new SET<PN>();
-		HeaderUtils.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.OfficialRecord);
+		EverestUtils.addNamePart(names, provider.getFirstName(), provider.getLastName(), EntityNameUse.OfficialRecord);
 		if(names.isEmpty()) {
 			PN pn = new PN();
 			pn.setNullFlavor(NullFlavor.NoInformation);

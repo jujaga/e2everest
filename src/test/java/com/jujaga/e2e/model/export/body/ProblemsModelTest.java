@@ -145,7 +145,7 @@ public class ProblemsModelTest {
 	public void effectiveTimeTest() {
 		IVL<TS> ivl = problemsModel.getEffectiveTime();
 		assertNotNull(ivl);
-		assertEquals(BodyUtils.buildTSFromDate(problem.getStartDate()), ivl.getLow());
+		assertEquals(EverestUtils.buildTSFromDate(problem.getStartDate()), ivl.getLow());
 	}
 
 	@Test

@@ -8,6 +8,6 @@ public class E2EParser {
 	}
 
 	public static ClinicalDocument parseEmrConversionDocument() {
-		return null;
+		throw new UnsupportedOperationException("Not implemented");
 	}
 }

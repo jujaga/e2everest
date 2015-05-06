@@ -19,10 +19,10 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelations
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.model.export.body.BodyUtils;
 import com.jujaga.e2e.model.export.template.observation.DoseObservationModel;
 import com.jujaga.e2e.model.export.template.observation.InstructionObservationModel;
 import com.jujaga.e2e.model.export.template.observation.OrderIndicatorObservationModel;
+import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Drug;
 
 public class MedicationPrescriptionEventModel {
@@ -60,7 +60,7 @@ public class MedicationPrescriptionEventModel {
 	}
 
 	private SET<II> getIds() {
-		return BodyUtils.buildUniqueId(Constants.IdPrefixes.MedicationPrescriptions, drug.getId());
+		return EverestUtils.buildUniqueId(Constants.IdPrefixes.MedicationPrescriptions, drug.getId());
 	}
 
 	private CD<String> getCode() {
@@ -70,8 +70,8 @@ public class MedicationPrescriptionEventModel {
 	}
 
 	private ArrayList<ISetComponent<TS>> getEffectiveTime() {
-		TS startTime = BodyUtils.buildTSFromDate(drug.getRxDate());
-		TS endTime = BodyUtils.buildTSFromDate(drug.getEndDate());
+		TS startTime = EverestUtils.buildTSFromDate(drug.getRxDate());
+		TS endTime = EverestUtils.buildTSFromDate(drug.getEndDate());
 
 		IVL<TS> ivl = new IVL<TS>();
 		ivl.setOperator(SetOperator.Inclusive);

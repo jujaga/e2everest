@@ -9,7 +9,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.model.export.body.BodyUtils;
+import com.jujaga.e2e.util.EverestUtils;
 
 public class DateObservationModel extends AbstractObservationModel {
 	public EntryRelationship getEntryRelationship(Date date) {
@@ -20,7 +20,7 @@ public class DateObservationModel extends AbstractObservationModel {
 
 			observation.setMoodCode(x_ActMoodDocumentObservation.Eventoccurrence);
 			observation.getCode().setCodeEx(Constants.ObservationType.DATEOBS.toString());
-			observation.setEffectiveTime(BodyUtils.buildTSFromDate(date), null);
+			observation.setEffectiveTime(EverestUtils.buildTSFromDate(date), null);
 		} else {
 			entryRelationship = null;
 		}

@@ -29,7 +29,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.model.export.body.BodyUtils;
+import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.DrugDao;
 import com.jujaga.emr.model.Drug;
 
@@ -97,8 +97,8 @@ public class MedicationPrescriptionEventModelTest {
 		IVL<TS> ivl = (IVL<TS>) effectiveTime.get(0);
 		assertNotNull(ivl);
 		assertEquals(SetOperator.Inclusive, ivl.getOperator());
-		assertEquals(BodyUtils.buildTSFromDate(drug.getRxDate()), ivl.getLow());
-		assertEquals(BodyUtils.buildTSFromDate(drug.getEndDate()), ivl.getHigh());
+		assertEquals(EverestUtils.buildTSFromDate(drug.getRxDate()), ivl.getLow());
+		assertEquals(EverestUtils.buildTSFromDate(drug.getEndDate()), ivl.getHigh());
 	}
 
 	@Test
