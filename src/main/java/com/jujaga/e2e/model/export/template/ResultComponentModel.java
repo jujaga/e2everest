@@ -1,13 +1,18 @@
 package com.jujaga.e2e.model.export.template;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.marc.everest.datatypes.ANY;
 import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.ED;
+import org.marc.everest.datatypes.ENXP;
+import org.marc.everest.datatypes.EntityNameUse;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.ON;
 import org.marc.everest.datatypes.PQ;
 import org.marc.everest.datatypes.ST;
 import org.marc.everest.datatypes.TS;
@@ -16,15 +21,23 @@ import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.CS;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedEntity;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Organization;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Performer2;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Procedure;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ObservationInterpretation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentProcedureMood;
 
 import com.jujaga.e2e.constant.BodyConstants.Labs;
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.model.export.template.observation.CommentObservationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.LabComponent;
 
@@ -40,6 +53,7 @@ public class ResultComponentModel {
 
 		Component4 component = new Component4(ActRelationshipHasComponent.HasComponent, new BL(true));
 		component.setTemplateId(Arrays.asList(new II(Constants.TemplateOids.RESULT_COMPONENT_TEMPLATE_ID)));
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
 
 		Observation observation = new Observation();
 		observation.setMoodCode(x_ActMoodDocumentObservation.Eventoccurrence);
@@ -50,7 +64,12 @@ public class ResultComponentModel {
 		observation.setEffectiveTime(getTime());
 		observation.setValue(getValue());
 		observation.setInterpretationCode(getInterpretationCode());
+		observation.setPerformer(getPerformer());
 
+		entryRelationships.add(getSpecimenCollection());
+		entryRelationships.add(getResultNotes());
+
+		observation.setEntryRelationship(entryRelationships);
 		component.setClinicalStatement(observation);
 		return component;
 	}
@@ -151,5 +170,57 @@ public class ResultComponentModel {
 		}
 
 		return interpretationCodes;
+	}
+
+	private ArrayList<Performer2> getPerformer() {
+		String labname = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.labname.toString());
+		ArrayList<Performer2> performers = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(labname)) {
+			Performer2 performer = new Performer2();
+			AssignedEntity assignedEntity = new AssignedEntity();
+			Organization organization = new Organization();
+
+			II ii = new II();
+			ii.setNullFlavor(NullFlavor.NoInformation);
+			ON on = new ON(EntityNameUse.OfficialRecord, Arrays.asList(new ENXP(labname)));
+			organization.setName(new SET<ON>(on));
+
+			assignedEntity.setId(new SET<II>(ii));
+			assignedEntity.setRepresentedOrganization(organization);
+
+			performer.setTemplateId(Arrays.asList(new II(Constants.TemplateOids.PERFORMER_PARTICIPATION_TEMPLATE_ID)));
+			performer.setTime(getTime());
+			performer.setAssignedEntity(assignedEntity);
+			performers = new ArrayList<Performer2>(Arrays.asList(performer));
+		}
+
+		return performers;
+	}
+
+	private EntryRelationship getSpecimenCollection() {
+		EntryRelationship entryRelationship = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(labComponent.getObrDate())) {
+			TS startTime = EverestUtils.buildTSFromDate(EverestUtils.stringToDate(labComponent.getObrDate()));
+			if(startTime != null) {
+				Procedure procedure = new Procedure(x_DocumentProcedureMood.Eventoccurrence);
+				procedure.setEffectiveTime(startTime, null);
+
+				entryRelationship = new EntryRelationship();
+				entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
+				entryRelationship.setContextConductionInd(true);
+				entryRelationship.setClinicalStatement(procedure);
+			}
+		}
+		return entryRelationship;
+	}
+
+	private EntryRelationship getResultNotes() {
+		String comments = labComponent.getMeasurement().getComments();
+		Date date = labComponent.getMeasurement().getDateObserved();
+		EntryRelationship entryRelationship = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(comments)) {
+			entryRelationship = new CommentObservationModel().getEntryRelationship(comments, date, null);
+		}
+		return entryRelationship;
 	}
 }

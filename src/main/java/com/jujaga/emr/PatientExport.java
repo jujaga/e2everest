@@ -138,6 +138,7 @@ public class PatientExport {
 			for(LabComponent labComponent : allLabComponents) {
 				String componentLabNumber = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.lab_no.toString());
 				if(Integer.valueOf(componentLabNumber) == labNumber) {
+					labComponent.setObrDate(labReport.getObrDate());
 					tempLabComponents.add(labComponent);
 				}
 			}
@@ -278,6 +279,7 @@ public class PatientExport {
 	public static class LabComponent {
 		private Measurement measurement = new Measurement();
 		private Map<String, String> measurementsMap = new HashMap<String, String>();
+		private String obrDate = null;
 
 		public LabComponent(Measurement measurement, List<MeasurementsExt> measurementsExt) {
 			if(measurement != null) {
@@ -302,6 +304,14 @@ public class PatientExport {
 
 		public Map<String, String> getMeasurementsMap() {
 			return measurementsMap;
+		}
+
+		public String getObrDate() {
+			return obrDate;
+		}
+
+		public void setObrDate(String obrDate) {
+			this.obrDate = obrDate;
 		}
 	}
 }

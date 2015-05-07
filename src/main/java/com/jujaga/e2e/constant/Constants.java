@@ -129,6 +129,7 @@ public class Constants {
 	}
 
 	public static class ObservationOids {
+		public static final String COMMENT_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.3";
 		public static final String DATE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.4";
 		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
 		public static final String ORDER_INDICATOR_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.37";
@@ -151,6 +152,7 @@ public class Constants {
 		public static final String MEDICATION_IDENTIFICATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.16";
 		public static final String MEDICATION_PRESCRIPTION_EVENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.20";
 		public static final String ORDER_EVENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.14";
+		public static final String PERFORMER_PARTICIPATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.19";
 		public static final String PROBLEMS_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.15";
 		public static final String RESULT_COMPONENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.25";
 		public static final String RESULT_ORGANIZER_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.26";

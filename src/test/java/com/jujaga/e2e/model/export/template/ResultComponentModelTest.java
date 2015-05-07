@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Level;
@@ -16,8 +17,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.ANY;
 import org.marc.everest.datatypes.ED;
+import org.marc.everest.datatypes.ENXP;
+import org.marc.everest.datatypes.EntityNameUse;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.ON;
 import org.marc.everest.datatypes.PQ;
 import org.marc.everest.datatypes.ST;
 import org.marc.everest.datatypes.TS;
@@ -26,13 +30,20 @@ import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.CS;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedEntity;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Organization;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Performer2;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Procedure;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActClassObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ObservationInterpretation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationPhysicalPerformer;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -40,15 +51,20 @@ import com.jujaga.e2e.constant.BodyConstants.Labs;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.LabComponent;
+import com.jujaga.emr.dao.Hl7TextInfoDao;
 import com.jujaga.emr.dao.MeasurementDao;
 import com.jujaga.emr.dao.MeasurementsExtDao;
+import com.jujaga.emr.model.Hl7TextInfo;
 import com.jujaga.emr.model.Measurement;
 import com.jujaga.emr.model.MeasurementsExt;
 
 public class ResultComponentModelTest {
 	private static ApplicationContext context;
+	private static Hl7TextInfoDao hl7TextInfoDao;
 	private static MeasurementDao measurementDao;
 	private static MeasurementsExtDao measurementsExtDao;
+
+	private static Hl7TextInfo hl7TextInfo;
 	private static Measurement measurement;
 	private static List<MeasurementsExt> measurementsExt;
 
@@ -60,8 +76,11 @@ public class ResultComponentModelTest {
 	public static void beforeClass() {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
+		hl7TextInfoDao = context.getBean(Hl7TextInfoDao.class);
 		measurementDao = context.getBean(MeasurementDao.class);
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
+
+		hl7TextInfo = hl7TextInfoDao.findLabId(Constants.Runtime.VALID_LAB_NO);
 		measurement = measurementDao.find(Constants.Runtime.VALID_LAB_MEASUREMENT);
 		measurementsExt = measurementsExtDao.getMeasurementsExtByMeasurementId(Constants.Runtime.VALID_LAB_MEASUREMENT);
 		resultComponentModel = new ResultComponentModel();
@@ -70,6 +89,7 @@ public class ResultComponentModelTest {
 	@Before
 	public void before() {
 		labComponent = new LabComponent(measurement, measurementsExt);
+		labComponent.setObrDate(hl7TextInfo.getObrDate());
 		nullLabComponent = new LabComponent(null, null);
 	}
 
@@ -279,5 +299,85 @@ public class ResultComponentModelTest {
 	public void interpretationCodeNullTest() {
 		SET<CE<ObservationInterpretation>> interpretationCodes = observationHelper(nullLabComponent).getInterpretationCode();
 		assertNull(interpretationCodes);
+	}
+
+	@Test
+	public void performerTest() {
+		String labname = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.labname.toString());
+
+		ArrayList<Performer2> performers = observationHelper(labComponent).getPerformer();
+		assertNotNull(performers);
+		assertEquals(1, performers.size());
+
+		Performer2 performer = performers.get(0);
+		assertNotNull(performer);
+		assertEquals(ParticipationPhysicalPerformer.PRF, performer.getTypeCode().getCode());
+		assertEquals(Constants.TemplateOids.PERFORMER_PARTICIPATION_TEMPLATE_ID, performer.getTemplateId().get(0).getRoot());
+		assertNotNull(performer.getTime());
+
+		AssignedEntity assignedEntity = performer.getAssignedEntity();
+		assertNotNull(assignedEntity);
+		assertNotNull(assignedEntity.getId());
+		assertEquals(1, assignedEntity.getId().size());
+
+		II ii = assignedEntity.getId().get(0);
+		assertNotNull(ii);
+		assertTrue(ii.isNull());
+		assertEquals(NullFlavor.NoInformation, ii.getNullFlavor().getCode());
+
+		Organization organization = assignedEntity.getRepresentedOrganization();
+		assertNotNull(organization);
+		assertNotNull(organization.getName());
+
+		ON on = organization.getName().get(0);
+		assertNotNull(on);
+		assertEquals(EntityNameUse.OfficialRecord, on.getUse().get(0).getCode());
+		assertNotNull(on.getParts());
+		assertEquals(1, on.getParts().size());
+		assertEquals(new ENXP(labname), on.getPart(0));
+	}
+
+	@Test
+	public void performerNullTest() {
+		ArrayList<Performer2> performers = observationHelper(nullLabComponent).getPerformer();
+		assertNull(performers);
+	}
+
+	@Test
+	public void specimenCollectionValidTest() {
+		EntryRelationship entryRelationship = observationHelper(labComponent).getEntryRelationship().get(0);
+		assertNotNull(entryRelationship);
+		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+
+		Procedure procedure = entryRelationship.getClinicalStatementIfProcedure();
+		assertNotNull(procedure);
+		assertNotNull(procedure.getEffectiveTime());
+		assertEquals(EverestUtils.buildTSFromDate(EverestUtils.stringToDate(labComponent.getObrDate())), procedure.getEffectiveTime().getLow());
+	}
+
+	@Test
+	public void specimenCollectionInvalidTest() {
+		labComponent.setObrDate("invalid");
+		EntryRelationship entryRelationship = observationHelper(labComponent).getEntryRelationship().get(0);
+		assertNull(entryRelationship);
+	}
+
+	@Test
+	public void specimenCollectionNullTest() {
+		EntryRelationship entryRelationship = observationHelper(nullLabComponent).getEntryRelationship().get(0);
+		assertNull(entryRelationship);
+	}
+
+	@Test
+	public void commentTest() {
+		EntryRelationship entryRelationship = observationHelper(labComponent).getEntryRelationship().get(1);
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void commentNullTest() {
+		EntryRelationship entryRelationship = observationHelper(nullLabComponent).getEntryRelationship().get(1);
+		assertNull(entryRelationship);
 	}
 }
