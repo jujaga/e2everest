@@ -3,6 +3,7 @@ package com.jujaga.e2e.util;
 import org.apache.log4j.Logger;
 import org.marc.everest.formatters.interfaces.IFormatterGraphResult;
 import org.marc.everest.interfaces.IResultDetail;
+import org.marc.everest.interfaces.ResultDetailType;
 
 public class E2EEverestValidator {
 	private static Logger log = Logger.getLogger(E2EEverestValidator.class.getName());
@@ -15,18 +16,12 @@ public class E2EEverestValidator {
 		Boolean result = true;
 
 		for(IResultDetail dtl : details.getDetails()) {
-			switch(dtl.getType()) {
-			case ERROR:
-				log.error(dtl.getMessage());
-				break;
-			case INFORMATION:
+			if(dtl.getType() == ResultDetailType.INFORMATION) {
 				log.info(dtl.getMessage());
-				break;
-			case WARNING:
+			} else if (dtl.getType() == ResultDetailType.WARNING) {
 				log.warn(dtl.getMessage());
-				break;
-			default:
-				break;
+			} else {
+				log.error(dtl.getMessage());
 			}
 
 			result = false;
