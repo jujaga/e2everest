@@ -25,7 +25,7 @@ public class Constants {
 	}
 
 	public static enum MeasurementsExtKeys {
-		abnormal, accession, datetime, identifier, labname, lab_no, maximum,
+		abnormal, accession, comments, datetime, identifier, labname, lab_no, maximum,
 		minimum, name, olis_status, other_id, range, request_datetime, unit
 	}
 

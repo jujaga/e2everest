@@ -28,6 +28,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Organization;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Performer2;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Procedure;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ReferenceRange;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ObservationInterpretation;
@@ -65,6 +66,7 @@ public class ResultComponentModel {
 		observation.setValue(getValue());
 		observation.setInterpretationCode(getInterpretationCode());
 		observation.setPerformer(getPerformer());
+		observation.setReferenceRange(getReferenceRange());
 
 		entryRelationships.add(getSpecimenCollection());
 		entryRelationships.add(getResultNotes());
@@ -215,6 +217,7 @@ public class ResultComponentModel {
 	}
 
 	private EntryRelationship getResultNotes() {
+		// TODO Change comment to come from measurementsExt instead of Measurement
 		String comments = labComponent.getMeasurement().getComments();
 		Date date = labComponent.getMeasurement().getDateObserved();
 		EntryRelationship entryRelationship = null;
@@ -222,5 +225,10 @@ public class ResultComponentModel {
 			entryRelationship = new CommentObservationModel().getEntryRelationship(comments, date, null);
 		}
 		return entryRelationship;
+	}
+
+	private ArrayList<ReferenceRange> getReferenceRange() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

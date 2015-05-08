@@ -101,6 +101,7 @@ public class PatientExport {
 	private List<Lab> assembleLabs(Integer demographicNo) {
 		// Gather Hl7TextInfo labs
 		List<PatientLabRouting> tempRouting = patientLabRoutingDao.findByDemographicAndLabType(demographicNo, "HL7");
+		// TODO Add Hl7TextMessage
 		List<Hl7TextInfo> allHl7TextInfo = new ArrayList<Hl7TextInfo>();
 		for(PatientLabRouting routing : tempRouting) {
 			Hl7TextInfo temp = hl7TextInfoDao.findLabId(routing.getLabNo());

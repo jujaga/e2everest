@@ -48,6 +48,7 @@ public class LabsModel {
 	public String getTextSummary() {
 		StringBuilder sb = new StringBuilder();
 
+		// TODO Add Hl7TextMessage model and dao for original HL7v2 message insertion
 		if(!EverestUtils.isNullorEmptyorWhitespace(hl7TextInfo.getDiscipline())) {
 			sb.append(hl7TextInfo.getDiscipline());
 		}
