@@ -204,15 +204,20 @@ public class EverestUtils {
 		return new SET<II>(ii);
 	}
 
-	// Create a TS object from a Java Date
+	// Create a TS object from a Java Date with Day precision
 	public static TS buildTSFromDate(Date date) {
+		return buildTSFromDate(date, TS.DAY);
+	}
+
+	// Create a TS object from a Java Date with specified precision
+	public static TS buildTSFromDate(Date date, Integer precision) {
 		if(date == null) {
 			return null;
 		}
 
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(date);
-		return new TS(calendar, TS.DAY);
+		return new TS(calendar, precision);
 	}
 
 	// Create a Date object from dateString

@@ -48,7 +48,6 @@ public class LabsModel {
 	public String getTextSummary() {
 		StringBuilder sb = new StringBuilder();
 
-		// TODO Add Hl7TextMessage model and dao for original HL7v2 message insertion
 		if(!EverestUtils.isNullorEmptyorWhitespace(hl7TextInfo.getDiscipline())) {
 			sb.append(hl7TextInfo.getDiscipline());
 		}
@@ -91,7 +90,7 @@ public class LabsModel {
 
 	private void setAuthor() {
 		this.authors = new ArrayList<Author>();
-		this.authors.add(new AuthorParticipationModel().getAuthor(EverestUtils.stringToDate(hl7TextInfo.getObrDate()), hl7TextInfo.getRequestingProvider()));
+		this.authors.add(new AuthorParticipationModel().getAuthor(EverestUtils.stringToDate(lab.getRequestDate()), hl7TextInfo.getRequestingProvider()));
 	}
 
 	public ArrayList<EntryRelationship> getResultOrganizers() {

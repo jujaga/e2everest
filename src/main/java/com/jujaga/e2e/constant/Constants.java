@@ -116,6 +116,8 @@ public class Constants {
 		public static final String LOINC_OID = "2.16.840.1.113883.6.1";
 		public static final String LOINC_NAME = "LOINC";
 		public static final String LOINC_VERSION = "2.44";
+		public static final String OBSERVATION_INTERPRETATION_OID = "2.16.840.1.113883.5.83";
+		public static final String OBSERVATION_INTERPRETATION_NAME = "ObservationInterpretation";
 		public static final String OBSERVATIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.3";
 		public static final String OBSERVATIONTYPE_CA_PENDING_NAME = "ObservationType-CA-Pending";
 		public static final String PCLOCD_OID = "2.16.840.1.113883.2.20.5.1";

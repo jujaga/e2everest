@@ -34,9 +34,11 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedEntity;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ObservationRange;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Organization;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Performer2;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Procedure;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ReferenceRange;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActClassObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
@@ -51,20 +53,16 @@ import com.jujaga.e2e.constant.BodyConstants.Labs;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.LabComponent;
-import com.jujaga.emr.dao.Hl7TextInfoDao;
 import com.jujaga.emr.dao.MeasurementDao;
 import com.jujaga.emr.dao.MeasurementsExtDao;
-import com.jujaga.emr.model.Hl7TextInfo;
 import com.jujaga.emr.model.Measurement;
 import com.jujaga.emr.model.MeasurementsExt;
 
 public class ResultComponentModelTest {
 	private static ApplicationContext context;
-	private static Hl7TextInfoDao hl7TextInfoDao;
 	private static MeasurementDao measurementDao;
 	private static MeasurementsExtDao measurementsExtDao;
 
-	private static Hl7TextInfo hl7TextInfo;
 	private static Measurement measurement;
 	private static List<MeasurementsExt> measurementsExt;
 
@@ -76,11 +74,9 @@ public class ResultComponentModelTest {
 	public static void beforeClass() {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
-		hl7TextInfoDao = context.getBean(Hl7TextInfoDao.class);
 		measurementDao = context.getBean(MeasurementDao.class);
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
 
-		hl7TextInfo = hl7TextInfoDao.findLabId(Constants.Runtime.VALID_LAB_NO);
 		measurement = measurementDao.find(Constants.Runtime.VALID_LAB_MEASUREMENT);
 		measurementsExt = measurementsExtDao.getMeasurementsExtByMeasurementId(Constants.Runtime.VALID_LAB_MEASUREMENT);
 		resultComponentModel = new ResultComponentModel();
@@ -89,7 +85,6 @@ public class ResultComponentModelTest {
 	@Before
 	public void before() {
 		labComponent = new LabComponent(measurement, measurementsExt);
-		labComponent.setObrDate(hl7TextInfo.getObrDate());
 		nullLabComponent = new LabComponent(null, null);
 	}
 
@@ -213,7 +208,7 @@ public class ResultComponentModelTest {
 		String datetime = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.datetime.toString());
 		IVL<TS> ivl = observationHelper(labComponent).getEffectiveTime();
 		assertNotNull(ivl);
-		assertEquals(EverestUtils.buildTSFromDate(EverestUtils.stringToDate(datetime)), ivl.getLow());
+		assertEquals(EverestUtils.buildTSFromDate(EverestUtils.stringToDate(datetime), TS.SECONDNOTIMEZONE), ivl.getLow());
 	}
 
 	@Test
@@ -272,8 +267,7 @@ public class ResultComponentModelTest {
 
 	@Test
 	public void interpretationCodeAbnormalTest() {
-		String abnormal = "A";
-		labComponent.getMeasurementsMap().replace(Constants.MeasurementsExtKeys.abnormal.toString(), abnormal);
+		labComponent.getMeasurementsMap().replace(Constants.MeasurementsExtKeys.abnormal.toString(), Labs.ABNORMAL_CODE);
 
 		SET<CE<ObservationInterpretation>> interpretationCodes = observationHelper(labComponent).getInterpretationCode();
 		assertNotNull(interpretationCodes);
@@ -304,6 +298,7 @@ public class ResultComponentModelTest {
 	@Test
 	public void performerTest() {
 		String labname = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.labname.toString());
+		String datetime = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.datetime.toString());
 
 		ArrayList<Performer2> performers = observationHelper(labComponent).getPerformer();
 		assertNotNull(performers);
@@ -314,6 +309,7 @@ public class ResultComponentModelTest {
 		assertEquals(ParticipationPhysicalPerformer.PRF, performer.getTypeCode().getCode());
 		assertEquals(Constants.TemplateOids.PERFORMER_PARTICIPATION_TEMPLATE_ID, performer.getTemplateId().get(0).getRoot());
 		assertNotNull(performer.getTime());
+		assertEquals(EverestUtils.buildTSFromDate(EverestUtils.stringToDate(datetime), TS.SECONDNOTIMEZONE), performer.getTime().getLow());
 
 		AssignedEntity assignedEntity = performer.getAssignedEntity();
 		assertNotNull(assignedEntity);
@@ -345,6 +341,8 @@ public class ResultComponentModelTest {
 
 	@Test
 	public void specimenCollectionValidTest() {
+		String datetime = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.datetime.toString());
+
 		EntryRelationship entryRelationship = observationHelper(labComponent).getEntryRelationship().get(0);
 		assertNotNull(entryRelationship);
 		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
@@ -353,14 +351,7 @@ public class ResultComponentModelTest {
 		Procedure procedure = entryRelationship.getClinicalStatementIfProcedure();
 		assertNotNull(procedure);
 		assertNotNull(procedure.getEffectiveTime());
-		assertEquals(EverestUtils.buildTSFromDate(EverestUtils.stringToDate(labComponent.getObrDate())), procedure.getEffectiveTime().getLow());
-	}
-
-	@Test
-	public void specimenCollectionInvalidTest() {
-		labComponent.setObrDate("invalid");
-		EntryRelationship entryRelationship = observationHelper(labComponent).getEntryRelationship().get(0);
-		assertNull(entryRelationship);
+		assertEquals(EverestUtils.buildTSFromDate(EverestUtils.stringToDate(datetime), TS.SECONDNOTIMEZONE), procedure.getEffectiveTime().getLow());
 	}
 
 	@Test
@@ -379,5 +370,138 @@ public class ResultComponentModelTest {
 	public void commentNullTest() {
 		EntryRelationship entryRelationship = observationHelper(nullLabComponent).getEntryRelationship().get(1);
 		assertNull(entryRelationship);
+	}
+
+	@Test
+	public void referenceRangeRangeTest() {
+		String range = "range";
+		labComponent.getMeasurementsMap().remove(Constants.MeasurementsExtKeys.minimum.toString());
+		labComponent.getMeasurementsMap().put(Constants.MeasurementsExtKeys.range.toString(), range);
+
+		ArrayList<ReferenceRange> referenceRanges = observationHelper(labComponent).getReferenceRange();
+		assertNotNull(referenceRanges);
+		assertEquals(1, referenceRanges.size());
+		assertNotNull(referenceRanges.get(0));
+
+		ObservationRange observationRange = referenceRanges.get(0).getObservationRange();
+		assertNotNull(observationRange);
+
+		CD<String> code = observationRange.getCode();
+		assertNotNull(code);
+		assertEquals(Labs.NORMAL_CODE, code.getCode());
+		assertEquals(Constants.CodeSystems.OBSERVATION_INTERPRETATION_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.OBSERVATION_INTERPRETATION_NAME, code.getCodeSystemName());
+		assertEquals(Labs.NORMAL, code.getDisplayName());
+
+		ED text = observationRange.getText();
+		assertNotNull(text);
+		assertTrue(new String(text.getData()).contains(range));
+
+		assertNotNull(observationRange.getValue());
+		assertEquals(ST.class, observationRange.getValue().getDataType());
+		ST value = (ST) observationRange.getValue();
+		assertTrue(value.getValue().contains(range));
+	}
+
+	@Test
+	public void referenceRangeMinTest() {
+		String min = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.minimum.toString());
+
+		ArrayList<ReferenceRange> referenceRanges = observationHelper(labComponent).getReferenceRange();
+		assertNotNull(referenceRanges);
+		assertEquals(1, referenceRanges.size());
+		assertNotNull(referenceRanges.get(0));
+
+		ObservationRange observationRange = referenceRanges.get(0).getObservationRange();
+		assertNotNull(observationRange);
+
+		CD<String> code = observationRange.getCode();
+		assertNotNull(code);
+		assertEquals(Labs.NORMAL_CODE, code.getCode());
+		assertEquals(Constants.CodeSystems.OBSERVATION_INTERPRETATION_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.OBSERVATION_INTERPRETATION_NAME, code.getCodeSystemName());
+		assertEquals(Labs.NORMAL, code.getDisplayName());
+
+		ED text = observationRange.getText();
+		assertNotNull(text);
+		assertTrue(new String(text.getData()).contains(min));
+
+		assertNotNull(observationRange.getValue());
+		assertEquals(IVL.class, observationRange.getValue().getDataType());
+		@SuppressWarnings("unchecked")
+		IVL<PQ> value = (IVL<PQ>) observationRange.getValue();
+		assertEquals(new BigDecimal(min), value.getLow().getValue());
+	}
+
+	@Test
+	public void referenceRangeMaxTest() {
+		String max = "1234";
+		labComponent.getMeasurementsMap().remove(Constants.MeasurementsExtKeys.minimum.toString());
+		labComponent.getMeasurementsMap().put(Constants.MeasurementsExtKeys.maximum.toString(), max);
+
+		ArrayList<ReferenceRange> referenceRanges = observationHelper(labComponent).getReferenceRange();
+		assertNotNull(referenceRanges);
+		assertEquals(1, referenceRanges.size());
+		assertNotNull(referenceRanges.get(0));
+
+		ObservationRange observationRange = referenceRanges.get(0).getObservationRange();
+		assertNotNull(observationRange);
+
+		CD<String> code = observationRange.getCode();
+		assertNotNull(code);
+		assertEquals(Labs.NORMAL_CODE, code.getCode());
+		assertEquals(Constants.CodeSystems.OBSERVATION_INTERPRETATION_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.OBSERVATION_INTERPRETATION_NAME, code.getCodeSystemName());
+		assertEquals(Labs.NORMAL, code.getDisplayName());
+
+		ED text = observationRange.getText();
+		assertNotNull(text);
+		assertTrue(new String(text.getData()).contains(max));
+
+		assertNotNull(observationRange.getValue());
+		assertEquals(IVL.class, observationRange.getValue().getDataType());
+		@SuppressWarnings("unchecked")
+		IVL<PQ> value = (IVL<PQ>) observationRange.getValue();
+		assertEquals(new BigDecimal(max), value.getHigh().getValue());
+	}
+
+	@Test
+	public void referenceRangeMinMaxTest() {
+		String min = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.minimum.toString());
+		String max = "1234";
+		labComponent.getMeasurementsMap().put(Constants.MeasurementsExtKeys.maximum.toString(), max);
+
+		ArrayList<ReferenceRange> referenceRanges = observationHelper(labComponent).getReferenceRange();
+		assertNotNull(referenceRanges);
+		assertEquals(1, referenceRanges.size());
+		assertNotNull(referenceRanges.get(0));
+
+		ObservationRange observationRange = referenceRanges.get(0).getObservationRange();
+		assertNotNull(observationRange);
+
+		CD<String> code = observationRange.getCode();
+		assertNotNull(code);
+		assertEquals(Labs.NORMAL_CODE, code.getCode());
+		assertEquals(Constants.CodeSystems.OBSERVATION_INTERPRETATION_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.OBSERVATION_INTERPRETATION_NAME, code.getCodeSystemName());
+		assertEquals(Labs.NORMAL, code.getDisplayName());
+
+		ED text = observationRange.getText();
+		assertNotNull(text);
+		assertTrue(new String(text.getData()).contains(min));
+		assertTrue(new String(text.getData()).contains(max));
+
+		assertNotNull(observationRange.getValue());
+		assertEquals(IVL.class, observationRange.getValue().getDataType());
+		@SuppressWarnings("unchecked")
+		IVL<PQ> value = (IVL<PQ>) observationRange.getValue();
+		assertEquals(new BigDecimal(min), value.getLow().getValue());
+		assertEquals(new BigDecimal(max), value.getHigh().getValue());
+	}
+
+	@Test
+	public void referenceRangeNullTest() {
+		ArrayList<ReferenceRange> referenceRanges = observationHelper(nullLabComponent).getReferenceRange();
+		assertNull(referenceRanges);
 	}
 }

@@ -25,6 +25,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.AssignedEntity;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ObservationRange;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Organization;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Performer2;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Procedure;
@@ -129,7 +130,7 @@ public class ResultComponentModel {
 	private IVL<TS> getTime() {
 		String datetime = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.datetime.toString());
 		IVL<TS> ivl = null;
-		TS startTime = EverestUtils.buildTSFromDate(EverestUtils.stringToDate(datetime));
+		TS startTime = EverestUtils.buildTSFromDate(EverestUtils.stringToDate(datetime), TS.SECONDNOTIMEZONE);
 		if(startTime != null) {
 			ivl = new IVL<TS>(startTime, null);
 		}
@@ -161,7 +162,7 @@ public class ResultComponentModel {
 		SET<CE<ObservationInterpretation>> interpretationCodes = null;
 		if(!EverestUtils.isNullorEmptyorWhitespace(abnormal)) {
 			CE<ObservationInterpretation> interpretation = new CE<ObservationInterpretation>();
-			if(abnormal.equalsIgnoreCase("A")) {
+			if(abnormal.equalsIgnoreCase(Labs.ABNORMAL_CODE)) {
 				interpretation.setCodeEx(ObservationInterpretation.Abnormal);
 				interpretation.setDisplayName(Labs.ABNORMAL);
 			} else {
@@ -200,25 +201,22 @@ public class ResultComponentModel {
 	}
 
 	private EntryRelationship getSpecimenCollection() {
+		String datetime = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.datetime.toString());
 		EntryRelationship entryRelationship = null;
-		if(!EverestUtils.isNullorEmptyorWhitespace(labComponent.getObrDate())) {
-			TS startTime = EverestUtils.buildTSFromDate(EverestUtils.stringToDate(labComponent.getObrDate()));
-			if(startTime != null) {
-				Procedure procedure = new Procedure(x_DocumentProcedureMood.Eventoccurrence);
-				procedure.setEffectiveTime(startTime, null);
+		if(!EverestUtils.isNullorEmptyorWhitespace(datetime)) {
+			Procedure procedure = new Procedure(x_DocumentProcedureMood.Eventoccurrence);
+			procedure.setEffectiveTime(getTime());
 
-				entryRelationship = new EntryRelationship();
-				entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
-				entryRelationship.setContextConductionInd(true);
-				entryRelationship.setClinicalStatement(procedure);
-			}
+			entryRelationship = new EntryRelationship();
+			entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
+			entryRelationship.setContextConductionInd(true);
+			entryRelationship.setClinicalStatement(procedure);
 		}
 		return entryRelationship;
 	}
 
 	private EntryRelationship getResultNotes() {
-		// TODO Change comment to come from measurementsExt instead of Measurement
-		String comments = labComponent.getMeasurement().getComments();
+		String comments = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.comments.toString());
 		Date date = labComponent.getMeasurement().getDateObserved();
 		EntryRelationship entryRelationship = null;
 		if(!EverestUtils.isNullorEmptyorWhitespace(comments)) {
@@ -228,7 +226,55 @@ public class ResultComponentModel {
 	}
 
 	private ArrayList<ReferenceRange> getReferenceRange() {
-		// TODO Auto-generated method stub
-		return null;
+		String range = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.range.toString());
+		String minimum = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.minimum.toString());
+		String maximum = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.maximum.toString());
+		String unit = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.unit.toString());
+
+		ObservationRange observationRange = new ObservationRange();
+		ReferenceRange referenceRange = new ReferenceRange(observationRange);
+		CD<String> code = new CD<String>(Labs.NORMAL_CODE, Constants.CodeSystems.OBSERVATION_INTERPRETATION_OID);
+		code.setCodeSystemName(Constants.CodeSystems.OBSERVATION_INTERPRETATION_NAME);
+		code.setDisplayName(Labs.NORMAL);
+		observationRange.setCode(code);
+
+		String unitField = "";
+		if(!EverestUtils.isNullorEmptyorWhitespace(unit)) {
+			unitField = " ".concat(unit);
+		}
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(range)) {
+			observationRange.setText(new ED(range.concat(unitField)));
+			observationRange.setValue(new ST(range.concat(unitField)));
+		} else if (!EverestUtils.isNullorEmptyorWhitespace(minimum) || !EverestUtils.isNullorEmptyorWhitespace(maximum)) {
+			if(EverestUtils.isNullorEmptyorWhitespace(minimum)) {
+				observationRange.setText(new ED("Reference range is less than ".concat(maximum).concat(unitField)));
+			} else if(EverestUtils.isNullorEmptyorWhitespace(maximum)) {
+				observationRange.setText(new ED("Reference range is greater than ".concat(minimum).concat(unitField)));
+			} else {
+				observationRange.setText(new ED("Reference range is between ".concat(minimum).concat(" and ").concat(maximum).concat(unitField)));
+			}
+
+			// Either we get a complete, properly formatted PQ value with units, or we don't include it at all
+			PQ low, high;
+			try {
+				low = new PQ(new BigDecimal(minimum), unit.replaceAll("\\s","_"));
+			} catch (Exception e) {
+				low = null;
+			}
+			try {
+				high = new PQ(new BigDecimal(maximum), unit.replaceAll("\\s","_"));
+			} catch (Exception e) {
+				high = null;
+			}
+
+			if(low != null || high != null) {
+				observationRange.setValue(new IVL<PQ>(low, high));
+			}
+		} else {
+			return null;
+		}
+
+		return new ArrayList<ReferenceRange>(Arrays.asList(referenceRange));
 	}
 }

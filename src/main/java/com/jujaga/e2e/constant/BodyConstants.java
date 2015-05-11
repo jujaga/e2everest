@@ -48,7 +48,9 @@ public class BodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
 
 		public static final String ABNORMAL = "Abnormal";
+		public static final String ABNORMAL_CODE = "A";
 		public static final String NORMAL = "Normal";
+		public static final String NORMAL_CODE = "N";
 
 		private Labs() {
 			SECTION_PRIORITY = SectionPriority.SHALL;

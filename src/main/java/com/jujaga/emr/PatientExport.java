@@ -101,7 +101,6 @@ public class PatientExport {
 	private List<Lab> assembleLabs(Integer demographicNo) {
 		// Gather Hl7TextInfo labs
 		List<PatientLabRouting> tempRouting = patientLabRoutingDao.findByDemographicAndLabType(demographicNo, "HL7");
-		// TODO Add Hl7TextMessage
 		List<Hl7TextInfo> allHl7TextInfo = new ArrayList<Hl7TextInfo>();
 		for(PatientLabRouting routing : tempRouting) {
 			Hl7TextInfo temp = hl7TextInfoDao.findLabId(routing.getLabNo());
@@ -139,7 +138,9 @@ public class PatientExport {
 			for(LabComponent labComponent : allLabComponents) {
 				String componentLabNumber = labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.lab_no.toString());
 				if(Integer.valueOf(componentLabNumber) == labNumber) {
-					labComponent.setObrDate(labReport.getObrDate());
+					if(EverestUtils.isNullorEmptyorWhitespace(labObservation.getRequestDate())) {
+						labObservation.setRequestDate(labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.request_datetime.toString()));
+					}
 					tempLabComponents.add(labComponent);
 				}
 			}
@@ -238,6 +239,7 @@ public class PatientExport {
 	public static class Lab {
 		private Hl7TextInfo hl7TextInfo = new Hl7TextInfo();
 		private List<LabOrganizer> labOrganizer = new ArrayList<LabOrganizer>();
+		private String requestDate = null;
 
 		public Lab(Hl7TextInfo hl7TextInfo) {
 			if(hl7TextInfo != null) {
@@ -251,6 +253,14 @@ public class PatientExport {
 
 		public List<LabOrganizer> getLabOrganizer() {
 			return labOrganizer;
+		}
+
+		public String getRequestDate() {
+			return requestDate;
+		}
+
+		public void setRequestDate(String requestDate) {
+			this.requestDate = requestDate;
 		}
 	}
 
@@ -280,7 +290,6 @@ public class PatientExport {
 	public static class LabComponent {
 		private Measurement measurement = new Measurement();
 		private Map<String, String> measurementsMap = new HashMap<String, String>();
-		private String obrDate = null;
 
 		public LabComponent(Measurement measurement, List<MeasurementsExt> measurementsExt) {
 			if(measurement != null) {
@@ -305,14 +314,6 @@ public class PatientExport {
 
 		public Map<String, String> getMeasurementsMap() {
 			return measurementsMap;
-		}
-
-		public String getObrDate() {
-			return obrDate;
-		}
-
-		public void setObrDate(String obrDate) {
-			this.obrDate = obrDate;
 		}
 	}
 }

@@ -43,6 +43,6 @@ public class MeasurementsExtDaoTest {
 	public void getMeasurementsExtByMeasurementIdTest() {
 		List<MeasurementsExt> measurementsExts = measurementsExtDao.getMeasurementsExtByMeasurementId(Constants.Runtime.VALID_LAB_MEASUREMENT);
 		assertNotNull(measurementsExts);
-		assertEquals(12, measurementsExts.size());
+		assertEquals(13, measurementsExts.size());
 	}
 }
