@@ -16,6 +16,7 @@ import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.model.export.template.ResultOrganizerModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.Lab;
+import com.jujaga.emr.PatientExport.LabComponent;
 import com.jujaga.emr.PatientExport.LabOrganizer;
 import com.jujaga.emr.model.Hl7TextInfo;
 
@@ -44,12 +45,27 @@ public class LabsModel {
 		setResultOrganizers();
 	}
 
-	// TODO Complete textSummary output
 	public String getTextSummary() {
 		StringBuilder sb = new StringBuilder();
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(hl7TextInfo.getDiscipline())) {
-			sb.append(hl7TextInfo.getDiscipline());
+			sb.append("Discipline: ".concat(hl7TextInfo.getDiscipline()));
+		}
+		if(!EverestUtils.isNullorEmptyorWhitespace(hl7TextInfo.getObrDate())) {
+			sb.append("\nOBR: ".concat(hl7TextInfo.getObrDate()));
+		}
+		for(LabOrganizer labOrganizer : lab.getLabOrganizer()) {
+			for(LabComponent labComponent : labOrganizer.getLabComponent()) {
+				if(!EverestUtils.isNullorEmptyorWhitespace(labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.name.toString()))) {
+					sb.append("\n".concat(labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.name.toString())));
+				}
+				if(!EverestUtils.isNullorEmptyorWhitespace(labComponent.getMeasurement().getDataField())) {
+					sb.append(": ".concat(labComponent.getMeasurement().getDataField()));
+				}
+				if(!EverestUtils.isNullorEmptyorWhitespace(labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.unit.toString()))) {
+					sb.append(" ".concat(labComponent.getMeasurementsMap().get(Constants.MeasurementsExtKeys.unit.toString())));
+				}
+			}
 		}
 
 		return sb.toString();
