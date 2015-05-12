@@ -32,18 +32,22 @@ public class PatientExport {
 	private static ApplicationContext context = null;
 
 	private DemographicDao demographicDao = null;
-	private DrugDao drugDao = null;
-	private DxresearchDao dxResearchDao = null;
-	private PatientLabRoutingDao patientLabRoutingDao = null;
-	private Hl7TextInfoDao hl7TextInfoDao = null;
 	private MeasurementDao measurementDao = null;
 	private MeasurementsExtDao measurementsExtDao = null;
+	private PatientLabRoutingDao patientLabRoutingDao = null;
+	private Hl7TextInfoDao hl7TextInfoDao = null;
+	private DrugDao drugDao = null;
+	private DxresearchDao dxResearchDao = null;
+
+	// Optimization for Measurements since both Labs and CMOs use the same table
+	private List<Measurement> rawMeasurements = null;
 
 	private Boolean loaded = false;
 	private Demographic demographic = null;
+	private List<Measurement> measurements = null;
+	private List<Lab> labs = null;
 	private List<Drug> drugs = null;
 	private List<Dxresearch> problems = null;
-	private List<Lab> labs = null;
 
 	public PatientExport() {
 		if(context == null) {
@@ -57,12 +61,12 @@ public class PatientExport {
 		}
 
 		demographicDao = context.getBean(DemographicDao.class);
-		drugDao = context.getBean(DrugDao.class);
-		dxResearchDao = context.getBean(DxresearchDao.class);
-		patientLabRoutingDao = context.getBean(PatientLabRoutingDao.class);
-		hl7TextInfoDao = context.getBean(Hl7TextInfoDao.class);
 		measurementDao = context.getBean(MeasurementDao.class);
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
+		patientLabRoutingDao = context.getBean(PatientLabRoutingDao.class);
+		hl7TextInfoDao = context.getBean(Hl7TextInfoDao.class);
+		drugDao = context.getBean(DrugDao.class);
+		dxResearchDao = context.getBean(DxresearchDao.class);
 
 		loaded = loadPatient(demographicNo);
 	}
@@ -72,6 +76,13 @@ public class PatientExport {
 		if(demographic == null) {
 			log.error("Demographic ".concat(demographicNo.toString()).concat(" can't be loaded"));
 			return false;
+		}
+
+		try {
+			measurements = assembleMeasurements(demographicNo);
+		} catch (Exception e) {
+			log.error("loadPatient - Failed to load Measurements", e);
+			measurements = null;
 		}
 
 		try {
@@ -98,6 +109,25 @@ public class PatientExport {
 		return true;
 	}
 
+	private List<Measurement> assembleMeasurements(Integer demographicNo) {
+		// Gather and filter Measurements based on existence of lab_no field
+		if(rawMeasurements == null) {
+			rawMeasurements = measurementDao.findByDemographicNo(demographicNo);
+		}
+		List<Measurement> cmoMeasurements = new ArrayList<Measurement>();
+		for(Measurement measurement : rawMeasurements) {
+			MeasurementsExt labNo = measurementsExtDao.getMeasurementsExtByMeasurementIdAndKeyVal(measurement.getId(), Constants.MeasurementsExtKeys.lab_no.toString());
+			if(labNo == null) {
+				cmoMeasurements.add(measurement);
+			}
+		}
+
+		if(cmoMeasurements.isEmpty()) {
+			return null;
+		}
+		return cmoMeasurements;
+	}
+
 	private List<Lab> assembleLabs(Integer demographicNo) {
 		// Gather Hl7TextInfo labs
 		List<PatientLabRouting> tempRouting = patientLabRoutingDao.findByDemographicAndLabType(demographicNo, "HL7");
@@ -115,7 +145,9 @@ public class PatientExport {
 		}
 
 		// Gather and filter Measurements based on existence of lab_no field
-		List<Measurement> rawMeasurements = measurementDao.findByDemographicNo(demographicNo);
+		if(rawMeasurements == null) {
+			rawMeasurements = measurementDao.findByDemographicNo(demographicNo);
+		}
 		List<LabComponent> allLabComponents = new ArrayList<LabComponent>();
 		for(Measurement measurement : rawMeasurements) {
 			MeasurementsExt labNo = measurementsExtDao.getMeasurementsExtByMeasurementIdAndKeyVal(measurement.getId(), Constants.MeasurementsExtKeys.lab_no.toString());
@@ -223,6 +255,10 @@ public class PatientExport {
 
 	public List<Lab> getLabs() {
 		return labs;
+	}
+
+	public List<Measurement> getMeasurements() {
+		return measurements;
 	}
 
 	// PatientExport Supplemental Functions

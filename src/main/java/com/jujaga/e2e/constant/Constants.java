@@ -126,6 +126,8 @@ public class Constants {
 		public static final String ROLE_CLASS_NAME = "RoleClass";
 		public static final String ROUTE_OF_ADMINISTRATION_OID = "2.16.840.1.113883.5.112";
 		public static final String ROUTE_OF_ADMINISTRATION_NAME = "RouteOfAdministration";
+		public static final String SECTIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.2";
+		public static final String SECTIONTYPE_CA_PENDING_NAME = "SectionType-CA-Pending";
 		public static final String SNOMED_CT_OID = "2.16.840.1.113883.6.69";
 		public static final String SNOMED_CT_NAME = "SNOMED-CT";
 	}
@@ -147,6 +149,7 @@ public class Constants {
 	public static class TemplateOids {
 		public static final String ADVANCE_DIRECTIVES_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.1";
 		public static final String AUTHOR_PARTICIPATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.2";
+		public static final String CLINICALLY_MEASURED_OBSERVATIONS_ORGANIZER_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.7";
 		public static final String DOSE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.8";
 		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
 		public static final String LABS_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.12";
@@ -177,6 +180,7 @@ public class Constants {
 		public static final Integer VALID_DEMOGRAPHIC = 1;
 		public static final Integer VALID_LAB_NO = 9;
 		public static final Integer VALID_LAB_MEASUREMENT = 26;
+		public static final Integer VALID_MEASUREMENT = 26; //TODO Change to non-lab measurement
 		public static final Integer VALID_PROVIDER = 999998;
 	}
 }

@@ -17,6 +17,7 @@ public class BodyConstants {
 		public String WITHOUT_ENTRIES_TEMPLATE_ID;
 		public String CODE;
 		public String CODE_SYSTEM;
+		public String CODE_SYSTEM_NAME;
 		public String ENTRY_TEMPLATE_ID;
 		public String ENTRY_NO_TEXT;
 	}
@@ -32,6 +33,7 @@ public class BodyConstants {
 			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.2";
 			CODE = "42348-3";
 			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
 			ENTRY_TEMPLATE_ID = Constants.TemplateOids.ADVANCE_DIRECTIVES_OBSERVATION_TEMPLATE_ID;
 			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_NOT_SUPPORTED_NO_DATA;
 		}
@@ -39,6 +41,30 @@ public class BodyConstants {
 		public static AbstractBodyConstants getConstants() {
 			if(bodyConstants == null) {
 				bodyConstants = new AdvanceDirectives();
+			}
+			return bodyConstants;
+		}
+	}
+
+	public static class ClinicallyMeasuredObservations extends AbstractBodyConstants {
+		protected static AbstractBodyConstants bodyConstants = null;
+
+		private ClinicallyMeasuredObservations() {
+			SECTION_PRIORITY = SectionPriority.SHOULD;
+			WITH_ENTRIES_TITLE = "Clinical Measured Observations [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Clinical Measured Observations [without entries]";
+			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.8.1";
+			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.8";
+			CODE = "CLINOBS";
+			CODE_SYSTEM = Constants.CodeSystems.SECTIONTYPE_CA_PENDING_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.SECTIONTYPE_CA_PENDING_NAME;
+			ENTRY_TEMPLATE_ID = Constants.TemplateOids.CLINICALLY_MEASURED_OBSERVATIONS_ORGANIZER_TEMPLATE_ID;
+			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_NOT_SUPPORTED_NO_DATA;
+		}
+
+		public static AbstractBodyConstants getConstants() {
+			if(bodyConstants == null) {
+				bodyConstants = new ClinicallyMeasuredObservations();
 			}
 			return bodyConstants;
 		}
@@ -60,6 +86,7 @@ public class BodyConstants {
 			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.16";
 			CODE = "30954-2";
 			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
 			ENTRY_TEMPLATE_ID = Constants.TemplateOids.LABS_OBSERVATION_TEMPLATE_ID;
 			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
 		}
@@ -87,6 +114,7 @@ public class BodyConstants {
 			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.19";
 			CODE = "10160-0";
 			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
 			ENTRY_TEMPLATE_ID = Constants.TemplateOids.MEDICATION_EVENT_TEMPLATE_ID;
 			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
 		}
@@ -110,6 +138,7 @@ public class BodyConstants {
 			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.20";
 			CODE = "REQS";
 			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
 			ENTRY_TEMPLATE_ID = Constants.TemplateOids.ORDER_EVENT_TEMPLATE_ID;
 			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_NOT_SUPPORTED_NO_DATA;
 		}
@@ -133,6 +162,7 @@ public class BodyConstants {
 			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.21";
 			CODE = "11450-4";
 			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
 			ENTRY_TEMPLATE_ID = Constants.TemplateOids.PROBLEMS_OBSERVATION_TEMPLATE_ID;
 			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
 		}

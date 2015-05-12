@@ -18,7 +18,6 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.constant.BodyConstants.AbstractBodyConstants;
 import com.jujaga.e2e.constant.BodyConstants.SectionPriority;
-import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.populator.AbstractPopulator;
 
 public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
@@ -59,7 +58,7 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 		component.setContextConductionInd(true);
 
 		Section section = new Section();
-		section.setCode(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, Constants.CodeSystems.LOINC_NAME, null));
+		section.setCode(new CE<String>(bodyConstants.CODE, bodyConstants.CODE_SYSTEM, bodyConstants.CODE_SYSTEM_NAME, null));
 
 		if(entries.isEmpty()) {
 			section.setTemplateId(Arrays.asList(new II(bodyConstants.WITHOUT_ENTRIES_TEMPLATE_ID)));
