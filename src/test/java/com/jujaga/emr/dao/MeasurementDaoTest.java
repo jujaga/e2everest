@@ -36,6 +36,6 @@ public class MeasurementDaoTest {
 	public void findByDemographicNoTest() {
 		List<Measurement> measurements = measurementDao.findByDemographicNo(Constants.Runtime.VALID_DEMOGRAPHIC);
 		assertNotNull(measurements);
-		assertEquals(4, measurements.size());
+		assertEquals(10, measurements.size());
 	}
 }

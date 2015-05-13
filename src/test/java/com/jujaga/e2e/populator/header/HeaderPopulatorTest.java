@@ -31,7 +31,7 @@ public class HeaderPopulatorTest extends AbstractPopulatorTest {
 		assertNotNull(binding);
 
 		BindingRealm code = binding.getCode();
-		assertEquals(Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE,code.getCode());
+		assertEquals(Constants.DocumentHeader.E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE,code.getCode());
 		assertNull(code.getCodeSystem());
 	}
 
@@ -39,8 +39,8 @@ public class HeaderPopulatorTest extends AbstractPopulatorTest {
 	public void typeIdTest() {
 		II typeId = clinicalDocument.getTypeId();
 		assertNotNull(typeId);
-		assertEquals(Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID, typeId.getRoot());
-		assertEquals(Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION, typeId.getExtension());
+		assertEquals(Constants.DocumentHeader.E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID, typeId.getRoot());
+		assertEquals(Constants.DocumentHeader.E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION, typeId.getExtension());
 	}
 
 	@Test

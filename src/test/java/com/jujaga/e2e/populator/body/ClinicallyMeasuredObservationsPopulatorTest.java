@@ -5,11 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
-import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Organizer;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActMoodEventOccurrence;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActClassDocumentEntryOrganizer;
 
 import com.jujaga.e2e.constant.BodyConstants.ClinicallyMeasuredObservations;
 
@@ -19,35 +19,34 @@ public class ClinicallyMeasuredObservationsPopulatorTest extends AbstractBodyPop
 		setupClass(ClinicallyMeasuredObservations.getConstants());
 	}
 
-	@Ignore
 	@Test
 	public void clinicallyMeasuredObservationsComponentSectionTest() {
 		componentSectionTest();
 	}
 
-	@Ignore
 	@Test
 	public void clinicallyMeasuredObservationsEntryCountTest() {
-		entryCountTest(0);
+		entryCountTest(6);
 	}
 
-	@Ignore
 	@Test
 	public void clinicallyMeasuredObservationsEntryStructureTest() {
 		entryStructureTest();
 	}
 
-	@Ignore
 	@Test
 	public void clinicallyMeasuredObservationsClinicalStatementTest() {
 		ClinicalStatement clinicalStatement = component.getSection().getEntry().get(0).getClinicalStatement();
 		assertNotNull(clinicalStatement);
-		assertTrue(clinicalStatement.isPOCD_MT000040UVObservation());
+		assertTrue(clinicalStatement.isPOCD_MT000040UVOrganizer());
 
-		Observation observation = (Observation) clinicalStatement;
-		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
-		assertNotNull(observation.getId());
-		assertNotNull(observation.getCode());
-		assertNotNull(observation.getStatusCode());
+		Organizer organizer = (Organizer) clinicalStatement;
+		assertEquals(x_ActClassDocumentEntryOrganizer.CLUSTER, organizer.getClassCode().getCode());
+		assertEquals(ActMoodEventOccurrence.Eventoccurrence, organizer.getMoodCode().getCode());
+		assertNotNull(organizer.getId());
+		assertNotNull(organizer.getCode());
+		assertNotNull(organizer.getStatusCode());
+		assertNotNull(organizer.getComponent());
+		assertTrue(organizer.getComponent().size() > 0);
 	}
 }

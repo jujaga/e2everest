@@ -71,9 +71,9 @@ public class Constants {
 
 	public static class DocumentHeader {
 		public static final String TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.7.1";
-		public static final String PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID = "2.16.840.1.113883.1.3";
-		public static final String PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION = "POCD_HD000040";
-		public static final String PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE = "CA-BC";
+		public static final String E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID = "2.16.840.1.113883.1.3";
+		public static final String E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION = "POCD_HD000040";
+		public static final String E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE = "CA-BC";
 		public static final String LANGUAGE_ENGLISH_CANADIAN = "en-CA";
 
 		public static final String EMAIL_PREFIX = "mailto:";

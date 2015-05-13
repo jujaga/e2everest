@@ -37,13 +37,13 @@ public class HeaderPopulator extends AbstractPopulator {
 	public void populate() {
 		// realmCode
 		CS<BindingRealm> binding = new CS<BindingRealm>();
-		binding.setCodeEx(new BindingRealm(Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE, null));
+		binding.setCodeEx(new BindingRealm(Constants.DocumentHeader.E2E_DTC_CLINICAL_DOCUMENT_TYPE_REALM_CODE, null));
 		clinicalDocument.setRealmCode(new SET<CS<BindingRealm>>(binding));
 
 		// typeId
 		clinicalDocument.setTypeId(new II(
-				Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID,
-				Constants.DocumentHeader.PITO_E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION));
+				Constants.DocumentHeader.E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID,
+				Constants.DocumentHeader.E2E_DTC_CLINICAL_DOCUMENT_TYPE_ID_EXTENSION));
 
 		// templateId
 		LIST<II> templateIds = new LIST<II>();

@@ -16,6 +16,12 @@ import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActClassObservation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -99,6 +105,20 @@ public class ClinicallyMeasuredObservationsModelTest {
 	}
 
 	@Test
+	public void statusCodeTest() {
+		ActStatus status = cmoModel.getStatusCode();
+		assertNotNull(status);
+		assertEquals(ActStatus.Completed, status);
+	}
+
+	@Test
+	public void statusCodeNullTest() {
+		ActStatus status = nullCmoModel.getStatusCode();
+		assertNotNull(status);
+		assertEquals(ActStatus.Completed, status);
+	}
+
+	@Test
 	public void authorTest() {
 		ArrayList<Author> authors = cmoModel.getAuthor();
 		assertNotNull(authors);
@@ -110,5 +130,36 @@ public class ClinicallyMeasuredObservationsModelTest {
 		ArrayList<Author> authors = nullCmoModel.getAuthor();
 		assertNotNull(authors);
 		assertEquals(1, authors.size());
+	}
+
+	@Test
+	public void componentTest() {
+		componentStructureTestHelper();
+	}
+
+	@Test
+	public void componentNullTest() {
+		componentStructureTestHelper();
+	}
+
+	private Observation componentStructureTestHelper() {
+		ArrayList<Component4> components = nullCmoModel.getComponent();
+		assertNotNull(components);
+		assertTrue(components.size() > 0);
+
+		Component4 component = components.get(0);
+		assertNotNull(component);
+		assertEquals(ActRelationshipHasComponent.HasComponent, component.getTypeCode().getCode());
+		assertTrue(component.getContextConductionInd().toBoolean());
+
+		Observation observation = component.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(ActClassObservation.OBS, observation.getClassCode().getCode());
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+
+		assertNotNull(observation.getId());
+		assertNotNull(observation.getCode());
+
+		return observation;
 	}
 }

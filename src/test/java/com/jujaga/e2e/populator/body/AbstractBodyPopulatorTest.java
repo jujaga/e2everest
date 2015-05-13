@@ -3,7 +3,6 @@ package com.jujaga.e2e.populator.body;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeNotNull;
 
 import java.util.ArrayList;
 
@@ -64,7 +63,6 @@ public abstract class AbstractBodyPopulatorTest {
 	}
 
 	protected void entryStructureTest() {
-		assumeNotNull(component);
 		Section section = component.getSection();
 		assertNotNull(section);
 		assertEquals(x_BasicConfidentialityKind.Normal, section.getConfidentialityCode().getCode());
