@@ -134,16 +134,15 @@ public class ClinicallyMeasuredObservationsModelTest {
 
 	@Test
 	public void componentTest() {
-		componentStructureTestHelper();
+		componentStructureTestHelper(cmoModel.getComponent());
 	}
 
 	@Test
 	public void componentNullTest() {
-		componentStructureTestHelper();
+		componentStructureTestHelper(nullCmoModel.getComponent());
 	}
 
-	private Observation componentStructureTestHelper() {
-		ArrayList<Component4> components = nullCmoModel.getComponent();
+	private Observation componentStructureTestHelper(ArrayList<Component4> components) {
 		assertNotNull(components);
 		assertTrue(components.size() > 0);
 
@@ -161,5 +160,30 @@ public class ClinicallyMeasuredObservationsModelTest {
 		assertNotNull(observation.getCode());
 
 		return observation;
+	}
+
+	private Observation componentObservationHelper(ArrayList<Component4> components) {
+		Component4 component = components.get(0);
+		return component.getClinicalStatementIfObservation();
+	}
+
+	@Test
+	public void componentIdTest() {
+		SET<II> ids = componentObservationHelper(cmoModel.getComponent()).getId();
+		assertNotNull(ids);
+
+		II id = ids.get(0);
+		assertNotNull(id);
+		assertEquals(Constants.EMR.EMR_OID, id.getRoot());
+		assertEquals(Constants.EMR.EMR_VERSION, id.getAssigningAuthorityName());
+		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
+		assertTrue(id.getExtension().contains(Constants.IdPrefixes.ClinicalMeasuredObservations.toString()));
+		assertTrue(id.getExtension().contains(Constants.Runtime.VALID_MEASUREMENT.toString()));
+	}
+
+	@Test
+	public void componentIdNullTest() {
+		SET<II> ids = componentObservationHelper(nullCmoModel.getComponent()).getId();
+		assertNotNull(ids);
 	}
 }

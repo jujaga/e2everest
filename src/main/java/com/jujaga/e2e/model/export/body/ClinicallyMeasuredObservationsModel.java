@@ -94,11 +94,15 @@ public class ClinicallyMeasuredObservationsModel {
 		Observation observation = new Observation();
 
 		observation.setMoodCode(x_ActMoodDocumentObservation.Eventoccurrence);
-		observation.setId(new SET<II>());
+		observation.setId(getComponentIds());
 		observation.setCode("testCode");
 
 		component.setClinicalStatement(observation);
 		components.add(component);
 		return components;
+	}
+
+	private SET<II> getComponentIds() {
+		return EverestUtils.buildUniqueId(Constants.IdPrefixes.ClinicalMeasuredObservations, measurement.getId());
 	}
 }
