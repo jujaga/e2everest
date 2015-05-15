@@ -2,8 +2,11 @@ package com.jujaga.e2e.populator.body;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
@@ -12,10 +15,13 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ActMoodEventOccurrence;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActClassDocumentEntryOrganizer;
 
 import com.jujaga.e2e.constant.BodyConstants.ClinicallyMeasuredObservations;
+import com.jujaga.e2e.constant.Constants;
+import com.jujaga.emr.PatientExport;
 
 public class ClinicallyMeasuredObservationsPopulatorTest extends AbstractBodyPopulatorTest {
 	@BeforeClass
 	public static void beforeClass() {
+		Logger.getRootLogger().setLevel(Level.FATAL);
 		setupClass(ClinicallyMeasuredObservations.getConstants());
 	}
 
@@ -48,5 +54,11 @@ public class ClinicallyMeasuredObservationsPopulatorTest extends AbstractBodyPop
 		assertNotNull(organizer.getStatusCode());
 		assertNotNull(organizer.getComponent());
 		assertTrue(organizer.getComponent().size() > 0);
+	}
+
+	@Test
+	public void clinicallyMeasuredObservationsNullFlavorTest() {
+		ClinicallyMeasuredObservationsPopulator cmoPopulator = new ClinicallyMeasuredObservationsPopulator(new PatientExport(Constants.Runtime.INVALID_VALUE));
+		assertNull(cmoPopulator.populateNullFlavorClinicalStatement());
 	}
 }

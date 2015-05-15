@@ -50,7 +50,7 @@ public class ClinicallyMeasuredObservationsPopulator extends AbstractBodyPopulat
 		organizer.setCode(cmoModel.getCode());
 		organizer.setStatusCode(cmoModel.getStatusCode());
 		organizer.setAuthor(cmoModel.getAuthor());
-		organizer.setComponent(cmoModel.getComponent());
+		organizer.setComponent(cmoModel.getComponents());
 
 		return organizer;
 	}

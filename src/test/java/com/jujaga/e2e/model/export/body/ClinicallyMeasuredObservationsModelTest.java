@@ -26,6 +26,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.MeasurementDao;
 import com.jujaga.emr.model.Measurement;
@@ -134,15 +135,16 @@ public class ClinicallyMeasuredObservationsModelTest {
 
 	@Test
 	public void componentTest() {
-		componentStructureTestHelper(cmoModel.getComponent());
+		componentStructureTestHelper(cmoModel);
 	}
 
 	@Test
 	public void componentNullTest() {
-		componentStructureTestHelper(nullCmoModel.getComponent());
+		componentStructureTestHelper(nullCmoModel);
 	}
 
-	private Observation componentStructureTestHelper(ArrayList<Component4> components) {
+	private Observation componentStructureTestHelper(ClinicallyMeasuredObservationsModel model) {
+		ArrayList<Component4> components = model.getComponents();
 		assertNotNull(components);
 		assertTrue(components.size() > 0);
 
@@ -162,14 +164,15 @@ public class ClinicallyMeasuredObservationsModelTest {
 		return observation;
 	}
 
-	private Observation componentObservationHelper(ArrayList<Component4> components) {
+	private Observation componentObservationHelper(ClinicallyMeasuredObservationsModel model) {
+		ArrayList<Component4> components = model.getComponents();
 		Component4 component = components.get(0);
 		return component.getClinicalStatementIfObservation();
 	}
 
 	@Test
 	public void componentIdTest() {
-		SET<II> ids = componentObservationHelper(cmoModel.getComponent()).getId();
+		SET<II> ids = componentObservationHelper(cmoModel).getId();
 		assertNotNull(ids);
 
 		II id = ids.get(0);
@@ -183,7 +186,25 @@ public class ClinicallyMeasuredObservationsModelTest {
 
 	@Test
 	public void componentIdNullTest() {
-		SET<II> ids = componentObservationHelper(nullCmoModel.getComponent()).getId();
+		SET<II> ids = componentObservationHelper(nullCmoModel).getId();
 		assertNotNull(ids);
+	}
+
+	@Test
+	public void componentCodeTest() {
+		CD<String> code = componentObservationHelper(cmoModel).getCode();
+		assertNotNull(code);
+		assertEquals(Mappings.measurementCodeMap.get(measurement.getType()), code.getCode());
+		assertEquals(Constants.CodeSystems.LOINC_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.LOINC_NAME, code.getCodeSystemName());
+		assertEquals(Constants.CodeSystems.LOINC_VERSION, code.getCodeSystemVersion());
+	}
+
+	@Test
+	public void componentCodeNullTest() {
+		CD<String> code = componentObservationHelper(nullCmoModel).getCode();
+		assertNotNull(code);
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.Unknown, code.getNullFlavor().getCode());
 	}
 }

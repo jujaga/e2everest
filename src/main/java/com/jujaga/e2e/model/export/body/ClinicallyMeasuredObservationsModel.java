@@ -15,6 +15,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Measurement;
@@ -88,14 +89,17 @@ public class ClinicallyMeasuredObservationsModel {
 		this.authors.add(new AuthorParticipationModel(measurement.getProviderNo()).getAuthor(measurement.getCreateDate()));
 	}
 
-	public ArrayList<Component4> getComponent() {
+	public ArrayList<Component4> getComponents() {
 		ArrayList<Component4> components = new ArrayList<Component4>();
 		Component4 component = new Component4(ActRelationshipHasComponent.HasComponent, new BL(true));
 		Observation observation = new Observation();
 
 		observation.setMoodCode(x_ActMoodDocumentObservation.Eventoccurrence);
 		observation.setId(getComponentIds());
-		observation.setCode("testCode");
+		observation.setCode(getComponentCode());
+		// Text
+		// EffectiveTime
+		// Value
 
 		component.setClinicalStatement(observation);
 		components.add(component);
@@ -104,5 +108,18 @@ public class ClinicallyMeasuredObservationsModel {
 
 	private SET<II> getComponentIds() {
 		return EverestUtils.buildUniqueId(Constants.IdPrefixes.ClinicalMeasuredObservations, measurement.getId());
+	}
+
+	public CD<String> getComponentCode() {
+		CD<String> code = new CD<String>();
+		if(Mappings.measurementCodeMap.get(measurement.getType()) != null) {
+			code.setCodeEx(Mappings.measurementCodeMap.get(measurement.getType()));
+			code.setCodeSystem(Constants.CodeSystems.LOINC_OID);
+			code.setCodeSystemName(Constants.CodeSystems.LOINC_NAME);
+			code.setCodeSystemVersion(Constants.CodeSystems.LOINC_VERSION);
+		} else {
+			code.setNullFlavor(NullFlavor.Unknown);
+		}
+		return code;
 	}
 }

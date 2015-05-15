@@ -270,4 +270,74 @@ public class Mappings {
 		map.put("QHS", hourOfSleep);
 		frequencyInterval = Collections.unmodifiableMap(map);
 	}
+
+	public static final Map<String, String> measurementCodeMap;
+	static {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("BMI", "39156-5");
+		map.put("BP", "55284-4");
+		map.put("DIAS", "8462-4");
+		map.put("FEET", "11428-0");
+		map.put("HR", "8867-4");
+		map.put("HT", "8302-2");
+		map.put("PULS", "8867-4");
+		map.put("PULSE", "8867-4");
+		map.put("SYST", "8480-6");
+		map.put("TEMP", "8310-5");
+		map.put("WAIS", "56115-9");
+		map.put("WT", "3141-9");
+		measurementCodeMap = Collections.unmodifiableMap(map);
+	}
+
+	public static final Map<String, String> measurementUnitMap;
+	static {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("02", "%");
+		map.put("02SA", "%");
+		map.put("24UA", "mg/24h");
+		map.put("24UR", "mg/24h");
+		map.put("ACR", "mg/mmol");
+		map.put("ALB", "g/l");
+		map.put("ALT", "U/L");
+		map.put("AST", "U/L");
+		map.put("BG", "mmol/L");
+		map.put("BILC", "mmol/L");
+		map.put("BILT", "mmol/L");
+		map.put("BILU", "mmol/L");
+		map.put("BMI", "kg/m2");
+		map.put("BP", "mm[Hg]");
+		map.put("CD4", "x10e9/l");
+		map.put("CD4P", "%");
+		map.put("Clpl", "mmol/L");
+		map.put("COUM", "mg/week");
+		map.put("CRCL", "ml/h");
+		map.put("DIAS", "mm[Hg]");
+		map.put("EGFR", "ml/min");
+		map.put("Exer", "min/week");
+		map.put("FBPC", "mmol/L");
+		map.put("FRAM", "%");
+		map.put("FTST", "nmol/L");
+		map.put("Hb", "g/L");
+		map.put("HDL", "mmol/L");
+		map.put("HEAD", "cm");
+		map.put("HR", "beats/min");
+		map.put("HT", "cm");
+		map.put("Kpl", "mmol/L");
+		map.put("Napl", "mmol/L");
+		map.put("PULS", "beats/min");
+		map.put("PULSE", "beats/min");
+		map.put("SCR", "umol/L");
+		map.put("SYST", "mm[Hg]");
+		map.put("TCHL", "mmol/L");
+		map.put("TEMP", "C");
+		map.put("TRIG", "mmol/L");
+		map.put("UA", "mmol/L");
+		map.put("UACR", "mg/mmol");
+		map.put("UALB", "mg/mmol");
+		map.put("VB12", "pmol/L");
+		map.put("VLOA", "x10e9/L");
+		map.put("WAIS", "cm");
+		map.put("WT", "kg");
+		measurementUnitMap = Collections.unmodifiableMap(map);
+	}
 }

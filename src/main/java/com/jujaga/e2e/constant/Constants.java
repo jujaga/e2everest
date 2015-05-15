@@ -180,7 +180,7 @@ public class Constants {
 		public static final Integer VALID_DEMOGRAPHIC = 1;
 		public static final Integer VALID_LAB_NO = 9;
 		public static final Integer VALID_LAB_MEASUREMENT = 26;
-		public static final Integer VALID_MEASUREMENT = 26; //TODO Change to non-lab measurement
+		public static final Integer VALID_MEASUREMENT = 1;
 		public static final Integer VALID_PROVIDER = 999998;
 	}
 }
