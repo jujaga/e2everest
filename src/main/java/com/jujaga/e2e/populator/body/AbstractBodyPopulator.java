@@ -30,7 +30,7 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 
 		if(entries.isEmpty()) { // HL7 Level 2
 			if(bodyConstants.SECTION_PRIORITY == SectionPriority.SHALL) {
-				// TODO Handle nullFlavor cascade for Conversion document conformance
+				// TODO [E2E] Handle nullFlavor cascade for Conversion document conformance
 				/*Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
 				entry.setClinicalStatement(populateNullFlavorClinicalStatement());
 

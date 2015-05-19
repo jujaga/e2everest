@@ -10,7 +10,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
-import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.DrugDao;
@@ -259,16 +258,6 @@ public class PatientExport {
 
 	public List<Measurement> getMeasurements() {
 		return measurements;
-	}
-
-	// PatientExport Supplemental Functions
-	// TODO Replace this mock with a fully functional icd9Dao DB variant
-	public String getICD9Description(String code) {
-		if(!EverestUtils.isNullorEmptyorWhitespace(code) && Mappings.icd9Map.containsKey(code)) {
-			return Mappings.icd9Map.get(code);
-		} else {
-			return null;
-		}
 	}
 
 	// Supporting Lab Grouping Subclasses

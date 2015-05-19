@@ -19,7 +19,7 @@ class InformationRecipientPopulator extends AbstractPopulator {
 		InformationRecipient informationRecipient = new InformationRecipient();
 		IntendedRecipient intendedRecipient = new IntendedRecipient();
 
-		// TODO Ask MARC-HI about equivalent SuppressXsiNil toggle
+		// TODO [MARC-HI] Ask about equivalent SuppressXsiNil toggle
 		//informationRecipient.setNullFlavor(NullFlavor.NotApplicable);
 		informationRecipient.setIntendedRecipient(intendedRecipient);
 		informationRecipient.setTypeCode(x_InformationRecipient.PRCP);

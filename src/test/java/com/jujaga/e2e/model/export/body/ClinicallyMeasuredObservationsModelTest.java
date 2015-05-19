@@ -3,17 +3,26 @@ package com.jujaga.e2e.model.export.body;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.marc.everest.datatypes.ANY;
+import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.PQ;
+import org.marc.everest.datatypes.ST;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
@@ -45,9 +54,12 @@ public class ClinicallyMeasuredObservationsModelTest {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
 		dao = context.getBean(MeasurementDao.class);
+	}
+
+	@Before
+	public void before() {
 		measurement = dao.find(Constants.Runtime.VALID_MEASUREMENT);
 		cmoModel = new ClinicallyMeasuredObservationsModel(measurement);
-
 		nullMeasurement = new Measurement();
 		nullCmoModel = new ClinicallyMeasuredObservationsModel(nullMeasurement);
 	}
@@ -206,5 +218,78 @@ public class ClinicallyMeasuredObservationsModelTest {
 		assertNotNull(code);
 		assertTrue(code.isNull());
 		assertEquals(NullFlavor.Unknown, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void componentTextTest() {
+		ED text = componentObservationHelper(cmoModel).getText();
+		assertNotNull(text);
+		assertFalse(new String(text.getData()).isEmpty());
+	}
+
+	@Test
+	public void componentTextNullTest() {
+		ED text = componentObservationHelper(nullCmoModel).getText();
+		assertNull(text);
+	}
+
+	@Test
+	public void componentEffectiveTimeTest() {
+		IVL<TS> ivl = componentObservationHelper(cmoModel).getEffectiveTime();
+		assertNotNull(ivl);
+		assertEquals(EverestUtils.buildTSFromDate(measurement.getDateObserved(), TS.SECONDNOTIMEZONE), ivl.getLow());
+	}
+
+	@Test
+	public void componentEffectiveTimeNullTest() {
+		IVL<TS> ivl = componentObservationHelper(nullCmoModel).getEffectiveTime();
+		assertNull(ivl);
+	}
+
+	@Test
+	public void componentValuePQTest() {
+		String dataField = measurement.getDataField();
+		String unit = Mappings.measurementUnitMap.get(measurement.getType());
+
+		ANY value = componentObservationHelper(cmoModel).getValue();
+		assertNotNull(value);
+		assertEquals(PQ.class, value.getDataType());
+
+		PQ pq = (PQ) value;
+		assertEquals(new BigDecimal(dataField), pq.getValue());
+		assertEquals(unit.replaceAll("\\s","_"), pq.getUnit());
+	}
+
+	@Test
+	public void componentValueSTValueUnitTest() {
+		measurement.setDataField("test");
+		String dataField = measurement.getDataField();
+		String unit = Mappings.measurementUnitMap.get(measurement.getType());
+
+		ANY value = componentObservationHelper(cmoModel).getValue();
+		assertNotNull(value);
+		assertEquals(ST.class, value.getDataType());
+
+		ST st = (ST) value;
+		assertEquals(dataField.concat(" ").concat(unit), st.getValue());
+	}
+
+	@Test
+	public void componentValueSTValueOnlyTest() {
+		measurement.setType(null);
+		String dataField = measurement.getDataField();
+
+		ANY value = componentObservationHelper(cmoModel).getValue();
+		assertNotNull(value);
+		assertEquals(ST.class, value.getDataType());
+
+		ST st = (ST) value;
+		assertEquals(dataField, st.getValue());
+	}
+
+	@Test
+	public void componentValueNullTest() {
+		ANY value = componentObservationHelper(nullCmoModel).getValue();
+		assertNull(value);
 	}
 }

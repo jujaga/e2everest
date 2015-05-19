@@ -18,7 +18,6 @@ import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.model.export.template.observation.DateObservationModel;
 import com.jujaga.e2e.model.export.template.observation.SecondaryCodeICD9ObservationModel;
 import com.jujaga.e2e.util.EverestUtils;
-import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Dxresearch;
 
 public class ProblemsModel {
@@ -54,7 +53,7 @@ public class ProblemsModel {
 
 	public String getTextSummary() {
 		StringBuilder sb = new StringBuilder();
-		String description = new PatientExport().getICD9Description(problem.getDxresearchCode());
+		String description = EverestUtils.getICD9Description(problem.getDxresearchCode());
 
 		if(!EverestUtils.isNullorEmptyorWhitespace(problem.getDxresearchCode())) {
 			sb.append("ICD9: " + problem.getDxresearchCode());
@@ -88,7 +87,7 @@ public class ProblemsModel {
 	}
 
 	private void setText() {
-		String description = new PatientExport().getICD9Description(problem.getDxresearchCode());
+		String description = EverestUtils.getICD9Description(problem.getDxresearchCode());
 		if(!EverestUtils.isNullorEmptyorWhitespace(description)) {
 			this.text = new ED(description);
 		} else {

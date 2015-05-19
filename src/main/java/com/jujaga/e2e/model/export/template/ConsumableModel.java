@@ -31,7 +31,7 @@ public class ConsumableModel {
 	return null;
 	}*/
 
-	// TODO Add e2e namespace extension fields
+	// TODO [MARC-HI] Add e2e namespace extension fields
 	public Consumable getConsumable(Drug drug) {
 		if(drug == null) {
 			this.drug = new Drug();

@@ -110,7 +110,7 @@ public class EverestUtils {
 
 	// Temporary Everest Bugfixes
 	private static String everestBugFixes(String output) {
-		// TODO Ask MARC-HI about equivalent SuppressXsiNil toggle
+		// TODO [MARC-HI] Ask about equivalent SuppressXsiNil toggle
 		String result = output.replaceAll("xsi:nil=\"true\" ", "");
 		return result.replaceAll("delimeter", "delimiter");
 	}
@@ -246,5 +246,25 @@ public class EverestUtils {
 			log.error("Demographic " + demographicNo + " not found");
 			return null;
 		}
+	}
+
+	// PatientExport Supplemental Functions
+	// TODO [OSCAR] Replace mock with OSCAR icd9Dao
+	public static String getICD9Description(String code) {
+		if(!EverestUtils.isNullorEmptyorWhitespace(code) && Mappings.icd9Map.containsKey(code)) {
+			return Mappings.icd9Map.get(code);
+		}
+
+		return null;
+	}
+
+	// Find the description of measurement type
+	// TODO [OSCAR] Replace mock with OSCAR measurementTypeDao
+	public static String getTypeDescription(String type) {
+		if(!isNullorEmptyorWhitespace(Mappings.measurementTypeMap.get(type))) {
+			return Mappings.measurementTypeMap.get(type);
+		}
+
+		return type;
 	}
 }

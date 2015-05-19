@@ -226,7 +226,7 @@ public class Mappings {
 		twentyfourhf.setInstitutionSpecified(false);
 
 		EIVL<TS> hourOfSleep = new EIVL<TS>(DomainTimingEvent.HourOfSleep, null, SetOperator.Intersect);
-		// TODO Notify MARC-HI about error "When the Event property implies before, after or between meals the Offset property must not be populated"
+		// TODO [MARC-HI] Notify about error "When the Event property implies before, after or between meals the Offset property must not be populated"
 		hourOfSleep.setOffset(new IVL<PQ>() {{setNullFlavor(NullFlavor.NotApplicable);}});
 
 		EIVL<TS> betweenDinnerAndSleep = new EIVL<TS>(DomainTimingEvent.BetweenDinnerAndSleep, null, SetOperator.Intersect);
@@ -259,12 +259,12 @@ public class Mappings {
 		map.put("Q12H", twelvehf);
 		map.put("Q24H", twentyfourhf);
 
-		// TODO Wait on MARC-HI answer on IVL based PIVL_TS implementation
+		// TODO [MARC-HI] Wait on answer about IVL based PIVL_TS implementation
 		map.put("Q1-2H", onehf);
 		map.put("Q3-4H", threehf);
 		map.put("Q4-6H", fourhf);
 
-		// TODO Resolve QAM to EIVL_TS DomainTimingEvent mapping
+		// TODO [E2E] Resolve QAM to EIVL_TS DomainTimingEvent mapping
 		map.put("QAM", onedt);
 		map.put("QPM", betweenDinnerAndSleep);
 		map.put("QHS", hourOfSleep);
@@ -287,6 +287,25 @@ public class Mappings {
 		map.put("WAIS", "56115-9");
 		map.put("WT", "3141-9");
 		measurementCodeMap = Collections.unmodifiableMap(map);
+	}
+
+	// TODO [OSCAR] Replace this mapping with measurementTypeDao
+	public static final Map<String, String> measurementTypeMap;
+	static {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("BMI", "Body Mass Index");
+		map.put("BP", "Blood Pressure");
+		map.put("DIAS", "Diastolic Blood Pressure");
+		map.put("FEET", "Feet Check skin");
+		map.put("HR", "Heart Rate");
+		map.put("HT", "Height");
+		map.put("PULS", "Heart Rate");
+		map.put("PULSE", "Heart Rate");
+		map.put("SYST", "Systolic Blood Pressure");
+		map.put("TEMP", "Temperature");
+		map.put("WAIS", "Waist");
+		map.put("WT", "Weight");
+		measurementTypeMap = Collections.unmodifiableMap(map);
 	}
 
 	public static final Map<String, String> measurementUnitMap;

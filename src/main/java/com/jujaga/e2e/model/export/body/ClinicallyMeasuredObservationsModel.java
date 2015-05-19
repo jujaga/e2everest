@@ -1,11 +1,18 @@
 package com.jujaga.e2e.model.export.body;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import org.marc.everest.datatypes.ANY;
 import org.marc.everest.datatypes.BL;
+import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.PQ;
+import org.marc.everest.datatypes.ST;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
@@ -41,15 +48,23 @@ public class ClinicallyMeasuredObservationsModel {
 		setAuthor();
 	}
 
-	// TODO Complete TextSummary
 	public String getTextSummary() {
 		StringBuilder sb = new StringBuilder();
 
-		if(!EverestUtils.isNullorEmptyorWhitespace(measurement.getType())) {
-			sb.append(measurement.getType());
+		if(!EverestUtils.isNullorEmptyorWhitespace(EverestUtils.getTypeDescription(measurement.getType()))) {
+			sb.append(EverestUtils.getTypeDescription(measurement.getType()));
 		}
 		if(!EverestUtils.isNullorEmptyorWhitespace(measurement.getDataField())) {
 			sb.append(": ".concat(measurement.getDataField()));
+		}
+		if(!EverestUtils.isNullorEmptyorWhitespace(Mappings.measurementUnitMap.get(measurement.getType()))) {
+			sb.append(" ".concat(Mappings.measurementUnitMap.get(measurement.getType())));
+		}
+		if(!EverestUtils.isNullorEmptyorWhitespace(measurement.getMeasuringInstruction())) {
+			sb.append(" (".concat(measurement.getMeasuringInstruction()).concat(")"));
+		}
+		if(measurement.getDateObserved() != null) {
+			sb.append(" ".concat(measurement.getDateObserved().toString()));
 		}
 
 		return sb.toString();
@@ -97,9 +112,9 @@ public class ClinicallyMeasuredObservationsModel {
 		observation.setMoodCode(x_ActMoodDocumentObservation.Eventoccurrence);
 		observation.setId(getComponentIds());
 		observation.setCode(getComponentCode());
-		// Text
-		// EffectiveTime
-		// Value
+		observation.setText(getComponentText());
+		observation.setEffectiveTime(getComponentTime());
+		observation.setValue(getComponentValue());
 
 		component.setClinicalStatement(observation);
 		components.add(component);
@@ -121,5 +136,49 @@ public class ClinicallyMeasuredObservationsModel {
 			code.setNullFlavor(NullFlavor.Unknown);
 		}
 		return code;
+	}
+
+	private ED getComponentText() {
+		String text = new String();
+		if(!EverestUtils.isNullorEmptyorWhitespace(EverestUtils.getTypeDescription(measurement.getType()))) {
+			text = EverestUtils.getTypeDescription(measurement.getType());
+		}
+		if(!EverestUtils.isNullorEmptyorWhitespace(measurement.getMeasuringInstruction())) {
+			text = text.concat(" (").concat(measurement.getMeasuringInstruction().concat(")"));
+		}
+
+		if(!text.isEmpty()) {
+			return new ED(text);
+		}
+		return null;
+	}
+
+	private IVL<TS> getComponentTime() {
+		IVL<TS> ivl = null;
+		TS startTime = EverestUtils.buildTSFromDate(measurement.getDateObserved(), TS.SECONDNOTIMEZONE);
+		if(startTime != null) {
+			ivl = new IVL<TS>(startTime, null);
+		}
+
+		return ivl;
+	}
+
+	private ANY getComponentValue() {
+		String dataField = measurement.getDataField();
+		String unit = Mappings.measurementUnitMap.get(measurement.getType());
+		ANY value = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(dataField)) {
+			if(!EverestUtils.isNullorEmptyorWhitespace(unit)) {
+				try {
+					value = new PQ(new BigDecimal(dataField), unit.replaceAll("\\s","_"));
+				} catch (NumberFormatException e) {
+					value = new ST(dataField.concat(" ").concat(unit));
+				}
+			} else {
+				value = new ST(dataField);
+			}
+		}
+
+		return value;
 	}
 }

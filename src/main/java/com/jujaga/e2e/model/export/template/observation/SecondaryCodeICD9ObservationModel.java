@@ -11,7 +11,6 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelations
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
-import com.jujaga.emr.PatientExport;
 
 public class SecondaryCodeICD9ObservationModel extends AbstractObservationModel {
 	public EntryRelationship getEntryRelationship(String value) {
@@ -24,7 +23,7 @@ public class SecondaryCodeICD9ObservationModel extends AbstractObservationModel 
 
 		CD<String> icd9Value = new CD<String>();
 		if(!EverestUtils.isNullorEmptyorWhitespace(value)) {
-			String description = new PatientExport().getICD9Description(value);
+			String description = EverestUtils.getICD9Description(value);
 			if(!EverestUtils.isNullorEmptyorWhitespace(description)) {
 				icd9Value.setDisplayName(description);
 			}
