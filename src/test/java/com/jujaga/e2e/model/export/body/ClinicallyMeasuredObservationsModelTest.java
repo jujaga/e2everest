@@ -36,6 +36,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Mappings;
+import com.jujaga.e2e.constant.BodyConstants.ClinicallyMeasuredObservations;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.MeasurementDao;
 import com.jujaga.emr.model.Measurement;
@@ -147,11 +148,24 @@ public class ClinicallyMeasuredObservationsModelTest {
 
 	@Test
 	public void componentTest() {
+		assertNotNull(cmoModel.new ComponentObservation().getComponent(measurement));
 		componentStructureTestHelper(cmoModel);
 	}
 
 	@Test
+	public void componentBPTest() {
+		measurement.setType(ClinicallyMeasuredObservations.BLOOD_PRESSURE_CODE);
+		measurement.setDataField("130/85");
+
+		assertNotNull(cmoModel.new ComponentObservation().getComponent(measurement));
+		componentStructureTestHelper(cmoModel);
+
+		assertEquals(2, cmoModel.getComponents().size());
+	}
+
+	@Test
 	public void componentNullTest() {
+		assertNotNull(nullCmoModel.new ComponentObservation().getComponent(null));
 		componentStructureTestHelper(nullCmoModel);
 	}
 

@@ -104,8 +104,9 @@ public class EverestUtils {
 			return output;
 		} catch (XMLStreamException e) {
 			log.error(e.toString());
-			return null;
 		}
+
+		return null;
 	}
 
 	// Temporary Everest Bugfixes
@@ -151,15 +152,10 @@ public class EverestUtils {
 	// Add a telecom element to the telecoms set
 	public static void addTelecomPart(SET<TEL> telecoms, String value, TelecommunicationsAddressUse telecomAddressUse, TelecomType telecomType) {
 		if(!isNullorEmptyorWhitespace(value)) {
-			switch(telecomType) {
-			case TELEPHONE:
+			if(telecomType == Constants.TelecomType.TELEPHONE) {
 				telecoms.add(new TEL(Constants.DocumentHeader.TEL_PREFIX + value.replaceAll("-", ""), telecomAddressUse));
-				break;
-			case EMAIL:
+			} else if(telecomType == Constants.TelecomType.EMAIL) {
 				telecoms.add(new TEL(Constants.DocumentHeader.EMAIL_PREFIX + value, telecomAddressUse));
-				break;
-			default:
-				break;
 			}
 		}
 	}

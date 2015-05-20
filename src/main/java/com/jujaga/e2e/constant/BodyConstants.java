@@ -49,6 +49,10 @@ public class BodyConstants {
 	public static class ClinicallyMeasuredObservations extends AbstractBodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
 
+		public static final String BLOOD_PRESSURE_CODE = "BP";
+		public static final String DIASTOLIC_CODE = "SYST";
+		public static final String SYSTOLIC_CODE = "DIAS";
+
 		private ClinicallyMeasuredObservations() {
 			SECTION_PRIORITY = SectionPriority.SHOULD;
 			WITH_ENTRIES_TITLE = "Clinical Measured Observations [with entries]";
