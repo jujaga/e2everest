@@ -74,6 +74,30 @@ public class BodyConstants {
 		}
 	}
 
+	public static class Encounters extends AbstractBodyConstants {
+		protected static AbstractBodyConstants bodyConstants = null;
+
+		private Encounters() {
+			SECTION_PRIORITY = SectionPriority.SHALL;
+			WITH_ENTRIES_TITLE = "Encounter History & Notes [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Encounter History & Notes [without entries]";
+			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.12.1";
+			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.12";
+			CODE = "46240-8";
+			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
+			ENTRY_TEMPLATE_ID = Constants.TemplateOids.ENCOUNTER_EVENT_TEMPLATE_ID;
+			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
+		}
+
+		public static AbstractBodyConstants getConstants() {
+			if(bodyConstants == null) {
+				bodyConstants = new Encounters();
+			}
+			return bodyConstants;
+		}
+	}
+
 	public static class Labs extends AbstractBodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
 

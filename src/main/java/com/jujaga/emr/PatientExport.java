@@ -11,6 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.dao.CaseManagementNoteDao;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.DrugDao;
 import com.jujaga.emr.dao.DxresearchDao;
@@ -18,6 +19,7 @@ import com.jujaga.emr.dao.Hl7TextInfoDao;
 import com.jujaga.emr.dao.MeasurementDao;
 import com.jujaga.emr.dao.MeasurementsExtDao;
 import com.jujaga.emr.dao.PatientLabRoutingDao;
+import com.jujaga.emr.model.CaseManagementNote;
 import com.jujaga.emr.model.Demographic;
 import com.jujaga.emr.model.Drug;
 import com.jujaga.emr.model.Dxresearch;
@@ -33,6 +35,7 @@ public class PatientExport {
 	private DemographicDao demographicDao = null;
 	private MeasurementDao measurementDao = null;
 	private MeasurementsExtDao measurementsExtDao = null;
+	private CaseManagementNoteDao caseManagementNoteDao = null;
 	private PatientLabRoutingDao patientLabRoutingDao = null;
 	private Hl7TextInfoDao hl7TextInfoDao = null;
 	private DrugDao drugDao = null;
@@ -44,6 +47,7 @@ public class PatientExport {
 	private Boolean loaded = false;
 	private Demographic demographic = null;
 	private List<Measurement> measurements = null;
+	private List<CaseManagementNote> encounters = null;
 	private List<Lab> labs = null;
 	private List<Drug> drugs = null;
 	private List<Dxresearch> problems = null;
@@ -62,6 +66,7 @@ public class PatientExport {
 		demographicDao = context.getBean(DemographicDao.class);
 		measurementDao = context.getBean(MeasurementDao.class);
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
+		caseManagementNoteDao = context.getBean(CaseManagementNoteDao.class);
 		patientLabRoutingDao = context.getBean(PatientLabRoutingDao.class);
 		hl7TextInfoDao = context.getBean(Hl7TextInfoDao.class);
 		drugDao = context.getBean(DrugDao.class);
@@ -82,6 +87,13 @@ public class PatientExport {
 		} catch (Exception e) {
 			log.error("loadPatient - Failed to load Measurements", e);
 			measurements = null;
+		}
+
+		try {
+			encounters = caseManagementNoteDao.getNotesByDemographic(demographicNo.toString());
+		} catch (Exception e) {
+			log.error("loadPatient - Failed to load Encounters", e);
+			encounters = null;
 		}
 
 		try {
@@ -244,20 +256,24 @@ public class PatientExport {
 		return demographic;
 	}
 
-	public List<Drug> getMedications() {
-		return drugs;
+	public List<Measurement> getMeasurements() {
+		return measurements;
 	}
 
-	public List<Dxresearch> getProblems() {
-		return problems;
+	public List<CaseManagementNote> getEncounters() {
+		return encounters;
 	}
 
 	public List<Lab> getLabs() {
 		return labs;
 	}
 
-	public List<Measurement> getMeasurements() {
-		return measurements;
+	public List<Drug> getMedications() {
+		return drugs;
+	}
+
+	public List<Dxresearch> getProblems() {
+		return problems;
 	}
 
 	// Supporting Lab Grouping Subclasses

@@ -186,10 +186,24 @@ public class EverestUtils {
 	/**
 	 * Body Utility Functions
 	 */
-	// Create Prefix-number id object
+	// Create Prefix-number id object from integer
 	public static SET<II> buildUniqueId(IdPrefixes prefix, Integer id) {
 		if(id == null) {
 			id = 0;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(prefix).append("-").append(id.toString());
+
+		II ii = new II(Constants.EMR.EMR_OID, sb.toString());
+		ii.setAssigningAuthorityName(Constants.EMR.EMR_VERSION);
+		return new SET<II>(ii);
+	}
+
+	// Create Prefix-number id object from long
+	public static SET<II> buildUniqueId(IdPrefixes prefix, Long id) {
+		if(id == null) {
+			id = 0L;
 		}
 
 		StringBuilder sb = new StringBuilder();
