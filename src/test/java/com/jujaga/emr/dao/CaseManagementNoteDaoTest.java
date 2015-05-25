@@ -36,6 +36,6 @@ public class CaseManagementNoteDaoTest {
 	public void getNotesByDemographicTest() {
 		List<CaseManagementNote> cmNotes = caseManagementNoteDao.getNotesByDemographic(Constants.Runtime.VALID_DEMOGRAPHIC.toString());
 		assertNotNull(cmNotes);
-		assertEquals(0, cmNotes.size());
+		assertEquals(6, cmNotes.size());
 	}
 }

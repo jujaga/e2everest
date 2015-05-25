@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.generic.SET;
@@ -34,8 +33,7 @@ public class EncountersModelTest {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
 		dao = context.getBean(CaseManagementNoteDao.class);
-		encounter = dao.find(new Long(0));//dao.getNotesByDemographic(Constants.Runtime.VALID_DEMOGRAPHIC.toString()).get(0);
-		encounter = new CaseManagementNote(); // Temporary
+		encounter = dao.getNotesByDemographic(Constants.Runtime.VALID_DEMOGRAPHIC.toString()).get(0);
 		encountersModel = new EncountersModel(encounter);
 
 		nullEncounter = new CaseManagementNote();
@@ -59,7 +57,6 @@ public class EncountersModelTest {
 		assertNotNull(text);
 	}
 
-	@Ignore // No test data yet
 	@Test
 	public void idTest() {
 		SET<II> ids = encountersModel.getIds();

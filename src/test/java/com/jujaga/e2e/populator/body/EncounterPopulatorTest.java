@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Encounter;
@@ -26,16 +25,14 @@ public class EncounterPopulatorTest extends AbstractBodyPopulatorTest {
 
 	@Test
 	public void encountersEntryCountTest() {
-		entryCountTest(0);
+		entryCountTest(6);
 	}
 
-	@Ignore // No test data yet
 	@Test
 	public void encountersEntryStructureTest() {
 		entryStructureTest();
 	}
 
-	@Ignore // No test data yet
 	@Test
 	public void encountersClinicalStatementTest() {
 		ClinicalStatement clinicalStatement = component.getSection().getEntry().get(0).getClinicalStatement();

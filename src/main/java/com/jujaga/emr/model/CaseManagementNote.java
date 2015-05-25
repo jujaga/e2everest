@@ -32,6 +32,7 @@ public class CaseManagementNote implements Serializable {
 	private String demographic_no;
 	@Column(name="provider_no")
 	private String providerNo;
+	@Column(length=8192)
 	private String note;
 	private Boolean signed = false;
 	@Column(name="include_issue_innote")
@@ -42,6 +43,7 @@ public class CaseManagementNote implements Serializable {
 	private String program_no;
 	private String reporter_caisi_role;
 	private String reporter_program_team;
+	@Column(length=8192)
 	private String history;
 	private String password;
 	private Boolean locked;
