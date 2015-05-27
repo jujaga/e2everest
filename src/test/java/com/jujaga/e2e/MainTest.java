@@ -15,6 +15,11 @@ public class MainTest {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}
 
+	@Test(expected=UnsupportedOperationException.class)
+	public void mainInstantiationTest() {
+		new Main();
+	}
+
 	@Test
 	public void mainTest() {
 		PrintStream stdOut = System.out;
