@@ -9,6 +9,7 @@ import org.marc.everest.datatypes.II;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Encounter;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentEncounterMood;
 
@@ -45,9 +46,13 @@ public class EncountersPopulator extends AbstractBodyPopulator<CaseManagementNot
 	public ClinicalStatement populateClinicalStatement(List<CaseManagementNote> list) {
 		EncountersModel encountersModel = new EncountersModel(list.get(0));
 		Encounter encounter = new Encounter(x_DocumentEncounterMood.Eventoccurrence);
+		ArrayList<Participant2> participants = new ArrayList<Participant2>();
 
 		encounter.setId(encountersModel.getIds());
+		encounter.setEffectiveTime(encountersModel.getEffectiveTime());
+		participants.add(encountersModel.getEncounterLocation());
 
+		encounter.setParticipant(participants);
 		return encounter;
 	}
 

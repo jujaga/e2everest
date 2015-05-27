@@ -3,6 +3,7 @@ package com.jujaga.e2e.model.export.body;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.log4j.Level;
@@ -10,7 +11,15 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.TS;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ParticipantRole;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PlayingEntity;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -75,5 +84,50 @@ public class EncountersModelTest {
 	public void idNullTest() {
 		SET<II> ids = nullEncountersModel.getIds();
 		assertNotNull(ids);
+	}
+
+	@Test
+	public void effectiveTimeTest() {
+		IVL<TS> ivl = encountersModel.getEffectiveTime();
+		assertNotNull(ivl);
+		assertEquals(EverestUtils.buildTSFromDate(encounter.getObservation_date()), ivl.getLow());
+	}
+
+	@Test
+	public void effectiveTimeNullTest() {
+		IVL<TS> ivl = nullEncountersModel.getEffectiveTime();
+		assertNull(ivl);
+	}
+
+	@Test
+	public void encounterLocationTest() {
+		Participant2 participant = encountersModel.getEncounterLocation();
+		assertNotNull(participant);
+		assertEquals(ParticipationType.LOC, participant.getTypeCode().getCode());
+		assertEquals(ContextControl.OverridingPropagating, participant.getContextControlCode().getCode());
+
+		ParticipantRole participantRole = participant.getParticipantRole();
+		assertNotNull(participantRole);
+		assertEquals(Constants.RoleClass.SDLOC.toString(), participantRole.getClassCode().getCode());
+
+		PlayingEntity playingEntity = participantRole.getPlayingEntityChoiceIfPlayingEntity();
+		assertNotNull(playingEntity);
+		assertEquals(EntityClassRoot.Organization, playingEntity.getClassCode().getCode());
+	}
+
+	@Test
+	public void encounterLocationNullTest() {
+		Participant2 participant = encountersModel.getEncounterLocation();
+		assertNotNull(participant);
+		assertEquals(ParticipationType.LOC, participant.getTypeCode().getCode());
+		assertEquals(ContextControl.OverridingPropagating, participant.getContextControlCode().getCode());
+
+		ParticipantRole participantRole = participant.getParticipantRole();
+		assertNotNull(participantRole);
+		assertEquals(Constants.RoleClass.SDLOC.toString(), participantRole.getClassCode().getCode());
+
+		PlayingEntity playingEntity = participantRole.getPlayingEntityChoiceIfPlayingEntity();
+		assertNotNull(playingEntity);
+		assertEquals(EntityClassRoot.Organization, playingEntity.getClassCode().getCode());
 	}
 }

@@ -35,7 +35,7 @@ public class Constants {
 	}
 
 	public static enum RoleClass {
-		ROL, PAT
+		PAT, ROL, SDLOC
 	}
 
 	public static enum SubstanceAdministrationType {
