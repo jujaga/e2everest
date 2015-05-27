@@ -130,4 +130,16 @@ public class EncountersModelTest {
 		assertNotNull(playingEntity);
 		assertEquals(EntityClassRoot.Organization, playingEntity.getClassCode().getCode());
 	}
+
+	@Test
+	public void encounterProviderTest() {
+		Participant2 participant = encountersModel.getEncounterProvider();
+		assertNotNull(participant);
+	}
+
+	@Test
+	public void encounterProviderNullTest() {
+		Participant2 participant = nullEncountersModel.getEncounterProvider();
+		assertNotNull(participant);
+	}
 }

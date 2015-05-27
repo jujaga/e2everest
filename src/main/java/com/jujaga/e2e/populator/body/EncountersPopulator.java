@@ -51,6 +51,7 @@ public class EncountersPopulator extends AbstractBodyPopulator<CaseManagementNot
 		encounter.setId(encountersModel.getIds());
 		encounter.setEffectiveTime(encountersModel.getEffectiveTime());
 		participants.add(encountersModel.getEncounterLocation());
+		participants.add(encountersModel.getEncounterProvider());
 
 		encounter.setParticipant(participants);
 		return encounter;

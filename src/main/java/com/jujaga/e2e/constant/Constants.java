@@ -35,7 +35,7 @@ public class Constants {
 	}
 
 	public static enum RoleClass {
-		PAT, ROL, SDLOC
+		PAT, PROV, ROL, SDLOC
 	}
 
 	public static enum SubstanceAdministrationType {
@@ -160,6 +160,7 @@ public class Constants {
 		public static final String ORDER_EVENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.14";
 		public static final String PERFORMER_PARTICIPATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.19";
 		public static final String PROBLEMS_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.15";
+		public static final String PROVIDER_PARTICIPATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.21";
 		public static final String RESULT_COMPONENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.25";
 		public static final String RESULT_ORGANIZER_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.26";
 	}

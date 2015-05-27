@@ -13,6 +13,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.model.export.template.ProviderParticipationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.CaseManagementNote;
 
@@ -22,6 +23,7 @@ public class EncountersModel {
 	private SET<II> ids;
 	private IVL<TS> effectiveTime;
 	private Participant2 encounterLocation;
+	private Participant2 encounterProvider;
 
 	public EncountersModel(CaseManagementNote encounter) {
 		if(encounter == null) {
@@ -33,6 +35,7 @@ public class EncountersModel {
 		setIds();
 		setEffectiveTime();
 		setEncounterLocation();
+		setEncounterProvider();
 	}
 
 	public String getTextSummary() {
@@ -83,5 +86,13 @@ public class EncountersModel {
 		participant.setParticipantRole(participantRole);
 
 		this.encounterLocation = participant;
+	}
+
+	public Participant2 getEncounterProvider() {
+		return encounterProvider;
+	}
+
+	private void setEncounterProvider() {
+		this.encounterProvider = new ProviderParticipationModel(encounter.getProviderNo()).getProvider();
 	}
 }
