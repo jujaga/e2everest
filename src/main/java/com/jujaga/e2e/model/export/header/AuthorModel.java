@@ -1,6 +1,5 @@
 package com.jujaga.e2e.model.export.header;
 
-import org.apache.log4j.Logger;
 import org.marc.everest.datatypes.EntityNameUse;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
@@ -15,13 +14,9 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Person;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Constants.TelecomType;
 import com.jujaga.e2e.util.EverestUtils;
-import com.jujaga.emr.PatientExport;
-import com.jujaga.emr.dao.ProviderDao;
 import com.jujaga.emr.model.Provider;
 
 public class AuthorModel {
-	private static Logger log = Logger.getLogger(AuthorModel.class.getName());
-
 	private final Provider provider;
 
 	protected SET<II> ids;
@@ -30,20 +25,11 @@ public class AuthorModel {
 	private AuthoringDevice device;
 
 	protected AuthorModel(String providerNo) {
-		Provider provider = null;
-
-		try {
-			Integer providerId = Integer.parseInt(providerNo);
-			ProviderDao providerDao = new PatientExport().getApplicationContext().getBean(ProviderDao.class);
-			provider = providerDao.find(providerId);
-		} catch (NumberFormatException e) {
-			log.error("Provider " + providerNo + " not found");
-		} finally {
-			if(provider == null) {
-				this.provider = new Provider();
-			} else {
-				this.provider = provider;
-			}
+		Provider provider = EverestUtils.getProviderFromString(providerNo);
+		if(provider == null) {
+			this.provider = new Provider();
+		} else {
+			this.provider = provider;
 		}
 
 		constructorHelper();

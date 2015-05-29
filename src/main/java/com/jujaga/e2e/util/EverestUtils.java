@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -43,10 +45,14 @@ import com.jujaga.e2e.constant.Constants.TelecomType;
 import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.dao.DemographicDao;
+import com.jujaga.emr.dao.ProviderDao;
 import com.jujaga.emr.model.Demographic;
+import com.jujaga.emr.model.Provider;
 
 public class EverestUtils {
 	private static Logger log = Logger.getLogger(EverestUtils.class.getName());
+	public static final Map<Integer, Demographic> demographicCache = new HashMap<Integer, Demographic>();
+	public static final Map<Integer, Provider> providerCache = new HashMap<Integer, Provider>();
 
 	EverestUtils() {
 		throw new UnsupportedOperationException();
@@ -246,16 +252,45 @@ public class EverestUtils {
 		return null;
 	}
 
+	/**
+	 * Database Caching Utility Functions
+	 */
 	// Find the provider of a given demographicNo
 	public static String getDemographicProviderNo(Integer demographicNo) {
+		String providerNo = null;
 		try {
-			DemographicDao demographicDao = new PatientExport().getApplicationContext().getBean(DemographicDao.class);
-			Demographic demographic = demographicDao.find(demographicNo);
-			return demographic.getProviderNo();
+			if(demographicCache.containsKey(demographicNo)) {
+				providerNo =  demographicCache.get(demographicNo).getProviderNo();
+			} else {
+				DemographicDao demographicDao = new PatientExport().getApplicationContext().getBean(DemographicDao.class);
+				Demographic demographic = demographicDao.find(demographicNo);
+				demographicCache.put(demographicNo, demographic);
+				providerNo = demographic.getProviderNo();
+			}
 		} catch (Exception e) {
 			log.error("Demographic " + demographicNo + " not found");
-			return null;
 		}
+
+		return providerNo;
+	}
+
+	// Find the provider from providerNo String
+	public static Provider getProviderFromString(String providerNo) {
+		Provider provider = null;
+		try {
+			Integer providerId = Integer.parseInt(providerNo);
+			if(providerCache.containsKey(providerId)) {
+				provider = providerCache.get(providerNo);
+			} else {
+				ProviderDao providerDao = new PatientExport().getApplicationContext().getBean(ProviderDao.class);
+				provider = providerDao.find(providerId);
+				providerCache.put(providerId, provider);
+			}
+		} catch (NumberFormatException e) {
+			log.error("Provider " + providerNo + " not found");
+		}
+
+		return provider;
 	}
 
 	// PatientExport Supplemental Functions

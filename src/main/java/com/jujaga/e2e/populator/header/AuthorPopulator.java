@@ -10,16 +10,15 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 
 import com.jujaga.e2e.model.export.header.AuthorModel;
 import com.jujaga.e2e.populator.AbstractPopulator;
+import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport;
-import com.jujaga.emr.dao.ProviderDao;
 import com.jujaga.emr.model.Provider;
 
 class AuthorPopulator extends AbstractPopulator {
 	private final AuthorModel authorModel;
 
 	AuthorPopulator(PatientExport patientExport) {
-		ProviderDao providerDao = patientExport.getApplicationContext().getBean(ProviderDao.class);
-		Provider provider = providerDao.find(Integer.parseInt(patientExport.getDemographic().getProviderNo()));
+		Provider provider = EverestUtils.getProviderFromString(patientExport.getDemographic().getProviderNo());
 		authorModel = new AuthorModel(provider);
 	}
 
