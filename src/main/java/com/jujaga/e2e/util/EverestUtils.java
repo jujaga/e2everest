@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -51,8 +51,8 @@ import com.jujaga.emr.model.Provider;
 
 public class EverestUtils {
 	private static Logger log = Logger.getLogger(EverestUtils.class.getName());
-	public static final Map<Integer, Demographic> demographicCache = new HashMap<Integer, Demographic>();
-	public static final Map<Integer, Provider> providerCache = new HashMap<Integer, Provider>();
+	public static final Map<Integer, Demographic> demographicCache = new ConcurrentHashMap<Integer, Demographic>();
+	public static final Map<Integer, Provider> providerCache = new ConcurrentHashMap<Integer, Provider>();
 
 	EverestUtils() {
 		throw new UnsupportedOperationException();
@@ -280,7 +280,7 @@ public class EverestUtils {
 		try {
 			Integer providerId = Integer.parseInt(providerNo);
 			if(providerCache.containsKey(providerId)) {
-				provider = providerCache.get(providerNo);
+				provider = providerCache.get(providerId);
 			} else {
 				ProviderDao providerDao = new PatientExport().getApplicationContext().getBean(ProviderDao.class);
 				provider = providerDao.find(providerId);

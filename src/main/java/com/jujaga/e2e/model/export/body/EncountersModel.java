@@ -1,18 +1,28 @@
 package com.jujaga.e2e.model.export.body;
 
+import java.util.ArrayList;
+
+import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.ST;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ParticipantRole;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PlayingEntity;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.model.export.template.ProviderParticipationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.CaseManagementNote;
@@ -24,6 +34,7 @@ public class EncountersModel {
 	private IVL<TS> effectiveTime;
 	private Participant2 encounterLocation;
 	private Participant2 encounterProvider;
+	private EntryRelationship encounterNote;
 
 	public EncountersModel(CaseManagementNote encounter) {
 		if(encounter == null) {
@@ -36,6 +47,7 @@ public class EncountersModel {
 		setEffectiveTime();
 		setEncounterLocation();
 		setEncounterProvider();
+		setEncounterNote();
 	}
 
 	public String getTextSummary() {
@@ -94,5 +106,36 @@ public class EncountersModel {
 
 	private void setEncounterProvider() {
 		this.encounterProvider = new ProviderParticipationModel(encounter.getProviderNo()).getProvider();
+	}
+
+	public EntryRelationship getEncounterNote() {
+		return encounterNote;
+	}
+
+	private void setEncounterNote() {
+		EntryRelationship entryRelationship = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(encounter.getNote())) {
+			entryRelationship = new EntryRelationship(x_ActRelationshipEntryRelationship.SUBJ, new BL(true));
+
+			CD<String> code = new CD<String>(Constants.ObservationType.COMMENT.toString());
+			code.setCodeSystem(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID);
+			code.setCodeSystemName(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME);
+
+			ST value = new ST(encounter.getNote().replaceAll("\\\\n", "\n"));
+
+			ArrayList<Author> authors = new ArrayList<Author>();
+			authors.add(new AuthorParticipationModel(encounter.getProviderNo()).getAuthor(encounter.getUpdate_date()));
+
+			Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+			observation.setId(getIds());
+			observation.setCode(code);
+			observation.setEffectiveTime(getEffectiveTime());
+			observation.setValue(value);
+			observation.setAuthor(authors);
+
+			entryRelationship.setClinicalStatement(observation);
+		}
+
+		this.encounterNote = entryRelationship;
 	}
 }

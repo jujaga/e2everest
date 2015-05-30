@@ -10,16 +10,24 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.marc.everest.datatypes.ANY;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.ST;
 import org.marc.everest.datatypes.TS;
+import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ParticipantRole;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PlayingEntity;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActClassObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -141,5 +149,46 @@ public class EncountersModelTest {
 	public void encounterProviderNullTest() {
 		Participant2 participant = nullEncountersModel.getEncounterProvider();
 		assertNotNull(participant);
+	}
+
+	@Test
+	public void encounterNoteTest() {
+		EntryRelationship entryRelationship = encountersModel.getEncounterNote();
+		assertNotNull(entryRelationship);
+		assertEquals(x_ActRelationshipEntryRelationship.SUBJ, entryRelationship.getTypeCode().getCode());
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+
+		Observation observation = entryRelationship.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(ActClassObservation.OBS, observation.getClassCode().getCode());
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+
+		assertNotNull(observation.getId());
+		assertEquals(encountersModel.getIds(), observation.getId());
+
+		CD<String> code = observation.getCode();
+		assertNotNull(code);
+		assertEquals(Constants.ObservationType.COMMENT.toString(), code.getCode());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME, code.getCodeSystemName());
+
+		assertNotNull(observation.getEffectiveTime());
+		assertEquals(encountersModel.getEffectiveTime(), observation.getEffectiveTime());
+
+		ANY value = observation.getValue();
+		assertNotNull(value);
+		assertEquals(ST.class, value.getDataType());
+		assertNotNull(((ST) value).getValue());
+		assertEquals(encounter.getNote().replaceAll("\\\\n", "\n"), ((ST) value).getValue());
+
+		assertNotNull(observation.getAuthor());
+		assertFalse(observation.getAuthor().isEmpty());
+		assertEquals(1, observation.getAuthor().size());
+	}
+
+	@Test
+	public void encounterNoteNullTest() {
+		EntryRelationship entryRelationship = nullEncountersModel.getEncounterNote();
+		assertNull(entryRelationship);
 	}
 }
