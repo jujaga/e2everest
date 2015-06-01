@@ -48,6 +48,7 @@ public class EncountersModel {
 		setEncounterLocation();
 		setEncounterProvider();
 		setEncounterNote();
+		// Reason Observation not included because icd9 code doesn't fit in Reason Observation template
 	}
 
 	public String getTextSummary() {
@@ -124,7 +125,7 @@ public class EncountersModel {
 			ST value = new ST(encounter.getNote().replaceAll("\\\\n", "\n"));
 
 			ArrayList<Author> authors = new ArrayList<Author>();
-			authors.add(new AuthorParticipationModel(encounter.getProviderNo()).getAuthor(encounter.getUpdate_date()));
+			authors.add(new AuthorParticipationModel(encounter.getSigning_provider_no()).getAuthor(encounter.getUpdate_date()));
 
 			Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
 			observation.setId(getIds());
