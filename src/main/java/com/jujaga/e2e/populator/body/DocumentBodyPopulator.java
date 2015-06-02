@@ -17,6 +17,7 @@ public class DocumentBodyPopulator extends AbstractPopulator {
 		populators.add(new AdvanceDirectivesPopulator());
 		populators.add(new ClinicallyMeasuredObservationsPopulator(patientExport));
 		populators.add(new EncountersPopulator(patientExport));
+		populators.add(new ImmunizationsPopulator(patientExport));
 		populators.add(new LabsPopulator(patientExport));
 		populators.add(new MedicationsPopulator(patientExport));
 		populators.add(new OrdersAndRequestsPopulator());

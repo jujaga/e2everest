@@ -19,6 +19,7 @@ import com.jujaga.emr.dao.Hl7TextInfoDao;
 import com.jujaga.emr.dao.MeasurementDao;
 import com.jujaga.emr.dao.MeasurementsExtDao;
 import com.jujaga.emr.dao.PatientLabRoutingDao;
+import com.jujaga.emr.dao.PreventionDao;
 import com.jujaga.emr.model.CaseManagementNote;
 import com.jujaga.emr.model.Demographic;
 import com.jujaga.emr.model.Drug;
@@ -27,6 +28,7 @@ import com.jujaga.emr.model.Hl7TextInfo;
 import com.jujaga.emr.model.Measurement;
 import com.jujaga.emr.model.MeasurementsExt;
 import com.jujaga.emr.model.PatientLabRouting;
+import com.jujaga.emr.model.Prevention;
 
 public class PatientExport {
 	private static Logger log = Logger.getLogger(PatientExport.class.getName());
@@ -36,6 +38,7 @@ public class PatientExport {
 	private MeasurementDao measurementDao = null;
 	private MeasurementsExtDao measurementsExtDao = null;
 	private CaseManagementNoteDao caseManagementNoteDao = null;
+	private PreventionDao preventionDao = null;
 	private PatientLabRoutingDao patientLabRoutingDao = null;
 	private Hl7TextInfoDao hl7TextInfoDao = null;
 	private DrugDao drugDao = null;
@@ -48,6 +51,7 @@ public class PatientExport {
 	private Demographic demographic = null;
 	private List<Measurement> measurements = null;
 	private List<CaseManagementNote> encounters = null;
+	private List<Prevention> preventions = null;
 	private List<Lab> labs = null;
 	private List<Drug> drugs = null;
 	private List<Dxresearch> problems = null;
@@ -67,6 +71,7 @@ public class PatientExport {
 		measurementDao = context.getBean(MeasurementDao.class);
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
 		caseManagementNoteDao = context.getBean(CaseManagementNoteDao.class);
+		preventionDao = context.getBean(PreventionDao.class);
 		patientLabRoutingDao = context.getBean(PatientLabRoutingDao.class);
 		hl7TextInfoDao = context.getBean(Hl7TextInfoDao.class);
 		drugDao = context.getBean(DrugDao.class);
@@ -94,6 +99,13 @@ public class PatientExport {
 		} catch (Exception e) {
 			log.error("loadPatient - Failed to load Encounters", e);
 			encounters = null;
+		}
+
+		try {
+			preventions = preventionDao.findNotDeletedByDemographicId(demographicNo);
+		} catch (Exception e) {
+			log.error("loadPatient - Failed to load Immunizations", e);
+			preventions = null;
 		}
 
 		try {
@@ -262,6 +274,10 @@ public class PatientExport {
 
 	public List<CaseManagementNote> getEncounters() {
 		return encounters;
+	}
+
+	public List<Prevention> getImmunizations() {
+		return preventions;
 	}
 
 	public List<Lab> getLabs() {
