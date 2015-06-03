@@ -1,5 +1,6 @@
 package com.jujaga.e2e.util;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -43,5 +44,13 @@ public class EverestUtilsTest {
 	public void prettyFormatXMLTest() {
 		assertNotNull(EverestUtils.prettyFormatXML("<test/>", Constants.XML.INDENT));
 		assertNull(EverestUtils.prettyFormatXML(null, Constants.XML.INDENT));
+	}
+
+	@Test
+	public void getPreventionTypeTest() {
+		assertNull(EverestUtils.getPreventionType(null));
+		assertNotNull(EverestUtils.preventionTypeCodes);
+		assertEquals(38, EverestUtils.preventionTypeCodes.size());
+		assertEquals("J07CA02", EverestUtils.getPreventionType("DTaP-HBV-IPV-Hib"));
 	}
 }

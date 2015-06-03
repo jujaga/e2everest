@@ -1,5 +1,6 @@
 package com.jujaga.e2e.util;
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,6 +23,9 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.jdom.Attribute;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 import org.marc.everest.datatypes.ADXP;
 import org.marc.everest.datatypes.AddressPartType;
 import org.marc.everest.datatypes.ENXP;
@@ -51,6 +56,9 @@ import com.jujaga.emr.model.Provider;
 
 public class EverestUtils {
 	private static Logger log = Logger.getLogger(EverestUtils.class.getName());
+	private static final String OSCAR_PREVENTIONITEMS_FILE = "/PreventionItems.xml";
+	protected static Map<String, String> preventionTypeCodes = null;
+
 	public static final Map<Integer, Demographic> demographicCache = new ConcurrentHashMap<Integer, Demographic>();
 	public static final Map<Integer, Provider> providerCache = new ConcurrentHashMap<Integer, Provider>();
 
@@ -253,7 +261,7 @@ public class EverestUtils {
 	}
 
 	/**
-	 * Database Caching Utility Functions
+	 * Caching Utility Functions
 	 */
 	// Find the provider of a given demographicNo
 	public static String getDemographicProviderNo(Integer demographicNo) {
@@ -311,5 +319,34 @@ public class EverestUtils {
 		}
 
 		return type;
+	}
+
+	// Find ATC code of prevention type
+	public static String getPreventionType(String type) {
+		if(preventionTypeCodes == null) {
+			preventionTypeCodes = new ConcurrentHashMap<String,String>();
+			try {
+				InputStream is = EverestUtils.class.getResourceAsStream(OSCAR_PREVENTIONITEMS_FILE);
+				Element root = new SAXBuilder().build(is).getRootElement();
+				@SuppressWarnings("unchecked")
+				List<Element> items = root.getChildren("item");
+				for(Element e : items) {
+					Attribute name = e.getAttribute("name");
+					Attribute atc = e.getAttribute("atc");
+					if(atc != null && !isNullorEmptyorWhitespace(atc.getValue())) {
+						preventionTypeCodes.put(name.getValue(), atc.getValue());
+					}
+				}
+				is.close();
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+		}
+
+		if(!isNullorEmptyorWhitespace(type) && preventionTypeCodes.containsKey(type)) {
+			return preventionTypeCodes.get(type);
+		}
+
+		return null;
 	}
 }
