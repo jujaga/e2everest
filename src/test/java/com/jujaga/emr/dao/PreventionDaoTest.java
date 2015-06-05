@@ -36,6 +36,6 @@ public class PreventionDaoTest {
 	public void findNotDeletedByDemographicIdTest() {
 		List<Prevention> preventions = preventionDao.findNotDeletedByDemographicId(Constants.Runtime.VALID_DEMOGRAPHIC);
 		assertNotNull(preventions);
-		assertEquals(0, preventions.size());
+		assertEquals(3, preventions.size());
 	}
 }

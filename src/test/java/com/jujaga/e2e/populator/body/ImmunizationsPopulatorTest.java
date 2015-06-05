@@ -26,10 +26,9 @@ public class ImmunizationsPopulatorTest extends AbstractBodyPopulatorTest {
 
 	@Test
 	public void immunizationsEntryCountTest() {
-		entryCountTest(0);
+		entryCountTest(3);
 	}
 
-	@Ignore
 	@Test
 	public void immunizationsEntryStructureTest() {
 		entryStructureTest();
@@ -45,8 +44,9 @@ public class ImmunizationsPopulatorTest extends AbstractBodyPopulatorTest {
 		SubstanceAdministration substanceAdministration = (SubstanceAdministration) clinicalStatement;
 		assertEquals(x_DocumentSubstanceMood.Eventoccurrence, substanceAdministration.getMoodCode().getCode());
 		assertNotNull(substanceAdministration.getId());
-		assertNotNull(substanceAdministration.getCode());
-		assertNotNull(substanceAdministration.getStatusCode());
+		assertNotNull(substanceAdministration.getEffectiveTime());
 		assertNotNull(substanceAdministration.getConsumable());
+		assertNotNull(substanceAdministration.getAuthor());
+		assertNotNull(substanceAdministration.getParticipant());
 	}
 }
