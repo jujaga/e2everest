@@ -57,7 +57,8 @@ public class ImmunizationsModel {
 	}
 
 	private void setNegationInd() {
-		this.negationInd = new BL(!prevention.getRefused().equals('0'));
+		Boolean isNegated = !prevention.getRefused().equals('0');
+		this.negationInd = new BL(isNegated);
 	}
 
 	public SET<II> getIds() {

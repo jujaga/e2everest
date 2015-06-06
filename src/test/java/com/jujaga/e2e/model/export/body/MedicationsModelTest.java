@@ -49,7 +49,7 @@ public class MedicationsModelTest {
 	}
 
 	@Test
-	public void medcicationsModelNullTest() {
+	public void medicationsModelNullTest() {
 		assertNotNull(new MedicationsModel(null));
 	}
 
