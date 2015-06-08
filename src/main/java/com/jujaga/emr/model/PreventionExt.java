@@ -10,23 +10,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Entity implementation class for Entity: MeasurementsExt
+ * Entity implementation class for Entity: PreventionExt
  *
  */
 @Entity
-@Table(name="measurementsExt")
-public class MeasurementsExt implements Serializable {
+@Table(name="preventionsExt")
+public class PreventionExt implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id = null;
-	@Column(name="measurement_id")
-	private Integer measurementId = null;
+	@Column(name="prevention_id")
+	private Integer preventionId = null;
 	private String keyVal = null;
 	private String val = null;
 
-	public MeasurementsExt() {
+	public PreventionExt() {
 		super();
 	}
 
@@ -38,12 +38,12 @@ public class MeasurementsExt implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getMeasurementId() {
-		return measurementId;
+	public Integer getPreventionId() {
+		return preventionId;
 	}
 
-	public void setMeasurementId(Integer measurementId) {
-		this.measurementId = measurementId;
+	public void setPreventionId(Integer preventionId) {
+		this.preventionId = preventionId;
 	}
 
 	public String getKeyVal() {

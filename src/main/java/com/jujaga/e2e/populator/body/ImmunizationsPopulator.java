@@ -16,25 +16,25 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 import com.jujaga.e2e.constant.BodyConstants.Immunizations;
 import com.jujaga.e2e.model.export.body.ImmunizationsModel;
 import com.jujaga.emr.PatientExport;
-import com.jujaga.emr.model.Prevention;
+import com.jujaga.emr.PatientExport.Immunization;
 
-public class ImmunizationsPopulator extends AbstractBodyPopulator<Prevention> {
-	private List<Prevention> preventions = null;
+public class ImmunizationsPopulator extends AbstractBodyPopulator<Immunization> {
+	private List<Immunization> immunizations = null;
 
 	ImmunizationsPopulator(PatientExport patientExport) {
 		bodyConstants = Immunizations.getConstants();
 		if(patientExport.isLoaded()) {
-			preventions = patientExport.getImmunizations();
+			immunizations = patientExport.getImmunizations();
 		}
 	}
 
 	@Override
 	public void populate() {
-		if(preventions != null) {
-			for(Prevention prevention : preventions) {
+		if(immunizations != null) {
+			for(Immunization immunization : immunizations) {
 				Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
 				entry.setTemplateId(Arrays.asList(new II(bodyConstants.ENTRY_TEMPLATE_ID)));
-				entry.setClinicalStatement(populateClinicalStatement(Arrays.asList(prevention)));
+				entry.setClinicalStatement(populateClinicalStatement(Arrays.asList(immunization)));
 				entries.add(entry);
 			}
 		}
@@ -43,7 +43,7 @@ public class ImmunizationsPopulator extends AbstractBodyPopulator<Prevention> {
 	}
 
 	@Override
-	public ClinicalStatement populateClinicalStatement(List<Prevention> list) {
+	public ClinicalStatement populateClinicalStatement(List<Immunization> list) {
 		ImmunizationsModel immunizationsModel = new ImmunizationsModel(list.get(0));
 		SubstanceAdministration substanceAdministration = new SubstanceAdministration(x_DocumentSubstanceMood.Eventoccurrence);
 		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
@@ -65,9 +65,9 @@ public class ImmunizationsPopulator extends AbstractBodyPopulator<Prevention> {
 	@Override
 	public List<String> populateText() {
 		List<String> list = new ArrayList<String>();
-		if(preventions != null) {
-			for(Prevention prevention : preventions) {
-				ImmunizationsModel immunizationsModel = new ImmunizationsModel(prevention);
+		if(immunizations != null) {
+			for(Immunization immunization : immunizations) {
+				ImmunizationsModel immunizationsModel = new ImmunizationsModel(immunization);
 				list.add(immunizationsModel.getTextSummary());
 			}
 		}

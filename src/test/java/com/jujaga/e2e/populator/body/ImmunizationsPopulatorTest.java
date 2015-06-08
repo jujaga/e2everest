@@ -34,7 +34,7 @@ public class ImmunizationsPopulatorTest extends AbstractBodyPopulatorTest {
 	}
 
 	@Test
-	public void medicationsClinicalStatementTest() {
+	public void immunizationsClinicalStatementTest() {
 		ClinicalStatement clinicalStatement = component.getSection().getEntry().get(0).getClinicalStatement();
 		assertNotNull(clinicalStatement);
 		assertTrue(clinicalStatement.isPOCD_MT000040UVSubstanceAdministration());

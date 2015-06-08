@@ -20,6 +20,7 @@ import com.jujaga.emr.dao.MeasurementDao;
 import com.jujaga.emr.dao.MeasurementsExtDao;
 import com.jujaga.emr.dao.PatientLabRoutingDao;
 import com.jujaga.emr.dao.PreventionDao;
+import com.jujaga.emr.dao.PreventionExtDao;
 import com.jujaga.emr.model.CaseManagementNote;
 import com.jujaga.emr.model.Demographic;
 import com.jujaga.emr.model.Drug;
@@ -29,6 +30,7 @@ import com.jujaga.emr.model.Measurement;
 import com.jujaga.emr.model.MeasurementsExt;
 import com.jujaga.emr.model.PatientLabRouting;
 import com.jujaga.emr.model.Prevention;
+import com.jujaga.emr.model.PreventionExt;
 
 public class PatientExport {
 	private static Logger log = Logger.getLogger(PatientExport.class.getName());
@@ -39,6 +41,7 @@ public class PatientExport {
 	private MeasurementsExtDao measurementsExtDao = null;
 	private CaseManagementNoteDao caseManagementNoteDao = null;
 	private PreventionDao preventionDao = null;
+	private PreventionExtDao preventionExtDao = null;
 	private PatientLabRoutingDao patientLabRoutingDao = null;
 	private Hl7TextInfoDao hl7TextInfoDao = null;
 	private DrugDao drugDao = null;
@@ -51,7 +54,7 @@ public class PatientExport {
 	private Demographic demographic = null;
 	private List<Measurement> measurements = null;
 	private List<CaseManagementNote> encounters = null;
-	private List<Prevention> preventions = null;
+	private List<Immunization> immunizations = null;
 	private List<Lab> labs = null;
 	private List<Drug> drugs = null;
 	private List<Dxresearch> problems = null;
@@ -72,6 +75,7 @@ public class PatientExport {
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
 		caseManagementNoteDao = context.getBean(CaseManagementNoteDao.class);
 		preventionDao = context.getBean(PreventionDao.class);
+		preventionExtDao = context.getBean(PreventionExtDao.class);
 		patientLabRoutingDao = context.getBean(PatientLabRoutingDao.class);
 		hl7TextInfoDao = context.getBean(Hl7TextInfoDao.class);
 		drugDao = context.getBean(DrugDao.class);
@@ -102,10 +106,15 @@ public class PatientExport {
 		}
 
 		try {
-			preventions = preventionDao.findNotDeletedByDemographicId(demographicNo);
+			immunizations = new ArrayList<Immunization>();
+			List<Prevention> preventions = preventionDao.findNotDeletedByDemographicId(demographicNo);
+			for(Prevention prevention : preventions) {
+				List<PreventionExt> preventionExts = preventionExtDao.findByPreventionId(prevention.getId());
+				immunizations.add(new Immunization(prevention, preventionExts));
+			}
 		} catch (Exception e) {
 			log.error("loadPatient - Failed to load Immunizations", e);
-			preventions = null;
+			immunizations = null;
 		}
 
 		try {
@@ -276,8 +285,8 @@ public class PatientExport {
 		return encounters;
 	}
 
-	public List<Prevention> getImmunizations() {
-		return preventions;
+	public List<Immunization> getImmunizations() {
+		return immunizations;
 	}
 
 	public List<Lab> getLabs() {
@@ -290,6 +299,31 @@ public class PatientExport {
 
 	public List<Dxresearch> getProblems() {
 		return problems;
+	}
+
+	// Supporting Immunization Subclass
+	public static class Immunization {
+		private Prevention prevention = new Prevention();
+		private Map<String, String> preventionMap = new HashMap<String, String>();
+
+		public Immunization(Prevention prevention, List<PreventionExt> preventionExt) {
+			if(prevention != null) {
+				this.prevention = prevention;
+			}
+			if(preventionExt != null) {
+				for(PreventionExt extElement : preventionExt) {
+					this.preventionMap.put(extElement.getKeyVal(), extElement.getVal());
+				}
+			}
+		}
+
+		public Prevention getPrevention() {
+			return prevention;
+		}
+
+		public Map<String, String> getPreventionMap() {
+			return preventionMap;
+		}
 	}
 
 	// Supporting Lab Grouping Subclasses
@@ -353,13 +387,7 @@ public class PatientExport {
 				this.measurement = measurement;
 			}
 			if(measurementsExt != null) {
-				mapMeasurementsExt(measurementsExt);
-			}
-		}
-
-		private void mapMeasurementsExt(List<MeasurementsExt> measurementsExts) {
-			if(measurementsExts != null) {
-				for(MeasurementsExt extElement : measurementsExts) {
+				for(MeasurementsExt extElement : measurementsExt) {
 					this.measurementsMap.put(extElement.getKeyVal(), extElement.getVal());
 				}
 			}

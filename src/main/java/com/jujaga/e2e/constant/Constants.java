@@ -24,6 +24,10 @@ public class Constants {
 		ProblemList, RiskFactors, Referrals, SocialHistory, SubstanceUse
 	}
 
+	public static enum PreventionExtKeys {
+		comments, dose, location, lot, manufacture, name, neverReason, route
+	}
+
 	public static enum MeasurementsExtKeys {
 		abnormal, accession, comments, datetime, identifier, labname, lab_no, maximum,
 		minimum, name, olis_status, other_id, range, request_datetime, unit
@@ -185,6 +189,7 @@ public class Constants {
 		public static final Integer VALID_LAB_NO = 9;
 		public static final Integer VALID_LAB_MEASUREMENT = 26;
 		public static final Integer VALID_MEASUREMENT = 2;
+		public static final Integer VALID_PREVENTION = 1;
 		public static final Integer VALID_PROVIDER = 999998;
 	}
 }

@@ -9,21 +9,21 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.template.ConsumableModel;
 import com.jujaga.e2e.util.EverestUtils;
-import com.jujaga.emr.model.Prevention;
+import com.jujaga.emr.PatientExport.Immunization;
 
 public class ImmunizationsModel {
-	private Prevention prevention;
+	private Immunization immunization;
 
 	private BL negationInd;
 	private SET<II> ids;
 	private CD<String> code;
 	private Consumable consumable;
 
-	public ImmunizationsModel(Prevention prevention) {
-		if(prevention == null) {
-			this.prevention = new Prevention();
+	public ImmunizationsModel(Immunization immunization) {
+		if(immunization == null) {
+			this.immunization = new Immunization(null, null);
 		} else {
-			this.prevention = prevention;
+			this.immunization = immunization;
 		}
 
 		setNegationInd();
@@ -35,15 +35,15 @@ public class ImmunizationsModel {
 	public String getTextSummary() {
 		StringBuilder sb = new StringBuilder();
 
-		if(!EverestUtils.isNullorEmptyorWhitespace(prevention.getPreventionType())) {
-			sb.append(prevention.getPreventionType());
+		if(!EverestUtils.isNullorEmptyorWhitespace(immunization.getPrevention().getPreventionType())) {
+			sb.append(immunization.getPrevention().getPreventionType());
 		}
-		if(prevention.getPreventionDate() != null) {
-			sb.append(" " + prevention.getPreventionDate());
+		if(immunization.getPrevention().getPreventionDate() != null) {
+			sb.append(" " + immunization.getPrevention().getPreventionDate());
 		}
-		if(prevention.getRefused().equals('1')) {
+		if(immunization.getPrevention().getRefused().equals('1')) {
 			sb.append(" Refused");
-		} else if(prevention.getRefused().equals('2')) {
+		} else if(immunization.getPrevention().getRefused().equals('2')) {
 			sb.append(" Ineligible");
 		} else {
 			sb.append(" Completed");
@@ -57,7 +57,7 @@ public class ImmunizationsModel {
 	}
 
 	private void setNegationInd() {
-		Boolean isNegated = !prevention.getRefused().equals('0');
+		Boolean isNegated = !(immunization.getPrevention().getRefused().equals('0'));
 		this.negationInd = new BL(isNegated);
 	}
 
@@ -66,7 +66,7 @@ public class ImmunizationsModel {
 	}
 
 	private void setIds() {
-		this.ids = EverestUtils.buildUniqueId(Constants.IdPrefixes.Immunizations, prevention.getId());
+		this.ids = EverestUtils.buildUniqueId(Constants.IdPrefixes.Immunizations, immunization.getPrevention().getId());
 	}
 
 	public CD<String> getCode() {
@@ -83,6 +83,6 @@ public class ImmunizationsModel {
 	}
 
 	private void setConsumable() {
-		this.consumable = new ConsumableModel().getConsumable(null); //TODO
+		this.consumable = new ConsumableModel().getConsumable(immunization); //TODO
 	}
 }
