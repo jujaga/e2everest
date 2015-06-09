@@ -51,7 +51,11 @@ public class ImmunizationsPopulator extends AbstractBodyPopulator<Immunization> 
 		substanceAdministration.setNegationInd(immunizationsModel.getNegationInd());
 		substanceAdministration.setId(immunizationsModel.getIds());
 		substanceAdministration.setCode(immunizationsModel.getCode());
+		substanceAdministration.setEffectiveTime(immunizationsModel.getEffectiveTime());
+		substanceAdministration.setRouteCode(immunizationsModel.getRoute());
 		substanceAdministration.setConsumable(immunizationsModel.getConsumable());
+		substanceAdministration.setAuthor(immunizationsModel.getAuthor());
+		substanceAdministration.setParticipant(immunizationsModel.getParticipant());
 
 		substanceAdministration.setEntryRelationship(entryRelationships);
 		return substanceAdministration;

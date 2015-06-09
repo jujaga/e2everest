@@ -1,12 +1,31 @@
 package com.jujaga.e2e.model.export.body;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.marc.everest.datatypes.BL;
+import org.marc.everest.datatypes.ED;
+import org.marc.everest.datatypes.ENXP;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.PN;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.CE;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.datatypes.interfaces.ISetComponent;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ParticipantRole;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PlayingEntity;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.model.export.template.ConsumableModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.Immunization;
@@ -17,7 +36,11 @@ public class ImmunizationsModel {
 	private BL negationInd;
 	private SET<II> ids;
 	private CD<String> code;
+	private ArrayList<ISetComponent<TS>> effectiveTime;
+	private CE<String> route;
 	private Consumable consumable;
+	private ArrayList<Author> authors;
+	private ArrayList<Participant2> participant;
 
 	public ImmunizationsModel(Immunization immunization) {
 		if(immunization == null) {
@@ -29,7 +52,12 @@ public class ImmunizationsModel {
 		setNegationInd();
 		setIds();
 		setCode();
+		setEffectiveTime();
+		setRoute();
+		// Dose not included because freetext dose can't be converted to IVL_PQ representation safely
 		setConsumable();
+		setAuthor();
+		setParticipant();
 	}
 
 	public String getTextSummary() {
@@ -78,11 +106,79 @@ public class ImmunizationsModel {
 		this.code.setCodeSystemName(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME);
 	}
 
+	public ArrayList<ISetComponent<TS>> getEffectiveTime() {
+		return effectiveTime;
+	}
+
+	private void setEffectiveTime() {
+		TS startTime = EverestUtils.buildTSFromDate(immunization.getPrevention().getPreventionDate());
+
+		IVL<TS> ivl = new IVL<TS>();
+		if(startTime == null) {
+			startTime = new TS();
+			startTime.setNullFlavor(NullFlavor.Unknown);
+		}
+		ivl.setLow(startTime);
+
+		this.effectiveTime = new ArrayList<ISetComponent<TS>>();
+		this.effectiveTime.add(ivl);
+	}
+
+	public CE<String> getRoute() {
+		return route;
+	}
+
+	private void setRoute() {
+		CE<String> route = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(immunization.getPreventionMap().get(Constants.PreventionExtKeys.route.toString()))) {
+			route = new CE<String>();
+			route.setNullFlavor(NullFlavor.Other);
+			route.setCodeSystem(Constants.CodeSystems.ROUTE_OF_ADMINISTRATION_OID);
+			route.setCodeSystemName(Constants.CodeSystems.ROUTE_OF_ADMINISTRATION_NAME);
+			route.setOriginalText(new ED(immunization.getPreventionMap().get(Constants.PreventionExtKeys.route.toString())));
+		}
+
+		this.route = route;
+	}
+
 	public Consumable getConsumable() {
 		return consumable;
 	}
 
 	private void setConsumable() {
-		this.consumable = new ConsumableModel().getConsumable(immunization); //TODO
+		this.consumable = new ConsumableModel().getConsumable(immunization);
+	}
+
+	public ArrayList<Author> getAuthor() {
+		return authors;
+	}
+
+	private void setAuthor() {
+		ArrayList<Author> authors = new ArrayList<Author>();
+		authors.add(new AuthorParticipationModel(immunization.getPrevention().getProviderNo()).getAuthor(immunization.getPrevention().getCreationDate()));
+		this.authors = authors;
+	}
+
+	public ArrayList<Participant2> getParticipant() {
+		return participant;
+	}
+
+	private void setParticipant() {
+		Participant2 participant = new Participant2(ParticipationType.LOC, ContextControl.OverridingPropagating);
+		ParticipantRole participantRole = new ParticipantRole(new CD<String>(Constants.RoleClass.SDLOC.toString()));
+		PlayingEntity playingEntity = new PlayingEntity(EntityClassRoot.Organization);
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(immunization.getPreventionMap().get(Constants.PreventionExtKeys.location.toString()))) {
+			SET<PN> names = new SET<PN>();
+			ArrayList<ENXP> name = new ArrayList<ENXP>();
+			name.add(new ENXP(immunization.getPreventionMap().get(Constants.PreventionExtKeys.location.toString())));
+			names.add(new PN(null, name));
+			playingEntity.setName(names);
+		}
+
+		participantRole.setPlayingEntityChoice(playingEntity);
+		participant.setParticipantRole(participantRole);
+
+		this.participant = new ArrayList<Participant2>(Arrays.asList(participant));
 	}
 }

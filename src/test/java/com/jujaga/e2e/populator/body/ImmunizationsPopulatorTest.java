@@ -42,9 +42,9 @@ public class ImmunizationsPopulatorTest extends AbstractBodyPopulatorTest {
 		SubstanceAdministration substanceAdministration = (SubstanceAdministration) clinicalStatement;
 		assertEquals(x_DocumentSubstanceMood.Eventoccurrence, substanceAdministration.getMoodCode().getCode());
 		assertNotNull(substanceAdministration.getId());
-		//assertNotNull(substanceAdministration.getEffectiveTime());
+		assertNotNull(substanceAdministration.getEffectiveTime());
 		assertNotNull(substanceAdministration.getConsumable());
-		//assertNotNull(substanceAdministration.getAuthor());
-		//assertNotNull(substanceAdministration.getParticipant());
+		assertNotNull(substanceAdministration.getAuthor());
+		assertNotNull(substanceAdministration.getParticipant());
 	}
 }
