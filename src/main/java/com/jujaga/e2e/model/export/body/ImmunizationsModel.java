@@ -17,16 +17,23 @@ import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.datatypes.interfaces.ISetComponent;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ParticipantRole;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PlayingEntity;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubstanceMood;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.model.export.template.ConsumableModel;
+import com.jujaga.e2e.model.export.template.observation.CommentObservationModel;
+import com.jujaga.e2e.model.export.template.observation.DateObservationModel;
+import com.jujaga.e2e.model.export.template.observation.ReasonObservationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.Immunization;
 
@@ -41,6 +48,10 @@ public class ImmunizationsModel {
 	private Consumable consumable;
 	private ArrayList<Author> authors;
 	private ArrayList<Participant2> participant;
+	private EntryRelationship antigenType;
+	private EntryRelationship refusalReason;
+	private EntryRelationship nextDate;
+	private EntryRelationship comment;
 
 	public ImmunizationsModel(Immunization immunization) {
 		if(immunization == null) {
@@ -58,6 +69,10 @@ public class ImmunizationsModel {
 		setConsumable();
 		setAuthor();
 		setParticipant();
+		setAntigenType();
+		setRefusalReason();
+		setNextDate();
+		setComment();
 	}
 
 	public String getTextSummary() {
@@ -180,5 +195,46 @@ public class ImmunizationsModel {
 		participant.setParticipantRole(participantRole);
 
 		this.participant = new ArrayList<Participant2>(Arrays.asList(participant));
+	}
+
+	public EntryRelationship getAntigenType() {
+		return antigenType;
+	}
+
+	private void setAntigenType() {
+		Immunization immunization = null;
+		EntryRelationship entryRelationship = new EntryRelationship();
+		Consumable consumable = new ConsumableModel().getConsumable(immunization);
+		SubstanceAdministration substanceAdministration = new SubstanceAdministration(x_DocumentSubstanceMood.Eventoccurrence, consumable);
+
+		entryRelationship.setTypeCode(x_ActRelationshipEntryRelationship.HasComponent);
+		entryRelationship.setContextConductionInd(true);
+		entryRelationship.setClinicalStatement(substanceAdministration);
+
+		this.antigenType = entryRelationship;
+	}
+
+	public EntryRelationship getRefusalReason() {
+		return refusalReason;
+	}
+
+	private void setRefusalReason() {
+		this.refusalReason = new ReasonObservationModel().getEntryRelationship(immunization.getPreventionMap().get(Constants.PreventionExtKeys.neverReason.toString()), immunization.getPrevention().getCreationDate(), immunization.getPrevention().getProviderNo());
+	}
+
+	public EntryRelationship getNextDate() {
+		return nextDate;
+	}
+
+	private void setNextDate() {
+		this.nextDate = new DateObservationModel().getEntryRelationship(immunization.getPrevention().getNextDate());
+	}
+
+	public EntryRelationship getComment() {
+		return comment;
+	}
+
+	private void setComment() {
+		this.comment = new CommentObservationModel().getEntryRelationship(immunization.getPreventionMap().get(Constants.PreventionExtKeys.comments.toString()), immunization.getPrevention().getCreationDate(), immunization.getPrevention().getProviderNo());
 	}
 }

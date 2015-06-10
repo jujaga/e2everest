@@ -57,6 +57,11 @@ public class ImmunizationsPopulator extends AbstractBodyPopulator<Immunization> 
 		substanceAdministration.setAuthor(immunizationsModel.getAuthor());
 		substanceAdministration.setParticipant(immunizationsModel.getParticipant());
 
+		entryRelationships.add(immunizationsModel.getAntigenType());
+		entryRelationships.add(immunizationsModel.getRefusalReason());
+		entryRelationships.add(immunizationsModel.getNextDate());
+		entryRelationships.add(immunizationsModel.getComment());
+
 		substanceAdministration.setEntryRelationship(entryRelationships);
 		return substanceAdministration;
 	}

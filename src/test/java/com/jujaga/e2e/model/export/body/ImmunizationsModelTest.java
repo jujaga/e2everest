@@ -26,12 +26,15 @@ import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.datatypes.interfaces.ISetComponent;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Consumable;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ParticipantRole;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PlayingEntity;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.SubstanceAdministration;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -253,5 +256,69 @@ public class ImmunizationsModelTest {
 		assertNotNull(playingEntity);
 		assertEquals(EntityClassRoot.Organization, playingEntity.getClassCode().getCode());
 		assertNull(playingEntity.getName());
+	}
+
+	@Test
+	public void antigenTypeTest() {
+		EntryRelationship entryRelationship = immunizationsModel.getAntigenType();
+		assertNotNull(entryRelationship);
+		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+
+		SubstanceAdministration substanceAdministration = entryRelationship.getClinicalStatementIfSubstanceAdministration();
+		assertNotNull(substanceAdministration);
+
+		Consumable consumable = substanceAdministration.getConsumable();
+		assertNotNull(consumable);
+	}
+
+	@Test
+	public void antigenTypeNullTest() {
+		EntryRelationship entryRelationship = nullImmunizationsModel.getAntigenType();
+		assertNotNull(entryRelationship);
+		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+
+		SubstanceAdministration substanceAdministration = entryRelationship.getClinicalStatementIfSubstanceAdministration();
+		assertNotNull(substanceAdministration);
+
+		Consumable consumable = substanceAdministration.getConsumable();
+		assertNotNull(consumable);
+	}
+
+	@Test
+	public void reasonTest() {
+		EntryRelationship entryRelationship = immunizationsModel.getRefusalReason();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void reasonNullTest() {
+		EntryRelationship entryRelationship = nullImmunizationsModel.getRefusalReason();
+		assertNull(entryRelationship);
+	}
+
+	@Test
+	public void nextDateTest() {
+		EntryRelationship entryRelationship = immunizationsModel.getNextDate();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void nextDateNullTest() {
+		EntryRelationship entryRelationship = nullImmunizationsModel.getNextDate();
+		assertNull(entryRelationship);
+	}
+
+	@Test
+	public void commentTest() {
+		EntryRelationship entryRelationship = immunizationsModel.getComment();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void commentNullTest() {
+		EntryRelationship entryRelationship = nullImmunizationsModel.getComment();
+		assertNull(entryRelationship);
 	}
 }

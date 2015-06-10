@@ -21,11 +21,11 @@ INSERT INTO CASEMGMT_NOTE VALUES(9,0,0,'',1,'','',NULL,NULL,1,0,NULL,NULL,'Ginse
 INSERT INTO CASEMGMT_NOTE VALUES(10,0,0,'',1,'','',NULL,NULL,1,0,NULL,NULL,'Heart Attack','2013-09-26 16:20:35',NULL,0,'10016','999998','1','0',1,'999998','2013-09-26 16:20:35','de752b1b-9eb5-451d-870b-6e2a59f8d055');
 
 -- Immunizations
-INSERT INTO PREVENTIONS VALUES(1,'2013-09-27 14:01:22','999998','0',1,'2013-09-27 14:01:22','0',NULL,'2012-09-01','Td','999998',NULL,'0');
+INSERT INTO PREVENTIONS VALUES(1,'2013-09-27 14:01:22','999998','0',1,'2013-09-27 14:01:22','0','2015-06-10','2012-09-01','Td','999998',NULL,'0');
 INSERT INTO PREVENTIONS VALUES(2,'2013-09-27 14:01:44','999998','0',1,'2013-09-27 14:01:44','0',NULL,'2009-02-01','Flu','999998',NULL,'1');
 INSERT INTO PREVENTIONS VALUES(3,'2013-09-27 14:02:19','999998','0',1,'2013-09-27 14:02:19','0',NULL,'2012-10-31','Pneumovax','999998',NULL,'2');
-INSERT INTO PREVENTIONSEXT VALUES(1,'location',1,'clinic'),(2,'lot',1,'1234'),(3,'route',1,'left deltoid'),(4,'dose',1,NULL),(5,'comments',1,NULL),(6,'neverReason',1,NULL),(7,'manufacture',1,NULL),(8,'name',1,NULL);
-INSERT INTO PREVENTIONSEXT VALUES(9,'location',2,NULL),(10,'lot',2,NULL),(11,'route',2,NULL),(12,'dose',2,NULL),(13,'comments',2,NULL),(14,'neverReason',2,NULL),(15,'manufacture',2,NULL),(16,'name',2,NULL);
+INSERT INTO PREVENTIONSEXT VALUES(1,'location',1,'clinic'),(2,'lot',1,'1234'),(3,'route',1,'left deltoid'),(4,'dose',1,NULL),(5,'comments',1,'comment'),(6,'neverReason',1,'test'),(7,'manufacture',1,NULL),(8,'name',1,NULL);
+INSERT INTO PREVENTIONSEXT VALUES(9,'location',2,NULL),(10,'lot',2,NULL),(11,'route',2,NULL),(12,'dose',2,NULL),(13,'comments',2,NULL),(14,'neverReason',2,'allergic'),(15,'manufacture',2,NULL),(16,'name',2,NULL);
 INSERT INTO PREVENTIONSEXT VALUES(17,'location',3,'hospital'),(18,'lot',3,NULL),(19,'route',3,'right deltoid'),(20,'dose',3,NULL),(21,'comments',3,NULL),(22,'neverReason',3,NULL),(23,'manufacture',3,NULL),(24,'name',3,NULL);
 
 -- Labs
