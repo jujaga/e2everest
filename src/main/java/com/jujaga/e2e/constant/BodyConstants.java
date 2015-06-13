@@ -46,6 +46,30 @@ public class BodyConstants {
 		}
 	}
 
+	public static class Allergies extends AbstractBodyConstants {
+		protected static AbstractBodyConstants bodyConstants = null;
+
+		private Allergies() {
+			SECTION_PRIORITY = SectionPriority.SHALL;
+			WITH_ENTRIES_TITLE = "Allergies and Intolerances (Reaction List) [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Allergies and Intolerances (Reaction List) [without entries]";
+			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.4.1";
+			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.4";
+			CODE = "48765-2";
+			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
+			ENTRY_TEMPLATE_ID = Constants.TemplateOids.ALLERGY_INTOLERANCE_OBSERVATION_TEMPLATE_ID;
+			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
+		}
+
+		public static AbstractBodyConstants getConstants() {
+			if(bodyConstants == null) {
+				bodyConstants = new Allergies();
+			}
+			return bodyConstants;
+		}
+	}
+
 	public static class ClinicallyMeasuredObservations extends AbstractBodyConstants {
 		protected static AbstractBodyConstants bodyConstants = null;
 

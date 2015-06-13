@@ -11,6 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.dao.AllergyDao;
 import com.jujaga.emr.dao.CaseManagementNoteDao;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.DrugDao;
@@ -21,6 +22,7 @@ import com.jujaga.emr.dao.MeasurementsExtDao;
 import com.jujaga.emr.dao.PatientLabRoutingDao;
 import com.jujaga.emr.dao.PreventionDao;
 import com.jujaga.emr.dao.PreventionExtDao;
+import com.jujaga.emr.model.Allergy;
 import com.jujaga.emr.model.CaseManagementNote;
 import com.jujaga.emr.model.Demographic;
 import com.jujaga.emr.model.Drug;
@@ -37,6 +39,7 @@ public class PatientExport {
 	private static ApplicationContext context = null;
 
 	private DemographicDao demographicDao = null;
+	private AllergyDao allergyDao = null;
 	private MeasurementDao measurementDao = null;
 	private MeasurementsExtDao measurementsExtDao = null;
 	private CaseManagementNoteDao caseManagementNoteDao = null;
@@ -52,6 +55,7 @@ public class PatientExport {
 
 	private Boolean loaded = false;
 	private Demographic demographic = null;
+	private List<Allergy> allergies = null;
 	private List<Measurement> measurements = null;
 	private List<CaseManagementNote> encounters = null;
 	private List<Immunization> immunizations = null;
@@ -71,6 +75,7 @@ public class PatientExport {
 		}
 
 		demographicDao = context.getBean(DemographicDao.class);
+		allergyDao = context.getBean(AllergyDao.class);
 		measurementDao = context.getBean(MeasurementDao.class);
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
 		caseManagementNoteDao = context.getBean(CaseManagementNoteDao.class);
@@ -89,6 +94,13 @@ public class PatientExport {
 		if(demographic == null) {
 			log.error("Demographic ".concat(demographicNo.toString()).concat(" can't be loaded"));
 			return false;
+		}
+
+		try {
+			allergies = allergyDao.findAllergies(demographicNo);
+		} catch (Exception e) {
+			log.error("loadPatient - Failed to load Allergies", e);
+			allergies = null;
 		}
 
 		try {
@@ -275,6 +287,10 @@ public class PatientExport {
 
 	public Demographic getDemographic() {
 		return demographic;
+	}
+
+	public List<Allergy> getAllergies() {
+		return allergies;
 	}
 
 	public List<Measurement> getMeasurements() {

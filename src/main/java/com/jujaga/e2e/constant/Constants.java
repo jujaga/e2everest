@@ -153,6 +153,7 @@ public class Constants {
 
 	public static class TemplateOids {
 		public static final String ADVANCE_DIRECTIVES_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.1";
+		public static final String ALLERGY_INTOLERANCE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.3";
 		public static final String AUTHOR_PARTICIPATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.2";
 		public static final String CLINICALLY_MEASURED_OBSERVATIONS_ORGANIZER_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.7";
 		public static final String DOSE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.8";
