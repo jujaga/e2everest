@@ -43,6 +43,10 @@ public class AllergiesPopulatorTest extends AbstractBodyPopulatorTest {
 		Act act = (Act) clinicalStatement;
 		assertEquals(x_ActClassDocumentEntryAct.Act, act.getClassCode().getCode());
 		assertEquals(x_DocumentActMood.Eventoccurrence, act.getMoodCode().getCode());
-		//assertNotNull(act.getId());
+		assertNotNull(act.getId());
+		assertNotNull(act.getCode());
+		assertNotNull(act.getStatusCode());
+		assertNotNull(act.getEffectiveTime());
+		assertNotNull(act.getEntryRelationship());
 	}
 }

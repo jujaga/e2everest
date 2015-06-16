@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.II;
-import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Act;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
@@ -16,6 +15,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentActMood;
 
 import com.jujaga.e2e.constant.BodyConstants.Allergies;
+import com.jujaga.e2e.model.export.body.AllergiesModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.Allergy;
 
@@ -45,11 +45,16 @@ public class AllergiesPopulator extends AbstractBodyPopulator<Allergy> {
 
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<Allergy> list) {
-		//AllergiesModel allergiesModel = new AllergiesModel(list.get(0));
+		AllergiesModel allergiesModel = new AllergiesModel(list.get(0));
 		Act act = new Act(x_ActClassDocumentEntryAct.Act, x_DocumentActMood.Eventoccurrence);
 		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
 
-		act.setNullFlavor(NullFlavor.NoInformation);
+		act.setId(allergiesModel.getIds());
+		act.setCode(allergiesModel.getCode());
+		act.setStatusCode(allergiesModel.getStatusCode());
+		act.setEffectiveTime(allergiesModel.getEffectiveTime());
+
+		entryRelationships.add(allergiesModel.getAllergyObservation());
 
 		act.setEntryRelationship(entryRelationships);
 		return act;
@@ -63,14 +68,12 @@ public class AllergiesPopulator extends AbstractBodyPopulator<Allergy> {
 	@Override
 	public List<String> populateText() {
 		List<String> list = new ArrayList<String>();
-		/*
 		if(allergies != null) {
 			for(Allergy allergy : allergies) {
-				AllergiesModel allergiesModel = new AllergiesModel(allergies);
+				AllergiesModel allergiesModel = new AllergiesModel(allergy);
 				list.add(allergiesModel.getTextSummary());
 			}
 		}
-		 */
 
 		return list;
 	}
