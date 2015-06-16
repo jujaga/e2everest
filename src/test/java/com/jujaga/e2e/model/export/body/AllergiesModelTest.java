@@ -14,18 +14,26 @@ import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ParticipantRole;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PlayingEntity;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActClassObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.AllergyDao;
 import com.jujaga.emr.model.Allergy;
@@ -189,7 +197,7 @@ public class AllergiesModelTest {
 	public void adverseEventCodeTest() {
 		CD<String> code = allergiesModel.getAdverseEventCode();
 		assertNotNull(code);
-		assertEquals("TBD", code.getCode());
+		assertEquals(Mappings.reactionTypeCode.get(allergy.getTypeCode()), code.getCode());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, code.getCodeSystem());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, code.getCodeSystemName());
 	}
@@ -198,9 +206,8 @@ public class AllergiesModelTest {
 	public void adverseEventCodeNullTest() {
 		CD<String> code = nullAllergiesModel.getAdverseEventCode();
 		assertNotNull(code);
-		assertEquals("TBD", code.getCode());
-		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, code.getCodeSystem());
-		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, code.getCodeSystemName());
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.Unknown, code.getNullFlavor().getCode());
 	}
 
 	@Test
@@ -216,5 +223,56 @@ public class AllergiesModelTest {
 		assertNotNull(ivl);
 		assertTrue(ivl.isNull());
 		assertEquals(NullFlavor.Unknown, ivl.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void allergenStructureTest() {
+		Participant2 provider = nullAllergiesModel.getAllergen().get(0);
+		assertNotNull(provider);
+		assertEquals(ParticipationType.Consumable, provider.getTypeCode().getCode());
+		assertEquals(ContextControl.OverridingPropagating, provider.getContextControlCode().getCode());
+
+		ParticipantRole participantRole = provider.getParticipantRole();
+		assertNotNull(participantRole);
+		assertEquals(Constants.RoleClass.MANU.toString(), participantRole.getClassCode().getCode());
+
+		PlayingEntity playingEntity = participantRole.getPlayingEntityChoiceIfPlayingEntity();
+		assertNotNull(playingEntity);
+		assertEquals(EntityClassRoot.ManufacturedMaterial, playingEntity.getClassCode().getCode());
+		assertNotNull(playingEntity.getCode());
+		assertNotNull(playingEntity.getName());
+	}
+
+	@Test
+	public void allergenCodedTest() {
+		String test = "test";
+		allergy.setRegionalIdentifier(test);
+		allergiesModel = new AllergiesModel(allergy);
+
+		Participant2 provider = allergiesModel.getAllergen().get(0);
+		assertNotNull(provider);
+
+		PlayingEntity playingEntity = provider.getParticipantRole().getPlayingEntityChoiceIfPlayingEntity();
+		assertNotNull(playingEntity);
+
+		CE<String> code = playingEntity.getCode();
+		assertNotNull(code);
+		assertEquals(test, code.getCode());
+		assertEquals(Constants.CodeSystems.DIN_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.DIN_NAME, code.getCodeSystemName());
+	}
+
+	@Test
+	public void allergenUncodedTest() {
+		Participant2 provider = allergiesModel.getAllergen().get(0);
+		assertNotNull(provider);
+
+		PlayingEntity playingEntity = provider.getParticipantRole().getPlayingEntityChoiceIfPlayingEntity();
+		assertNotNull(playingEntity);
+
+		CE<String> code = playingEntity.getCode();
+		assertNotNull(code);
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
 	}
 }

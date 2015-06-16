@@ -48,6 +48,18 @@ public class Mappings {
 		languageCode = Collections.unmodifiableMap(map);
 	}
 
+	public static final Map<Integer, String> reactionTypeCode;
+	static {
+		Map<Integer, String> map = new HashMap<Integer, String>();
+		map.put(8, Constants.ReactionTypeCode.DALG.toString());
+		map.put(10, Constants.ReactionTypeCode.DALG.toString());
+		map.put(11, Constants.ReactionTypeCode.DALG.toString());
+		map.put(12, Constants.ReactionTypeCode.ALG.toString());
+		map.put(13, Constants.ReactionTypeCode.DALG.toString());
+		map.put(14, Constants.ReactionTypeCode.ALG.toString());
+		reactionTypeCode = Collections.unmodifiableMap(map);
+	}
+
 	// Mock icd9 description mapping
 	public static final Map<String, String> icd9Map;
 	static {

@@ -38,8 +38,12 @@ public class Constants {
 		OUTCOBS, PRNIND, REACTOBS, REASON, RECLINK, SEV, TRTNOTE, UNBOUND
 	}
 
+	public static enum ReactionTypeCode {
+		ALG, DALG, DINT, DNAINT, EALG, EINT, ENAINT, FALG, FINT, FNAINT, NAINT, OINT
+	}
+
 	public static enum RoleClass {
-		PAT, PROV, ROL, SDLOC
+		MANU, PAT, PROV, ROL, SDLOC
 	}
 
 	public static enum SubstanceAdministrationType {

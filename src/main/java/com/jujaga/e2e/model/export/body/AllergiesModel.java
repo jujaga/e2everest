@@ -1,21 +1,32 @@
 package com.jujaga.e2e.model.export.body;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.marc.everest.datatypes.BL;
+import org.marc.everest.datatypes.ENXP;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.PN;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Participant2;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ParticipantRole;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.PlayingEntity;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.EntityClassRoot;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationType;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Allergy;
 
@@ -112,6 +123,7 @@ public class AllergiesModel {
 
 		observation.setCode(getAdverseEventCode());
 		observation.setEffectiveTime(getOnsetDate());
+		observation.setParticipant(getAllergen());
 
 		observation.setEntryRelationship(entryRelationships);
 		entryRelationship.setClinicalStatement(observation);
@@ -121,9 +133,14 @@ public class AllergiesModel {
 
 	protected CD<String> getAdverseEventCode() {
 		CD<String> code = new CD<String>();
-		code.setCodeEx("TBD"); //TODO Add Enum for ReactionTypeCode (page 395)
-		code.setCodeSystem(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID);
-		code.setCodeSystemName(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME);
+		if(Mappings.reactionTypeCode.containsKey(allergy.getTypeCode())) {
+			code.setCodeEx(Mappings.reactionTypeCode.get(allergy.getTypeCode()));
+			code.setCodeSystem(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID);
+			code.setCodeSystemName(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME);
+		} else {
+			code.setNullFlavor(NullFlavor.Unknown);
+		}
+
 		return code;
 	}
 
@@ -137,5 +154,30 @@ public class AllergiesModel {
 		}
 
 		return ivl;
+	}
+
+	protected ArrayList<Participant2> getAllergen() {
+		Participant2 participant = new Participant2(ParticipationType.Consumable, ContextControl.OverridingPropagating);
+		ParticipantRole participantRole = new ParticipantRole(new CD<String>(Constants.RoleClass.MANU.toString()));
+		PlayingEntity playingEntity = new PlayingEntity(EntityClassRoot.ManufacturedMaterial);
+
+		CE<String> code = new CE<String>();
+		if(!EverestUtils.isNullorEmptyorWhitespace(allergy.getRegionalIdentifier())) {
+			code.setCodeEx(allergy.getRegionalIdentifier());
+			code.setCodeSystem(Constants.CodeSystems.DIN_OID);
+			code.setCodeSystemName(Constants.CodeSystems.DIN_NAME);
+		} else {
+			code.setNullFlavor(NullFlavor.NoInformation);
+		}
+
+		SET<PN> names = new SET<PN>(new PN(null, Arrays.asList(new ENXP(allergy.getDescription()))));
+
+		playingEntity.setCode(code);
+		playingEntity.setName(names);
+
+		participantRole.setPlayingEntityChoice(playingEntity);
+		participant.setParticipantRole(participantRole);
+
+		return new ArrayList<Participant2>(Arrays.asList(participant));
 	}
 }
