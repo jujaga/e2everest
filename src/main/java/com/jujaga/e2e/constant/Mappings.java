@@ -60,6 +60,28 @@ public class Mappings {
 		reactionTypeCode = Collections.unmodifiableMap(map);
 	}
 
+	public static final Map<String, String> lifeStageCode;
+	static {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("N", "133933007");
+		map.put("I", "133931009");
+		map.put("C", "410601007");
+		map.put("T", "133937008");
+		map.put("A", "133936004");
+		lifeStageCode = Collections.unmodifiableMap(map);
+	}
+
+	public static final Map<String, String> lifeStageName;
+	static {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("N", "Newborn");
+		map.put("I", "Infant");
+		map.put("C", "Child");
+		map.put("T", "Adolescent");
+		map.put("A", "Adult");
+		lifeStageName = Collections.unmodifiableMap(map);
+	}
+
 	// Mock icd9 description mapping
 	public static final Map<String, String> icd9Map;
 	static {

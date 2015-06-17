@@ -27,6 +27,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelations
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Mappings;
+import com.jujaga.e2e.model.export.template.observation.LifestageObservationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Allergy;
 
@@ -125,6 +126,9 @@ public class AllergiesModel {
 		observation.setEffectiveTime(getOnsetDate());
 		observation.setParticipant(getAllergen());
 
+		entryRelationships.add(getAllergenGroup());
+		entryRelationships.add(getLifestage());
+
 		observation.setEntryRelationship(entryRelationships);
 		entryRelationship.setClinicalStatement(observation);
 
@@ -179,5 +183,26 @@ public class AllergiesModel {
 		participant.setParticipantRole(participantRole);
 
 		return new ArrayList<Participant2>(Arrays.asList(participant));
+	}
+
+	protected EntryRelationship getAllergenGroup() {
+		EntryRelationship entryRelationship = new EntryRelationship(x_ActRelationshipEntryRelationship.HasComponent, new BL(true));
+		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+
+		CD<String> code = new CD<String>("ALRGRP", Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID);
+		code.setCodeSystemName(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME);
+
+		CD<String> value = new CD<String>();
+		value.setNullFlavor(NullFlavor.NoInformation);
+
+		observation.setCode(code);
+		observation.setValue(value);
+
+		entryRelationship.setClinicalStatement(observation);
+		return entryRelationship;
+	}
+
+	protected EntryRelationship getLifestage() {
+		return new LifestageObservationModel().getEntryRelationship(allergy.getLifeStage());
 	}
 }

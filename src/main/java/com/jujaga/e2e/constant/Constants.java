@@ -34,7 +34,7 @@ public class Constants {
 	}
 
 	public static enum ObservationType {
-		ALRGRP, CLINSTAT, COMMENT, DATEOBS, ICD9CODE, INSTRUCT, NXTENCREAS,
+		ALRGRP, CLINSTAT, COMMENT, DATEOBS, ICD9CODE, INSTRUCT, LIFEOBS, NXTENCREAS,
 		OUTCOBS, PRNIND, REACTOBS, REASON, RECLINK, SEV, TRTNOTE, UNBOUND
 	}
 
@@ -136,7 +136,7 @@ public class Constants {
 		public static final String ROUTE_OF_ADMINISTRATION_NAME = "RouteOfAdministration";
 		public static final String SECTIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.2";
 		public static final String SECTIONTYPE_CA_PENDING_NAME = "SectionType-CA-Pending";
-		public static final String SNOMED_CT_OID = "2.16.840.1.113883.6.69";
+		public static final String SNOMED_CT_OID = "2.16.840.1.113883.6.96";
 		public static final String SNOMED_CT_NAME = "SNOMED-CT";
 	}
 
@@ -144,6 +144,7 @@ public class Constants {
 		public static final String COMMENT_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.3";
 		public static final String DATE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.4";
 		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
+		public static final String LIFESTAGE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.12";
 		public static final String ORDER_INDICATOR_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.37";
 		public static final String REASON_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.24";
 		public static final String SECONDARY_CODE_ICD9_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.28";

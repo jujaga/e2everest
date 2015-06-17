@@ -172,7 +172,7 @@ public class AllergiesModelTest {
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
 		assertNotNull(observation.getCode());
 		assertNotNull(observation.getEffectiveTime());
-		//assertNotNull(observation.getParticipant());
+		assertNotNull(observation.getParticipant());
 		assertNotNull(observation.getEntryRelationship());
 	}
 
@@ -189,7 +189,7 @@ public class AllergiesModelTest {
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
 		assertNotNull(observation.getCode());
 		assertNotNull(observation.getEffectiveTime());
-		//assertNotNull(observation.getParticipant());
+		assertNotNull(observation.getParticipant());
 		assertNotNull(observation.getEntryRelationship());
 	}
 
@@ -274,5 +274,49 @@ public class AllergiesModelTest {
 		assertNotNull(code);
 		assertTrue(code.isNull());
 		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void allergyGroupTest() {
+		EntryRelationship entryRelationship = allergiesModel.getAllergenGroup();
+		assertNotNull(entryRelationship);
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
+
+		Observation observation = entryRelationship.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(ActClassObservation.OBS, observation.getClassCode().getCode());
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+
+		assertNotNull(observation.getCode());
+		assertEquals("ALRGRP", observation.getCode().getCode());
+		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, observation.getCode().getCodeSystem());
+		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, observation.getCode().getCodeSystemName());
+
+		assertNotNull(observation.getValue());
+		assertTrue(observation.getValue().isNull());
+		assertEquals(NullFlavor.NoInformation, observation.getValue().getNullFlavor().getCode());
+	}
+
+	@Test
+	public void allergyGroupNullTest() {
+		EntryRelationship entryRelationship = allergiesModel.getAllergenGroup();
+		assertNotNull(entryRelationship);
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
+
+		Observation observation = entryRelationship.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(ActClassObservation.OBS, observation.getClassCode().getCode());
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+
+		assertNotNull(observation.getCode());
+		assertEquals("ALRGRP", observation.getCode().getCode());
+		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, observation.getCode().getCodeSystem());
+		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, observation.getCode().getCodeSystemName());
+
+		assertNotNull(observation.getValue());
+		assertTrue(observation.getValue().isNull());
+		assertEquals(NullFlavor.NoInformation, observation.getValue().getNullFlavor().getCode());
 	}
 }
