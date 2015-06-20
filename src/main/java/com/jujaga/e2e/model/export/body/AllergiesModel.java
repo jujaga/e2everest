@@ -28,6 +28,8 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelations
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.model.export.template.observation.LifestageObservationModel;
+import com.jujaga.e2e.model.export.template.observation.ReactionObservationModel;
+import com.jujaga.e2e.model.export.template.observation.SeverityObservationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.Allergy;
 
@@ -128,6 +130,8 @@ public class AllergiesModel {
 
 		entryRelationships.add(getAllergenGroup());
 		entryRelationships.add(getLifestage());
+		entryRelationships.add(getReaction());
+		entryRelationships.add(getSeverity());
 
 		observation.setEntryRelationship(entryRelationships);
 		entryRelationship.setClinicalStatement(observation);
@@ -204,5 +208,13 @@ public class AllergiesModel {
 
 	protected EntryRelationship getLifestage() {
 		return new LifestageObservationModel().getEntryRelationship(allergy.getLifeStage());
+	}
+
+	protected EntryRelationship getReaction() {
+		return new ReactionObservationModel().getEntryRelationship(allergy.getReaction(), allergy.getStartDate(), allergy.getProviderNo(), allergy.getEntryDate(), allergy.getSeverityOfReaction());
+	}
+
+	protected EntryRelationship getSeverity() {
+		return new SeverityObservationModel().getEntryRelationship(allergy.getSeverityOfReaction());
 	}
 }

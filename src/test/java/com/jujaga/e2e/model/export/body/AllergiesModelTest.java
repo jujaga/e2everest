@@ -3,6 +3,7 @@ package com.jujaga.e2e.model.export.body;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.log4j.Level;
@@ -318,5 +319,41 @@ public class AllergiesModelTest {
 		assertNotNull(observation.getValue());
 		assertTrue(observation.getValue().isNull());
 		assertEquals(NullFlavor.NoInformation, observation.getValue().getNullFlavor().getCode());
+	}
+
+	@Test
+	public void lifeStageTest() {
+		EntryRelationship entryRelationship = allergiesModel.getLifestage();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void lifeStageNullTest() {
+		EntryRelationship entryRelationship = nullAllergiesModel.getLifestage();
+		assertNull(entryRelationship);
+	}
+
+	@Test
+	public void reactionTest() {
+		EntryRelationship entryRelationship = allergiesModel.getReaction();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void reactionNullTest() {
+		EntryRelationship entryRelationship = nullAllergiesModel.getReaction();
+		assertNull(entryRelationship);
+	}
+
+	@Test
+	public void severityTest() {
+		EntryRelationship entryRelationship = allergiesModel.getSeverity();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void severityNullTest() {
+		EntryRelationship entryRelationship = nullAllergiesModel.getSeverity();
+		assertNotNull(entryRelationship);
 	}
 }

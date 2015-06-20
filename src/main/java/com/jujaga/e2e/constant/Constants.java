@@ -128,6 +128,8 @@ public class Constants {
 		public static final String OBSERVATION_INTERPRETATION_NAME = "ObservationInterpretation";
 		public static final String OBSERVATIONTYPE_CA_PENDING_OID = "2.16.840.1.113883.3.3068.10.6.3";
 		public static final String OBSERVATIONTYPE_CA_PENDING_NAME = "ObservationType-CA-Pending";
+		public static final String OBSERVATION_VALUE_OID = "2.16.840.1.113883.5.1063";
+		public static final String OBSERVATION_VALUE_NAME = "ObservationValue";
 		public static final String PCLOCD_OID = "2.16.840.1.113883.2.20.5.1";
 		public static final String PCLOCD_NAME = "pCLOCD";
 		public static final String ROLE_CLASS_OID = "2.16.840.1.113883.3.3068.10.8.30";
@@ -146,8 +148,10 @@ public class Constants {
 		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
 		public static final String LIFESTAGE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.12";
 		public static final String ORDER_INDICATOR_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.37";
+		public static final String REACTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.23";
 		public static final String REASON_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.24";
 		public static final String SECONDARY_CODE_ICD9_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.28";
+		public static final String SEVERITY_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.30";
 		public static final String UNBOUND_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.32";
 	}
 

@@ -82,6 +82,24 @@ public class Mappings {
 		lifeStageName = Collections.unmodifiableMap(map);
 	}
 
+	public static final Map<String, String> allergyTestValue;
+	static {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("1", "A2");
+		map.put("2", "A3");
+		map.put("3", "A4");
+		allergyTestValue = Collections.unmodifiableMap(map);
+	}
+
+	public static final Map<String, String> allergyTestName;
+	static {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("1", "mild reaction");
+		map.put("2", "moderate reaction");
+		map.put("3", "severe reaction");
+		allergyTestName = Collections.unmodifiableMap(map);
+	}
+
 	// Mock icd9 description mapping
 	public static final Map<String, String> icd9Map;
 	static {
