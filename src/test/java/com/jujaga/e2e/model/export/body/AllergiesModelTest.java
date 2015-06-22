@@ -290,7 +290,7 @@ public class AllergiesModelTest {
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
 
 		assertNotNull(observation.getCode());
-		assertEquals("ALRGRP", observation.getCode().getCode());
+		assertEquals(Constants.ObservationType.ALRGRP.toString(), observation.getCode().getCode());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, observation.getCode().getCodeSystem());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, observation.getCode().getCodeSystemName());
 
@@ -301,7 +301,7 @@ public class AllergiesModelTest {
 
 	@Test
 	public void allergyGroupNullTest() {
-		EntryRelationship entryRelationship = allergiesModel.getAllergenGroup();
+		EntryRelationship entryRelationship = nullAllergiesModel.getAllergenGroup();
 		assertNotNull(entryRelationship);
 		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
 		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
@@ -312,7 +312,7 @@ public class AllergiesModelTest {
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
 
 		assertNotNull(observation.getCode());
-		assertEquals("ALRGRP", observation.getCode().getCode());
+		assertEquals(Constants.ObservationType.ALRGRP.toString(), observation.getCode().getCode());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID, observation.getCode().getCodeSystem());
 		assertEquals(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME, observation.getCode().getCodeSystemName());
 
@@ -355,5 +355,57 @@ public class AllergiesModelTest {
 	public void severityNullTest() {
 		EntryRelationship entryRelationship = nullAllergiesModel.getSeverity();
 		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void clinicalStatusTest() {
+		EntryRelationship entryRelationship = allergiesModel.getClinicalStatus();
+		assertNotNull(entryRelationship);
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+		assertEquals(x_ActRelationshipEntryRelationship.SUBJ, entryRelationship.getTypeCode().getCode());
+
+		Observation observation = entryRelationship.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(ActClassObservation.OBS, observation.getClassCode().getCode());
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+
+		assertNotNull(observation.getCode());
+		assertEquals(Constants.ObservationType.CLINSTAT.toString(), observation.getCode().getCode());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID, observation.getCode().getCodeSystem());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME, observation.getCode().getCodeSystemName());
+
+		assertNotNull(observation.getText());
+		assertTrue(observation.getText().isNull());
+		assertEquals(NullFlavor.NoInformation, observation.getText().getNullFlavor().getCode());
+
+		assertNotNull(observation.getValue());
+		assertTrue(observation.getValue().isNull());
+		assertEquals(NullFlavor.NoInformation, observation.getValue().getNullFlavor().getCode());
+	}
+
+	@Test
+	public void clinicalStatusNullTest() {
+		EntryRelationship entryRelationship = nullAllergiesModel.getClinicalStatus();
+		assertNotNull(entryRelationship);
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+		assertEquals(x_ActRelationshipEntryRelationship.SUBJ, entryRelationship.getTypeCode().getCode());
+
+		Observation observation = entryRelationship.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(ActClassObservation.OBS, observation.getClassCode().getCode());
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+
+		assertNotNull(observation.getCode());
+		assertEquals(Constants.ObservationType.CLINSTAT.toString(), observation.getCode().getCode());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID, observation.getCode().getCodeSystem());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME, observation.getCode().getCodeSystemName());
+
+		assertNotNull(observation.getText());
+		assertTrue(observation.getText().isNull());
+		assertEquals(NullFlavor.NoInformation, observation.getText().getNullFlavor().getCode());
+
+		assertNotNull(observation.getValue());
+		assertTrue(observation.getValue().isNull());
+		assertEquals(NullFlavor.NoInformation, observation.getValue().getNullFlavor().getCode());
 	}
 }

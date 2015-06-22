@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.marc.everest.datatypes.BL;
+import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.ENXP;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
@@ -132,6 +133,7 @@ public class AllergiesModel {
 		entryRelationships.add(getLifestage());
 		entryRelationships.add(getReaction());
 		entryRelationships.add(getSeverity());
+		entryRelationships.add(getClinicalStatus());
 
 		observation.setEntryRelationship(entryRelationships);
 		entryRelationship.setClinicalStatement(observation);
@@ -193,7 +195,7 @@ public class AllergiesModel {
 		EntryRelationship entryRelationship = new EntryRelationship(x_ActRelationshipEntryRelationship.HasComponent, new BL(true));
 		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
 
-		CD<String> code = new CD<String>("ALRGRP", Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID);
+		CD<String> code = new CD<String>(Constants.ObservationType.ALRGRP.toString(), Constants.CodeSystems.ACT_CODE_CODESYSTEM_OID);
 		code.setCodeSystemName(Constants.CodeSystems.ACT_CODE_CODESYSTEM_NAME);
 
 		CD<String> value = new CD<String>();
@@ -216,5 +218,26 @@ public class AllergiesModel {
 
 	protected EntryRelationship getSeverity() {
 		return new SeverityObservationModel().getEntryRelationship(allergy.getSeverityOfReaction());
+	}
+
+	protected EntryRelationship getClinicalStatus() {
+		EntryRelationship entryRelationship = new EntryRelationship(x_ActRelationshipEntryRelationship.SUBJ, new BL(true));
+		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+
+		CD<String> code = new CD<String>(Constants.ObservationType.CLINSTAT.toString(), Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID);
+		code.setCodeSystemName(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME);
+
+		ED text = new ED();
+		text.setNullFlavor(NullFlavor.NoInformation);
+
+		CD<String> value = new CD<String>();
+		value.setNullFlavor(NullFlavor.NoInformation);
+
+		observation.setCode(code);
+		observation.setText(text);
+		observation.setValue(value);
+
+		entryRelationship.setClinicalStatement(observation);
+		return entryRelationship;
 	}
 }
