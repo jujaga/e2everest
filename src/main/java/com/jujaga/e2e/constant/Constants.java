@@ -162,11 +162,13 @@ public class Constants {
 
 	public static class TemplateOids {
 		public static final String ADVANCE_DIRECTIVES_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.1";
+		public static final String ALERTS_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.2";
 		public static final String ALLERGY_INTOLERANCE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.3";
 		public static final String AUTHOR_PARTICIPATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.2";
 		public static final String CLINICALLY_MEASURED_OBSERVATIONS_ORGANIZER_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.7";
 		public static final String DOSE_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.8";
 		public static final String ENCOUNTER_EVENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.9";
+		public static final String FAMILY_HISTORY_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.10";
 		public static final String IMMUNIZATION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.11";
 		public static final String INSTRUCTION_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.35";
 		public static final String LABS_OBSERVATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.12";
@@ -179,6 +181,7 @@ public class Constants {
 		public static final String PROVIDER_PARTICIPATION_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.21";
 		public static final String RESULT_COMPONENT_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.25";
 		public static final String RESULT_ORGANIZER_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.4.26";
+		public static final String RISK_FACTORS_ORGANIZER_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.3.17";
 	}
 
 	/**

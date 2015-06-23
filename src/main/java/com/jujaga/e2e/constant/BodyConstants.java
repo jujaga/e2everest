@@ -6,7 +6,7 @@ public class BodyConstants {
 	}
 
 	public static enum SectionPriority {
-		SHALL, SHOULD, MAY
+		MAY, SHALL, SHOULD
 	}
 
 	public abstract static class AbstractBodyConstants {
@@ -41,6 +41,30 @@ public class BodyConstants {
 		public static AbstractBodyConstants getConstants() {
 			if(bodyConstants == null) {
 				bodyConstants = new AdvanceDirectives();
+			}
+			return bodyConstants;
+		}
+	}
+
+	public static class Alerts extends AbstractBodyConstants {
+		protected static AbstractBodyConstants bodyConstants = null;
+
+		private Alerts() {
+			SECTION_PRIORITY = SectionPriority.SHALL;
+			WITH_ENTRIES_TITLE = "Alerts [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Alerts [without entries]";
+			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.3.1";
+			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.3";
+			CODE = "ALERTS";
+			CODE_SYSTEM = Constants.CodeSystems.SECTIONTYPE_CA_PENDING_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.SECTIONTYPE_CA_PENDING_NAME;
+			ENTRY_TEMPLATE_ID = Constants.TemplateOids.ALERTS_OBSERVATION_TEMPLATE_ID;
+			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
+		}
+
+		public static AbstractBodyConstants getConstants() {
+			if(bodyConstants == null) {
+				bodyConstants = new Alerts();
 			}
 			return bodyConstants;
 		}
@@ -117,6 +141,30 @@ public class BodyConstants {
 		public static AbstractBodyConstants getConstants() {
 			if(bodyConstants == null) {
 				bodyConstants = new Encounters();
+			}
+			return bodyConstants;
+		}
+	}
+
+	public static class FamilyHistory extends AbstractBodyConstants {
+		protected static AbstractBodyConstants bodyConstants = null;
+
+		private FamilyHistory() {
+			SECTION_PRIORITY = SectionPriority.SHALL;
+			WITH_ENTRIES_TITLE = "Family History [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Family History [without entries]";
+			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.13.1";
+			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.13";
+			CODE = "10157-6";
+			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
+			ENTRY_TEMPLATE_ID = Constants.TemplateOids.FAMILY_HISTORY_OBSERVATION_TEMPLATE_ID;
+			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
+		}
+
+		public static AbstractBodyConstants getConstants() {
+			if(bodyConstants == null) {
+				bodyConstants = new FamilyHistory();
 			}
 			return bodyConstants;
 		}
@@ -250,5 +298,28 @@ public class BodyConstants {
 			return bodyConstants;
 		}
 	}
-}
 
+	public static class RiskFactors extends AbstractBodyConstants {
+		protected static AbstractBodyConstants bodyConstants = null;
+
+		private RiskFactors() {
+			SECTION_PRIORITY = SectionPriority.SHALL;
+			WITH_ENTRIES_TITLE = "Risk Factors [with entries]";
+			WITHOUT_ENTRIES_TITLE = "Risk Factors [without entries]";
+			WITH_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.24.1";
+			WITHOUT_ENTRIES_TEMPLATE_ID = "2.16.840.1.113883.3.1818.10.2.24";
+			CODE = "46467-7";
+			CODE_SYSTEM = Constants.CodeSystems.LOINC_OID;
+			CODE_SYSTEM_NAME = Constants.CodeSystems.LOINC_NAME;
+			ENTRY_TEMPLATE_ID = Constants.TemplateOids.RISK_FACTORS_ORGANIZER_TEMPLATE_ID;
+			ENTRY_NO_TEXT = Constants.SectionSupport.SECTION_SUPPORTED_NO_DATA;
+		}
+
+		public static AbstractBodyConstants getConstants() {
+			if(bodyConstants == null) {
+				bodyConstants = new RiskFactors();
+			}
+			return bodyConstants;
+		}
+	}
+}
