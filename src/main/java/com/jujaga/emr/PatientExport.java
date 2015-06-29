@@ -12,6 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.AllergyDao;
+import com.jujaga.emr.dao.CaseManagementIssueDao;
 import com.jujaga.emr.dao.CaseManagementNoteDao;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.DrugDao;
@@ -23,6 +24,7 @@ import com.jujaga.emr.dao.PatientLabRoutingDao;
 import com.jujaga.emr.dao.PreventionDao;
 import com.jujaga.emr.dao.PreventionExtDao;
 import com.jujaga.emr.model.Allergy;
+import com.jujaga.emr.model.CaseManagementIssue;
 import com.jujaga.emr.model.CaseManagementNote;
 import com.jujaga.emr.model.Demographic;
 import com.jujaga.emr.model.Drug;
@@ -42,6 +44,7 @@ public class PatientExport {
 	private AllergyDao allergyDao = null;
 	private MeasurementDao measurementDao = null;
 	private MeasurementsExtDao measurementsExtDao = null;
+	private CaseManagementIssueDao caseManagementIssueDao = null;
 	private CaseManagementNoteDao caseManagementNoteDao = null;
 	private PreventionDao preventionDao = null;
 	private PreventionExtDao preventionExtDao = null;
@@ -57,7 +60,10 @@ public class PatientExport {
 	private Demographic demographic = null;
 	private List<Allergy> allergies = null;
 	private List<Measurement> measurements = null;
+	private List<CaseManagementNote> alerts = null;
 	private List<CaseManagementNote> encounters = null;
+	private List<CaseManagementNote> familyHistory = null;
+	private List<CaseManagementNote> riskFactors = null;
 	private List<Immunization> immunizations = null;
 	private List<Lab> labs = null;
 	private List<Drug> drugs = null;
@@ -78,6 +84,7 @@ public class PatientExport {
 		allergyDao = context.getBean(AllergyDao.class);
 		measurementDao = context.getBean(MeasurementDao.class);
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
+		caseManagementIssueDao = context.getBean(CaseManagementIssueDao.class);
 		caseManagementNoteDao = context.getBean(CaseManagementNoteDao.class);
 		preventionDao = context.getBean(PreventionDao.class);
 		preventionExtDao = context.getBean(PreventionExtDao.class);
@@ -150,7 +157,14 @@ public class PatientExport {
 			problems = null;
 		}
 
+		parseCaseManagement(demographicNo);
+
 		return true;
+	}
+
+	private void parseCaseManagement(Integer demographicNo) {
+		List<CaseManagementIssue> caseManagementIssues = caseManagementIssueDao.getIssuesByDemographic(demographicNo.toString());
+		caseManagementIssues.isEmpty();
 	}
 
 	private List<Measurement> assembleMeasurements(Integer demographicNo) {
@@ -297,8 +311,20 @@ public class PatientExport {
 		return measurements;
 	}
 
+	public List<CaseManagementNote> getAlerts() {
+		return alerts;
+	}
+
 	public List<CaseManagementNote> getEncounters() {
 		return encounters;
+	}
+
+	public List<CaseManagementNote> getFamilyHistory() {
+		return familyHistory;
+	}
+
+	public List<CaseManagementNote> getRiskFactors() {
+		return riskFactors;
 	}
 
 	public List<Immunization> getImmunizations() {

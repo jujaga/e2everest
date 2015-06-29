@@ -24,8 +24,8 @@ public class Constants {
 		ProblemList, RiskFactors, Referrals, SocialHistory, SubstanceUse
 	}
 
-	public static enum PreventionExtKeys {
-		comments, dose, location, lot, manufacture, name, neverReason, route
+	public static enum IssueCodes {
+		OMeds, SocHistory, MedHistory, Concerns, Reminders, FamHistory, RiskFactors
 	}
 
 	public static enum MeasurementsExtKeys {
@@ -36,6 +36,10 @@ public class Constants {
 	public static enum ObservationType {
 		ALRGRP, CLINSTAT, COMMENT, DATEOBS, ICD9CODE, INSTRUCT, LIFEOBS, NXTENCREAS,
 		OUTCOBS, PRNIND, REACTOBS, REASON, RECLINK, SEV, TRTNOTE, UNBOUND
+	}
+
+	public static enum PreventionExtKeys {
+		comments, dose, location, lot, manufacture, name, neverReason, route
 	}
 
 	public static enum ReactionTypeCode {

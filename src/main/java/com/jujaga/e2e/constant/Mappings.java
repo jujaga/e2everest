@@ -100,6 +100,20 @@ public class Mappings {
 		allergyTestName = Collections.unmodifiableMap(map);
 	}
 
+	// Mock issueId mapping
+	public static final Map<String, Long> issueId;
+	static {
+		Map<String, Long> map = new HashMap<String, Long>();
+		map.put(Constants.IssueCodes.OMeds.toString(), 65l);
+		map.put(Constants.IssueCodes.SocHistory.toString(), 66l);
+		map.put(Constants.IssueCodes.MedHistory.toString(), 67l);
+		map.put(Constants.IssueCodes.Concerns.toString(), 68l);
+		map.put(Constants.IssueCodes.Reminders.toString(), 69l);
+		map.put(Constants.IssueCodes.FamHistory.toString(), 70l);
+		map.put(Constants.IssueCodes.RiskFactors.toString(), 71l);
+		issueId = Collections.unmodifiableMap(map);
+	}
+
 	// Mock icd9 description mapping
 	public static final Map<String, String> icd9Map;
 	static {
