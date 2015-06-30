@@ -17,6 +17,8 @@ import org.marc.everest.datatypes.generic.PIVL;
 import org.marc.everest.datatypes.interfaces.ISetComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.AdministrativeGender;
 
+import com.jujaga.e2e.constant.Constants.IssueCodes;
+
 public class Mappings {
 	Mappings() {
 		throw new UnsupportedOperationException();
@@ -101,16 +103,16 @@ public class Mappings {
 	}
 
 	// Mock issueId mapping
-	public static final Map<String, Long> issueId;
+	public static final Map<IssueCodes, Long> issueId;
 	static {
-		Map<String, Long> map = new HashMap<String, Long>();
-		map.put(Constants.IssueCodes.OMeds.toString(), 65l);
-		map.put(Constants.IssueCodes.SocHistory.toString(), 66l);
-		map.put(Constants.IssueCodes.MedHistory.toString(), 67l);
-		map.put(Constants.IssueCodes.Concerns.toString(), 68l);
-		map.put(Constants.IssueCodes.Reminders.toString(), 69l);
-		map.put(Constants.IssueCodes.FamHistory.toString(), 70l);
-		map.put(Constants.IssueCodes.RiskFactors.toString(), 71l);
+		Map<IssueCodes, Long> map = new HashMap<IssueCodes, Long>();
+		map.put(Constants.IssueCodes.OMeds, 65L);
+		map.put(Constants.IssueCodes.SocHistory, 66L);
+		map.put(Constants.IssueCodes.MedHistory, 67L);
+		map.put(Constants.IssueCodes.Concerns, 68L);
+		map.put(Constants.IssueCodes.Reminders, 69L);
+		map.put(Constants.IssueCodes.FamHistory, 70L);
+		map.put(Constants.IssueCodes.RiskFactors, 71L);
 		issueId = Collections.unmodifiableMap(map);
 	}
 

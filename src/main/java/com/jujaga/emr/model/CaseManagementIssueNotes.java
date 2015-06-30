@@ -20,7 +20,7 @@ public class CaseManagementIssueNotes implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Long note_id;
+	private Integer note_id;
 
 	public CaseManagementIssueNotes() {
 		super();
@@ -34,11 +34,11 @@ public class CaseManagementIssueNotes implements Serializable {
 		this.id = id;
 	}
 
-	public Long getNote_id() {
+	public Integer getNote_id() {
 		return note_id;
 	}
 
-	public void setNote_id(Long note_id) {
+	public void setNote_id(Integer note_id) {
 		this.note_id = note_id;
 	}
 }

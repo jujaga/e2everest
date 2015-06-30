@@ -1,23 +1,31 @@
 package com.jujaga.e2e.populator.body;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 
 import com.jujaga.e2e.constant.BodyConstants.Alerts;
 import com.jujaga.emr.PatientExport;
+import com.jujaga.emr.model.CaseManagementNote;
 
-public class AlertsPopulator extends AbstractBodyPopulator<AlertsPopulator> {
+public class AlertsPopulator extends AbstractBodyPopulator<CaseManagementNote> {
+	private List<CaseManagementNote> alerts = null;
+
 	AlertsPopulator(PatientExport patientExport) {
 		bodyConstants = Alerts.getConstants();
 		if(patientExport.isLoaded()) {
-			populateClinicalStatement(Arrays.asList(this));
+			alerts = patientExport.getAlerts();
 		}
 	}
 
 	@Override
-	public ClinicalStatement populateClinicalStatement(List<AlertsPopulator> list) {
+	public void populate() {
+		populateClinicalStatement(alerts);
+		super.populate();
+	}
+
+	@Override
+	public ClinicalStatement populateClinicalStatement(List<CaseManagementNote> list) {
 		return null;
 	}
 

@@ -36,6 +36,6 @@ public class CaseManagementIssueDaoTest {
 	public void getIssuesByDemographicTest() {
 		List<CaseManagementIssue> cmIssues = caseManagementIssueDao.getIssuesByDemographic(Constants.Runtime.VALID_DEMOGRAPHIC.toString());
 		assertNotNull(cmIssues);
-		assertEquals(0, cmIssues.size());
+		assertEquals(3, cmIssues.size());
 	}
 }

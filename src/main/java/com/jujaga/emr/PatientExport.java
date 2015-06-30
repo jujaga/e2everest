@@ -10,9 +10,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.dao.AllergyDao;
 import com.jujaga.emr.dao.CaseManagementIssueDao;
+import com.jujaga.emr.dao.CaseManagementIssueNotesDao;
 import com.jujaga.emr.dao.CaseManagementNoteDao;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.DrugDao;
@@ -45,6 +47,7 @@ public class PatientExport {
 	private MeasurementDao measurementDao = null;
 	private MeasurementsExtDao measurementsExtDao = null;
 	private CaseManagementIssueDao caseManagementIssueDao = null;
+	private CaseManagementIssueNotesDao caseManagementIssueNotesDao = null;
 	private CaseManagementNoteDao caseManagementNoteDao = null;
 	private PreventionDao preventionDao = null;
 	private PreventionExtDao preventionExtDao = null;
@@ -85,6 +88,7 @@ public class PatientExport {
 		measurementDao = context.getBean(MeasurementDao.class);
 		measurementsExtDao = context.getBean(MeasurementsExtDao.class);
 		caseManagementIssueDao = context.getBean(CaseManagementIssueDao.class);
+		caseManagementIssueNotesDao = context.getBean(CaseManagementIssueNotesDao.class);
 		caseManagementNoteDao = context.getBean(CaseManagementNoteDao.class);
 		preventionDao = context.getBean(PreventionDao.class);
 		preventionExtDao = context.getBean(PreventionExtDao.class);
@@ -163,8 +167,87 @@ public class PatientExport {
 	}
 
 	private void parseCaseManagement(Integer demographicNo) {
-		List<CaseManagementIssue> caseManagementIssues = caseManagementIssueDao.getIssuesByDemographic(demographicNo.toString());
-		caseManagementIssues.isEmpty();
+		if(encounters != null) {
+			List<CaseManagementIssue> caseManagementIssues = caseManagementIssueDao.getIssuesByDemographic(demographicNo.toString());
+			List<String> cmRiskFactorIssues = new ArrayList<String>();
+			List<String> cmFamilyHistoryIssues = new ArrayList<String>();
+			List<String> cmAlertsIssues = new ArrayList<String>();
+
+			if(caseManagementIssues != null) {
+				for(CaseManagementIssue entry : caseManagementIssues) {
+					if(entry.getIssue_id() == Mappings.issueId.get(Constants.IssueCodes.RiskFactors) ||
+							entry.getIssue_id() == Mappings.issueId.get(Constants.IssueCodes.SocHistory)) {
+						cmRiskFactorIssues.add(entry.getId().toString());
+					}
+					else if(entry.getIssue_id() == Mappings.issueId.get(Constants.IssueCodes.FamHistory)) {
+						cmFamilyHistoryIssues.add(entry.getId().toString());
+					}
+					else if(entry.getIssue_id() == Mappings.issueId.get(Constants.IssueCodes.Reminders)) {
+						cmAlertsIssues.add(entry.getId().toString());
+					}
+				}
+			}
+
+			try {
+				List<Integer> cmRiskFactorNotes = caseManagementIssueNotesDao.getNoteIdsWhichHaveIssues(cmRiskFactorIssues.toArray(new String[cmRiskFactorIssues.size()]));
+				List<Long> cmRiskFactorNotesLong = new ArrayList<Long>();
+				if(cmRiskFactorNotes != null) {
+					riskFactors = new ArrayList<CaseManagementNote>();
+					for(Integer i : cmRiskFactorNotes) {
+						cmRiskFactorNotesLong.add(Long.parseLong(String.valueOf(i)));
+					}
+				}
+
+				for(CaseManagementNote entry : encounters) {
+					if(cmRiskFactorNotesLong.contains(entry.getId())) {
+						riskFactors.add(entry);
+					}
+				}
+			} catch (Exception e) {
+				log.error("loadPatient - Failed to load Risk Factors/Personal History", e);
+				riskFactors = null;
+			}
+
+			try {
+				List<Integer> cmFamilyHistoryNotes = caseManagementIssueNotesDao.getNoteIdsWhichHaveIssues(cmFamilyHistoryIssues.toArray(new String[cmFamilyHistoryIssues.size()]));
+				List<Long> cmFamilyHistoryNotesLong = new ArrayList<Long>();
+				if(cmFamilyHistoryNotes != null) {
+					familyHistory = new ArrayList<CaseManagementNote>();
+					for(Integer i : cmFamilyHistoryNotes) {
+						cmFamilyHistoryNotesLong.add(Long.parseLong(String.valueOf(i)));
+					}
+				}
+
+				for(CaseManagementNote entry : encounters) {
+					if(cmFamilyHistoryNotesLong.contains(entry.getId())) {
+						familyHistory.add(entry);
+					}
+				}
+			} catch (Exception e) {
+				log.error("loadPatient - Failed to load Family History", e);
+				familyHistory = null;
+			}
+
+			try {
+				List<Integer> cmAlertsNotes = caseManagementIssueNotesDao.getNoteIdsWhichHaveIssues(cmAlertsIssues.toArray(new String[cmAlertsIssues.size()]));
+				List<Long> cmAlertsLong = new ArrayList<Long>();
+				if(cmAlertsNotes != null) {
+					alerts = new ArrayList<CaseManagementNote>();
+					for(Integer i : cmAlertsNotes) {
+						cmAlertsLong.add(Long.parseLong(String.valueOf(i)));
+					}
+				}
+
+				for(CaseManagementNote entry : encounters) {
+					if(cmAlertsLong.contains(entry.getId())) {
+						alerts.add(entry);
+					}
+				}
+			} catch (Exception e) {
+				log.error("loadPatient - Failed to load Alerts", e);
+				alerts = null;
+			}
+		}
 	}
 
 	private List<Measurement> assembleMeasurements(Integer demographicNo) {

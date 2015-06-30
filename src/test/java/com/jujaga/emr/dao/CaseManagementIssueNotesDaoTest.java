@@ -35,10 +35,10 @@ public class CaseManagementIssueNotesDaoTest {
 
 	@Test
 	public void getNoteIdsWhichHaveIssuesTest() {
-		String[] issueId = {"0", "1"}; // TODO replace with runtime numbers
+		String[] issueId = {"1", "3"}; // TODO replace with runtime numbers
 		List<Integer> ids = caseManagementIssueNotesDao.getNoteIdsWhichHaveIssues(issueId);
 		assertNotNull(ids);
-		assertEquals(0, ids.size());
+		assertEquals(2, ids.size());
 	}
 
 	@Test
