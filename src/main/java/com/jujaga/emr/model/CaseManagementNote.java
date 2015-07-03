@@ -196,7 +196,7 @@ public class CaseManagementNote implements Serializable {
 		this.locked = locked;
 	}
 
-	public Boolean getArchived() {
+	public Boolean isArchived() {
 		return archived;
 	}
 
