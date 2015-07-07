@@ -1,11 +1,26 @@
 package com.jujaga.e2e.model.export.body;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.marc.everest.datatypes.BL;
+import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.ST;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.model.export.template.AuthorParticipationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.model.CaseManagementNote;
 
@@ -15,6 +30,8 @@ public class RiskFactorsModel {
 	private SET<II> ids;
 	private CD<String> code;
 	private ActStatus statusCode;
+	private ArrayList<Author> authors;
+	private ArrayList<Component4> components;
 
 	public RiskFactorsModel(CaseManagementNote riskFactor) {
 		if(riskFactor == null) {
@@ -26,6 +43,8 @@ public class RiskFactorsModel {
 		setIds();
 		setCode();
 		setStatusCode();
+		setAuthor();
+		setComponentObservation();
 	}
 
 	public String getTextSummary() {
@@ -69,5 +88,68 @@ public class RiskFactorsModel {
 		} else {
 			this.statusCode = ActStatus.Completed;
 		}
+	}
+
+	public ArrayList<Author> getAuthor() {
+		return authors;
+	}
+
+	private void setAuthor() {
+		this.authors = new ArrayList<Author>();
+		this.authors.add(new AuthorParticipationModel(riskFactor.getProviderNo()).getAuthor(riskFactor.getUpdate_date()));
+	}
+
+	public ArrayList<Component4> getComponentObservation() {
+		return components;
+	}
+
+	private void setComponentObservation() {
+		Component4 component = new Component4(ActRelationshipHasComponent.HasComponent, new BL(true));
+		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+
+		observation.setId(getIds());
+		observation.setCode(getObservationCode());
+		observation.setText(getObservationName());
+		observation.setEffectiveTime(getObservationDate());
+		observation.setValue(getObservationValue());
+
+		component.setClinicalStatement(observation);
+		this.components = new ArrayList<Component4>(Arrays.asList(component));
+	}
+
+	protected CD<String> getObservationCode() {
+		CD<String> code = new CD<String>();
+		code.setNullFlavor(NullFlavor.NoInformation);
+		return code;
+	}
+
+	protected ED getObservationName() {
+		ED text = null;
+		if(!EverestUtils.isNullorEmptyorWhitespace(riskFactor.getNote())) {
+			text = new ED(riskFactor.getNote());
+		}
+
+		return text;
+	}
+
+	protected IVL<TS> getObservationDate() {
+		IVL<TS> ivl = null;
+		TS startTime = EverestUtils.buildTSFromDate(riskFactor.getObservation_date());
+		if(startTime != null) {
+			ivl = new IVL<TS>(startTime, null);
+		}
+
+		return ivl;
+	}
+
+	protected ST getObservationValue() {
+		ST value = new ST();
+		if(!EverestUtils.isNullorEmptyorWhitespace(riskFactor.getNote())) {
+			value.setValue(riskFactor.getNote());
+		} else {
+			value.setNullFlavor(NullFlavor.NoInformation);
+		}
+
+		return value;
 	}
 }

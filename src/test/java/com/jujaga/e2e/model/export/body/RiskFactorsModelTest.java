@@ -3,16 +3,29 @@ package com.jujaga.e2e.model.export.body;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.ST;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Author;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component4;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -109,5 +122,114 @@ public class RiskFactorsModelTest {
 		ActStatus status = nullRiskFactorsModel.getStatusCode();
 		assertNotNull(status);
 		assertEquals(ActStatus.Completed, status);
+	}
+
+	@Test
+	public void authorTest() {
+		ArrayList<Author> authors = riskFactorsModel.getAuthor();
+		assertNotNull(authors);
+		assertEquals(1, authors.size());
+	}
+
+	@Test
+	public void authorNullTest() {
+		ArrayList<Author> authors = nullRiskFactorsModel.getAuthor();
+		assertNotNull(authors);
+		assertEquals(1, authors.size());
+	}
+
+	@Test
+	public void componentObservationTest() {
+		ArrayList<Component4> components = riskFactorsModel.getComponentObservation();
+		assertNotNull(components);
+		assertEquals(1, components.size());
+
+		Component4 component = components.get(0);
+		assertNotNull(component);
+		assertEquals(ActRelationshipHasComponent.HasComponent, component.getTypeCode().getCode());
+		assertTrue(component.getContextConductionInd().toBoolean());
+
+		Observation observation = component.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+		assertNotNull(observation.getId());
+		assertNotNull(observation.getCode());
+		assertNotNull(observation.getValue());
+	}
+
+	@Test
+	public void componentObservationNullTest() {
+		ArrayList<Component4> components = nullRiskFactorsModel.getComponentObservation();
+		assertNotNull(components);
+		assertEquals(1, components.size());
+
+		Component4 component = components.get(0);
+		assertNotNull(component);
+		assertEquals(ActRelationshipHasComponent.HasComponent, component.getTypeCode().getCode());
+		assertTrue(component.getContextConductionInd().toBoolean());
+
+		Observation observation = component.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+		assertNotNull(observation.getId());
+		assertNotNull(observation.getCode());
+		assertNotNull(observation.getValue());
+	}
+
+	@Test
+	public void observationCodeTest() {
+		CD<String> code = riskFactorsModel.getObservationCode();
+		assertNotNull(code);
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void observationCodeNullTest() {
+		CD<String> code = nullRiskFactorsModel.getObservationCode();
+		assertNotNull(code);
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void observationNameTest() {
+		ED text = riskFactorsModel.getObservationName();
+		assertNotNull(text);
+		assertEquals(riskFactor.getNote(), new String(text.getData()));
+	}
+
+	@Test
+	public void observationNameNullTest() {
+		ED text = nullRiskFactorsModel.getObservationName();
+		assertNull(text);
+	}
+
+	@Test
+	public void observationDateTest() {
+		IVL<TS> ivl = riskFactorsModel.getObservationDate();
+		assertNotNull(ivl);
+		assertEquals(EverestUtils.buildTSFromDate(riskFactor.getObservation_date()), ivl.getLow());
+	}
+
+	@Test
+	public void observationDateNullTest() {
+		IVL<TS> ivl = nullRiskFactorsModel.getObservationDate();
+		assertNull(ivl);
+	}
+
+	@Test
+	public void observationValueTest() {
+		ST value = riskFactorsModel.getObservationValue();
+		assertNotNull(value);
+		assertEquals(riskFactor.getNote(), value.getValue());
+	}
+
+	@Test
+	public void observationValueNullTest() {
+		ST value = nullRiskFactorsModel.getObservationValue();
+		assertNotNull(value);
+		assertTrue(value.isNull());
+		assertEquals(NullFlavor.NoInformation, value.getNullFlavor().getCode());
 	}
 }

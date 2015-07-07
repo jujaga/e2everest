@@ -49,6 +49,8 @@ public class RiskFactorsPopulator extends AbstractBodyPopulator<CaseManagementNo
 		organizer.setId(riskFactorsModel.getIds());
 		organizer.setCode(riskFactorsModel.getCode());
 		organizer.setStatusCode(riskFactorsModel.getStatusCode());
+		organizer.setAuthor(riskFactorsModel.getAuthor());
+		organizer.setComponent(riskFactorsModel.getComponentObservation());
 
 		return organizer;
 	}
