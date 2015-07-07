@@ -18,6 +18,11 @@ public class AlertsPopulatorTest extends AbstractBodyPopulatorTest {
 
 	@Test
 	public void alertsEntryCountTest() {
-		entryCountTest(0);
+		entryCountTest(1);
+	}
+
+	@Test
+	public void alertsEntryStructureTest() {
+		entryStructureTest();
 	}
 }
