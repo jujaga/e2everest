@@ -20,22 +20,22 @@ public class RiskFactorsPopulatorTest extends AbstractBodyPopulatorTest {
 	}
 
 	@Test
-	public void alertsComponentSectionTest() {
+	public void riskFactorsComponentSectionTest() {
 		componentSectionTest();
 	}
 
 	@Test
-	public void alertsEntryCountTest() {
+	public void riskFactorsEntryCountTest() {
 		entryCountTest(1);
 	}
 
 	@Test
-	public void alertsEntryStructureTest() {
+	public void riskFactorsEntryStructureTest() {
 		entryStructureTest();
 	}
 
 	@Test
-	public void alertsClinicalStatementTest() {
+	public void riskFactorsClinicalStatementTest() {
 		ClinicalStatement clinicalStatement = component.getSection().getEntry().get(0).getClinicalStatement();
 		assertNotNull(clinicalStatement);
 		assertTrue(clinicalStatement.isPOCD_MT000040UVOrganizer());

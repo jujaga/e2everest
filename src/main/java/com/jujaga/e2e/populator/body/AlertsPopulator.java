@@ -14,6 +14,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 
 import com.jujaga.e2e.constant.BodyConstants.Alerts;
+import com.jujaga.e2e.model.export.body.AlertsModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.CaseManagementNote;
 
@@ -43,8 +44,10 @@ public class AlertsPopulator extends AbstractBodyPopulator<CaseManagementNote> {
 
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<CaseManagementNote> list) {
+		AlertsModel alertsModel = new AlertsModel(list.get(0));
 		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
 
+		observation.setId(alertsModel.getIds());
 		observation.setCode(new CD<String>());
 
 		return observation;
@@ -58,6 +61,12 @@ public class AlertsPopulator extends AbstractBodyPopulator<CaseManagementNote> {
 	@Override
 	public List<String> populateText() {
 		List<String> list = new ArrayList<String>();
+		if(alerts != null) {
+			for(CaseManagementNote alert : alerts) {
+				AlertsModel alertsModel = new AlertsModel(alert);
+				list.add(alertsModel.getTextSummary());
+			}
+		}
 
 		return list;
 	}
