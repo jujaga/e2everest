@@ -1,6 +1,8 @@
 package com.jujaga.e2e.model.export.body;
 
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.SET;
 
 import com.jujaga.e2e.constant.Constants;
@@ -11,6 +13,7 @@ public class AlertsModel {
 	private CaseManagementNote alert;
 
 	private SET<II> ids;
+	private CD<String> code;
 
 	public AlertsModel(CaseManagementNote alert) {
 		if(alert == null) {
@@ -20,6 +23,7 @@ public class AlertsModel {
 		}
 
 		setIds();
+		setCode();
 	}
 
 	public String getTextSummary() {
@@ -41,5 +45,15 @@ public class AlertsModel {
 
 	private void setIds() {
 		this.ids = EverestUtils.buildUniqueId(Constants.IdPrefixes.Alerts, alert.getId());
+	}
+
+	public CD<String> getCode() {
+		return code;
+	}
+
+	public void setCode() {
+		CD<String> code = new CD<String>();
+		code.setNullFlavor(NullFlavor.NoInformation);
+		this.code = code;
 	}
 }

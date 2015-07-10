@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.II;
-import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
@@ -48,7 +47,7 @@ public class AlertsPopulator extends AbstractBodyPopulator<CaseManagementNote> {
 		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
 
 		observation.setId(alertsModel.getIds());
-		observation.setCode(new CD<String>());
+		observation.setCode(alertsModel.getCode());
 
 		return observation;
 	}

@@ -53,4 +53,12 @@ public class EverestUtilsTest {
 		assertEquals(38, EverestUtils.preventionTypeCodes.size());
 		assertEquals("J07CA02", EverestUtils.getPreventionType("DTaP-HBV-IPV-Hib"));
 	}
+
+	@Test
+	public void getDemographicProviderNoTest() {
+		assertNull(EverestUtils.getDemographicProviderNo(Constants.Runtime.INVALID_VALUE));
+		assertNotNull(EverestUtils.getDemographicProviderNo(Constants.Runtime.VALID_DEMOGRAPHIC));
+		// Test Caching
+		assertNotNull(EverestUtils.getDemographicProviderNo(Constants.Runtime.VALID_DEMOGRAPHIC));
+	}
 }

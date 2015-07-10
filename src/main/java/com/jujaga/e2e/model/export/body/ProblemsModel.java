@@ -136,7 +136,7 @@ public class ProblemsModel {
 
 	private void setAuthor() {
 		authors = new ArrayList<Author>();
-		authors.add(new AuthorParticipationModel(EverestUtils.getDemographicProviderNo(problem.getDemographicNo())).getAuthor(problem.getUpdateDate()));
+		authors.add(new AuthorParticipationModel(problem.getProviderNo()).getAuthor(problem.getUpdateDate()));
 	}
 
 	public EntryRelationship getSecondaryCodeICD9() {

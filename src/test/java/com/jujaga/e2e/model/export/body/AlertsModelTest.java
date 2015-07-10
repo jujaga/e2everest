@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.SET;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -75,5 +77,21 @@ public class AlertsModelTest {
 	public void idNullTest() {
 		SET<II> ids = nullAlertsModel.getIds();
 		assertNotNull(ids);
+	}
+
+	@Test
+	public void codeTest() {
+		CD<String> code = alertsModel.getCode();
+		assertNotNull(code);
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void codeNullTest() {
+		CD<String> code = nullAlertsModel.getCode();
+		assertNotNull(code);
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
 	}
 }
