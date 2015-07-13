@@ -39,6 +39,7 @@ import org.marc.everest.datatypes.TelecommunicationsAddressUse;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.formatters.interfaces.IFormatterGraphResult;
 import org.marc.everest.formatters.xml.datatypes.r1.DatatypeFormatter;
+import org.marc.everest.formatters.xml.datatypes.r1.R1FormatterCompatibilityMode;
 import org.marc.everest.formatters.xml.its1.XmlIts1Formatter;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.LanguageCommunication;
@@ -48,6 +49,7 @@ import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Constants.IdPrefixes;
 import com.jujaga.e2e.constant.Constants.TelecomType;
 import com.jujaga.e2e.constant.Mappings;
+import com.jujaga.e2e.extension.ObservationWithConfidentialityCode;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.ProviderDao;
@@ -80,7 +82,8 @@ public class EverestUtils {
 
 		XmlIts1Formatter fmtr = new XmlIts1Formatter();
 		fmtr.setValidateConformance(validation);
-		fmtr.getGraphAides().add(new DatatypeFormatter());
+		fmtr.getGraphAides().add(new DatatypeFormatter(R1FormatterCompatibilityMode.ClinicalDocumentArchitecture));
+		fmtr.registerXSITypeName("POCD_MT000040UV.Observation", ObservationWithConfidentialityCode.class);
 
 		if(clinicalDocument == null) {
 			return null;
@@ -127,6 +130,8 @@ public class EverestUtils {
 	private static String everestBugFixes(String output) {
 		// TODO [MARC-HI] Ask about equivalent SuppressXsiNil toggle
 		String result = output.replaceAll("xsi:nil=\"true\" ", "");
+		// TODO [MARC-HI] Ask about xmlns namespace formatting
+		result = result.replaceAll("confidentialityCode xmlns=\"http://standards.pito.bc.ca/E2E-DTC/cda\"", "e2e:confidentialityCode");
 		return result.replaceAll("delimeter", "delimiter");
 	}
 

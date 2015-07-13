@@ -8,11 +8,11 @@ import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
-import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 
 import com.jujaga.e2e.constant.BodyConstants.Alerts;
+import com.jujaga.e2e.extension.ObservationWithConfidentialityCode;
 import com.jujaga.e2e.model.export.body.AlertsModel;
 import com.jujaga.emr.PatientExport;
 import com.jujaga.emr.model.CaseManagementNote;
@@ -44,10 +44,11 @@ public class AlertsPopulator extends AbstractBodyPopulator<CaseManagementNote> {
 	@Override
 	public ClinicalStatement populateClinicalStatement(List<CaseManagementNote> list) {
 		AlertsModel alertsModel = new AlertsModel(list.get(0));
-		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+		ObservationWithConfidentialityCode observation = new ObservationWithConfidentialityCode(x_ActMoodDocumentObservation.Eventoccurrence);
 
 		observation.setId(alertsModel.getIds());
 		observation.setCode(alertsModel.getCode());
+		observation.setConfidentialityCode(alertsModel.getConfidentiality());
 
 		return observation;
 	}

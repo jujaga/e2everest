@@ -3,7 +3,9 @@ package com.jujaga.e2e.model.export.body;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
@@ -14,6 +16,7 @@ public class AlertsModel {
 
 	private SET<II> ids;
 	private CD<String> code;
+	private CE<x_BasicConfidentialityKind> confidentiality;
 
 	public AlertsModel(CaseManagementNote alert) {
 		if(alert == null) {
@@ -24,6 +27,7 @@ public class AlertsModel {
 
 		setIds();
 		setCode();
+		setConfidentiality();
 	}
 
 	public String getTextSummary() {
@@ -55,5 +59,13 @@ public class AlertsModel {
 		CD<String> code = new CD<String>();
 		code.setNullFlavor(NullFlavor.NoInformation);
 		this.code = code;
+	}
+
+	public CE<x_BasicConfidentialityKind> getConfidentiality() {
+		return confidentiality;
+	}
+
+	private void setConfidentiality() {
+		this.confidentiality = new CE<x_BasicConfidentialityKind>(x_BasicConfidentialityKind.Normal);
 	}
 }

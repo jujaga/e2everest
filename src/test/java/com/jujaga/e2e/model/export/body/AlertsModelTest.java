@@ -12,7 +12,9 @@ import org.junit.Test;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -93,5 +95,19 @@ public class AlertsModelTest {
 		assertNotNull(code);
 		assertTrue(code.isNull());
 		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void confidentialityTest() {
+		CE<x_BasicConfidentialityKind> confidentiality = alertsModel.getConfidentiality();
+		assertNotNull(confidentiality);
+		assertEquals(x_BasicConfidentialityKind.Normal, confidentiality.getCode());
+	}
+
+	@Test
+	public void confidentialityNullTest() {
+		CE<x_BasicConfidentialityKind> confidentiality = nullAlertsModel.getConfidentiality();
+		assertNotNull(confidentiality);
+		assertEquals(x_BasicConfidentialityKind.Normal, confidentiality.getCode());
 	}
 }
