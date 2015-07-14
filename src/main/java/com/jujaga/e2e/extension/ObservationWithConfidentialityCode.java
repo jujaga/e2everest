@@ -13,7 +13,7 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 @Structure(model = "POCD_MT000040", name = "Observation", structureType = StructureType.MESSAGETYPE)
 public class ObservationWithConfidentialityCode extends Observation {
-	public CE<x_BasicConfidentialityKind> confidentialityCode;
+	private CE<x_BasicConfidentialityKind> confidentialityCode;
 
 	public ObservationWithConfidentialityCode(x_ActMoodDocumentObservation eventoccurrence) {
 		this.setMoodCode(new CS<x_ActMoodDocumentObservation>(eventoccurrence));
