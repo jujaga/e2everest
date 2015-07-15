@@ -9,11 +9,15 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.CE;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -95,6 +99,50 @@ public class AlertsModelTest {
 		assertNotNull(code);
 		assertTrue(code.isNull());
 		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void textTest() {
+		ED text = alertsModel.getText();
+		assertNotNull(text);
+		assertEquals(alert.getNote(), new String(text.getData()));
+	}
+
+	@Test
+	public void textNullTest() {
+		ED text = nullAlertsModel.getText();
+		assertNotNull(text);
+		assertTrue(text.isNull());
+		assertEquals(NullFlavor.NoInformation, text.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void statusCodeTest() {
+		ActStatus status = alertsModel.getStatusCode();
+		assertNotNull(status);
+		assertEquals(ActStatus.Active, status);
+	}
+
+	@Test
+	public void statusCodeNullTest() {
+		ActStatus status = nullAlertsModel.getStatusCode();
+		assertNotNull(status);
+		assertEquals(ActStatus.Completed, status);
+	}
+
+	@Test
+	public void effectiveTimeTest() {
+		IVL<TS> ivl = alertsModel.getEffectiveTime();
+		assertNotNull(ivl);
+		assertEquals(EverestUtils.buildTSFromDate(alert.getObservation_date()), ivl.getLow());
+	}
+
+	@Test
+	public void effectiveTimeNullTest() {
+		IVL<TS> ivl = nullAlertsModel.getEffectiveTime();
+		assertNotNull(ivl);
+		assertTrue(ivl.isNull());
+		assertEquals(NullFlavor.NoInformation, ivl.getNullFlavor().getCode());
 	}
 
 	@Test

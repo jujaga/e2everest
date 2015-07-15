@@ -44,6 +44,9 @@ public class AlertsPopulatorTest extends AbstractBodyPopulatorTest {
 		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
 		assertNotNull(observation.getId());
 		assertNotNull(observation.getCode());
+		assertNotNull(observation.getText());
+		assertNotNull(observation.getStatusCode());
+		assertNotNull(observation.getEffectiveTime());
 		assertNotNull(observation.getConfidentialityCode());
 	}
 }

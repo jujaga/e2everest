@@ -48,6 +48,9 @@ public class AlertsPopulator extends AbstractBodyPopulator<CaseManagementNote> {
 
 		observation.setId(alertsModel.getIds());
 		observation.setCode(alertsModel.getCode());
+		observation.setStatusCode(alertsModel.getStatusCode());
+		observation.setText(alertsModel.getText());
+		observation.setEffectiveTime(alertsModel.getEffectiveTime());
 		observation.setConfidentialityCode(alertsModel.getConfidentiality());
 
 		return observation;
