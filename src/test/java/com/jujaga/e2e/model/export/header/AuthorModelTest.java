@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.ENXP;
@@ -46,6 +47,10 @@ public class AuthorModelTest {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
 		dao = context.getBean(ProviderDao.class);
+	}
+
+	@Before
+	public void before() {
 		provider = dao.find(Constants.Runtime.VALID_PROVIDER);
 		authorModel = new AuthorModel(provider);
 
@@ -61,7 +66,7 @@ public class AuthorModelTest {
 	}
 
 	@Test
-	public void idTest() {
+	public void idPractitionerNoTest() {
 		SET<II> ids = authorModel.getIds();
 		assertNotNull(ids);
 
@@ -74,30 +79,35 @@ public class AuthorModelTest {
 	}
 
 	@Test
-	public void idSecondaryTest() {
-		Provider provider1 = new Provider();
-		provider1.setOhipNo(test);
-		AuthorModel model1 = new AuthorModel(provider1);
+	public void idOhipNoTest() {
+		nullProvider.setOhipNo(test);
+		AuthorModel model = new AuthorModel(nullProvider);
 
-		SET<II> ids1 = model1.getIds();
-		assertNotNull(ids1);
+		SET<II> ids = model.getIds();
+		assertNotNull(ids);
 
-		II id1 = ids1.get(0);
-		assertNotNull(id1);
-		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id1.getExtension()));
-		assertEquals(provider1.getOhipNo().toString(), id1.getExtension());
+		II id = ids.get(0);
+		assertNotNull(id);
+		assertEquals(Constants.DocumentHeader.MEDICAL_SERVICES_PLAN_BILLING_NUMBER_OID, id.getRoot());
+		assertEquals(Constants.DocumentHeader.MEDICAL_SERVICES_PLAN_BILLING_NUMBER_NAME, id.getAssigningAuthorityName());
+		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
+		assertEquals(nullProvider.getOhipNo().toString(), id.getExtension());
+	}
 
-		Provider provider2 = new Provider();
-		provider2.setProviderNo(1);
-		AuthorModel model2 = new AuthorModel(provider2);
+	@Test
+	public void idProviderNoTest() {
+		nullProvider.setProviderNo(1);
+		AuthorModel model = new AuthorModel(nullProvider);
 
-		SET<II> ids2 = model2.getIds();
-		assertNotNull(ids2);
+		SET<II> ids = model.getIds();
+		assertNotNull(ids);
 
-		II id2 = ids2.get(0);
-		assertNotNull(id2);
-		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id2.getExtension()));
-		assertEquals(provider2.getProviderNo().toString(), id2.getExtension());
+		II id = ids.get(0);
+		assertNotNull(id);
+		assertEquals(Constants.DocumentHeader.LOCALLY_ASSIGNED_IDENTIFIER_OID, id.getRoot());
+		assertEquals(Constants.DocumentHeader.LOCALLY_ASSIGNED_IDENTIFIER_NAME, id.getAssigningAuthorityName());
+		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
+		assertEquals(nullProvider.getProviderNo().toString(), id.getExtension());
 	}
 
 	@Test
@@ -175,9 +185,38 @@ public class AuthorModelTest {
 	}
 
 	@Test
+	public void deviceIdTest() {
+		SET<II> ids = authorModel.getDeviceIds();
+		assertNotNull(ids);
+
+		II id = ids.get(0);
+		assertNotNull(id);
+		assertTrue(id.isNull());
+		assertEquals(NullFlavor.NoInformation, id.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void deviceIdNullTest() {
+		SET<II> ids = nullAuthorModel.getDeviceIds();
+		assertNotNull(ids);
+
+		II id = ids.get(0);
+		assertNotNull(id);
+		assertTrue(id.isNull());
+		assertEquals(NullFlavor.NoInformation, id.getNullFlavor().getCode());
+	}
+
+	@Test
 	public void deviceTest() {
 		AuthoringDevice device = authorModel.getDevice();
-		assertNotNull(device);	
+		assertNotNull(device);
+		assertEquals(Constants.EMR.EMR_VERSION, device.getSoftwareName().getValue());
+	}
+
+	@Test
+	public void deviceNullTest() {
+		AuthoringDevice device = nullAuthorModel.getDevice();
+		assertNotNull(device);
 		assertEquals(Constants.EMR.EMR_VERSION, device.getSoftwareName().getValue());
 	}
 }

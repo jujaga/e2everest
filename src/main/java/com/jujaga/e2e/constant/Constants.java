@@ -101,8 +101,13 @@ public class Constants {
 		public static final String BC_PHN_OID_ASSIGNING_AUTHORITY_NAME = "BC Patient Health Number";
 		public static final String BC_PHN_OID = "2.16.840.1.113883.4.50";
 
+		// TODO [E2E] Determine BC MSP and Locally Assigned ID OIDs
 		public static final String BC_MINISTRY_OF_HEALTH_PRACTITIONER_ID_OID = "2.16.840.1.113883.3.40.2.11";
 		public static final String BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME = "BC MSP Provider License Number";
+		public static final String MEDICAL_SERVICES_PLAN_BILLING_NUMBER_OID = "TBD";
+		public static final String MEDICAL_SERVICES_PLAN_BILLING_NUMBER_NAME = "BC MSP Billing Number";
+		public static final String LOCALLY_ASSIGNED_IDENTIFIER_OID = "TBD";
+		public static final String LOCALLY_ASSIGNED_IDENTIFIER_NAME = "Locally Assigned Identifier";
 
 		public static final String HUMANLANGUAGE_ENGLISH_CODE = "EN";
 		public static final String HUMANLANGUAGE_FRENCH_CODE = "FR";

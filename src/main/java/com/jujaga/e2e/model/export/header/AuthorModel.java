@@ -22,6 +22,7 @@ public class AuthorModel {
 	protected SET<II> ids;
 	private SET<TEL> telecoms;
 	protected Person person;
+	private SET<II> deviceIds;
 	private AuthoringDevice device;
 
 	protected AuthorModel(String providerNo) {
@@ -49,6 +50,7 @@ public class AuthorModel {
 		setIds();
 		setTelecoms();
 		setPerson();
+		setDeviceIds();
 		setDevice();
 	}
 
@@ -57,28 +59,23 @@ public class AuthorModel {
 	}
 
 	private void setIds() {
-		String providerId = getProviderID();
 		II id = new II();
-		if(providerId != null && !EverestUtils.isNullorEmptyorWhitespace(providerId)) {
+		if(!EverestUtils.isNullorEmptyorWhitespace(provider.getPractitionerNo())) {
 			id.setRoot(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_ID_OID);
 			id.setAssigningAuthorityName(Constants.DocumentHeader.BC_MINISTRY_OF_HEALTH_PRACTITIONER_NAME);
-			id.setExtension(providerId);
+			id.setExtension(provider.getPractitionerNo());
+		} else if (!EverestUtils.isNullorEmptyorWhitespace(provider.getOhipNo())) {
+			id.setRoot(Constants.DocumentHeader.MEDICAL_SERVICES_PLAN_BILLING_NUMBER_OID);
+			id.setAssigningAuthorityName(Constants.DocumentHeader.MEDICAL_SERVICES_PLAN_BILLING_NUMBER_NAME);
+			id.setExtension(provider.getOhipNo());
+		} else if (provider.getProviderNo() != null) {
+			id.setRoot(Constants.DocumentHeader.LOCALLY_ASSIGNED_IDENTIFIER_OID);
+			id.setAssigningAuthorityName(Constants.DocumentHeader.LOCALLY_ASSIGNED_IDENTIFIER_NAME);
+			id.setExtension(provider.getProviderNo().toString());
 		} else {
 			id.setNullFlavor(NullFlavor.NoInformation);
 		}
 		this.ids = new SET<II>(id);
-	}
-
-	private String getProviderID() {
-		String id = null;
-		if(!EverestUtils.isNullorEmptyorWhitespace(provider.getPractitionerNo())) {
-			id = provider.getPractitionerNo();
-		} else if (!EverestUtils.isNullorEmptyorWhitespace(provider.getOhipNo())) {
-			id = provider.getOhipNo();
-		} else if (provider.getProviderNo() != null) {
-			id = provider.getProviderNo().toString();
-		}
-		return id;
 	}
 
 	public SET<TEL> getTelecoms() {
@@ -112,6 +109,16 @@ public class AuthorModel {
 		}
 		person.setName(names);
 		this.person = person;
+	}
+
+	public SET<II> getDeviceIds() {
+		return deviceIds;
+	}
+
+	private void setDeviceIds() {
+		II id = new II();
+		id.setNullFlavor(NullFlavor.NoInformation);
+		this.deviceIds = new SET<II>(id);
 	}
 
 	public AuthoringDevice getDevice() {

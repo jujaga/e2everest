@@ -25,6 +25,14 @@ class AuthorPopulator extends AbstractPopulator {
 	@Override
 	public void populate() {
 		ArrayList<Author> authors = new ArrayList<Author>();
+
+		authors.add(getProvider());
+		authors.add(getSystem());
+
+		clinicalDocument.setAuthor(authors);
+	}
+
+	private Author getProvider() {
 		Author provider = new Author();
 		AssignedAuthor assignedAuthor = new AssignedAuthor();
 
@@ -35,8 +43,11 @@ class AuthorPopulator extends AbstractPopulator {
 		assignedAuthor.setId(authorModel.getIds());
 		assignedAuthor.setTelecom(authorModel.getTelecoms());
 		assignedAuthor.setAssignedAuthorChoice(authorModel.getPerson());
-		authors.add(provider);
 
+		return provider;
+	}
+
+	private Author getSystem() {
 		Author system = new Author();
 		AssignedAuthor assignedSystem = new AssignedAuthor();
 
@@ -44,10 +55,9 @@ class AuthorPopulator extends AbstractPopulator {
 		system.setTime(new GregorianCalendar(), TS.DAY);
 		system.setAssignedAuthor(assignedSystem);
 
-		assignedSystem.setId(authorModel.getIds());
+		assignedSystem.setId(authorModel.getDeviceIds());
 		assignedSystem.setAssignedAuthorChoice(authorModel.getDevice());
-		authors.add(system);
 
-		clinicalDocument.setAuthor(authors);
+		return system;
 	}
 }
