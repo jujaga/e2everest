@@ -15,10 +15,10 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import com.jujaga.e2e.constant.BodyConstants.FamilyHistory;
 import com.jujaga.e2e.model.export.body.FamilyHistoryModel;
 import com.jujaga.emr.PatientExport;
-import com.jujaga.emr.model.CaseManagementNote;
+import com.jujaga.emr.PatientExport.FamilyHistoryEntry;
 
-public class FamilyHistoryPopulator extends AbstractBodyPopulator<CaseManagementNote> {
-	private List<CaseManagementNote> familyHistory = null;
+public class FamilyHistoryPopulator extends AbstractBodyPopulator<FamilyHistoryEntry> {
+	private List<FamilyHistoryEntry> familyHistory = null;
 
 	FamilyHistoryPopulator(PatientExport patientExport) {
 		bodyConstants = FamilyHistory.getConstants();
@@ -30,7 +30,7 @@ public class FamilyHistoryPopulator extends AbstractBodyPopulator<CaseManagement
 	@Override
 	public void populate() {
 		if(familyHistory != null) {
-			for(CaseManagementNote familyEntry : familyHistory) {
+			for(FamilyHistoryEntry familyEntry : familyHistory) {
 				Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
 				entry.setTemplateId(Arrays.asList(new II(bodyConstants.ENTRY_TEMPLATE_ID)));
 				entry.setClinicalStatement(populateClinicalStatement(Arrays.asList(familyEntry)));
@@ -42,7 +42,7 @@ public class FamilyHistoryPopulator extends AbstractBodyPopulator<CaseManagement
 	}
 
 	@Override
-	public ClinicalStatement populateClinicalStatement(List<CaseManagementNote> list) {
+	public ClinicalStatement populateClinicalStatement(List<FamilyHistoryEntry> list) {
 		FamilyHistoryModel familyHistoryModel = new FamilyHistoryModel(list.get(0));
 		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
 
@@ -64,7 +64,7 @@ public class FamilyHistoryPopulator extends AbstractBodyPopulator<CaseManagement
 	public List<String> populateText() {
 		List<String> list = new ArrayList<String>();
 		if(familyHistory != null) {
-			for(CaseManagementNote familyEntry : familyHistory) {
+			for(FamilyHistoryEntry familyEntry : familyHistory) {
 				FamilyHistoryModel familyHistoryModel = new FamilyHistoryModel(familyEntry);
 				list.add(familyHistoryModel.getTextSummary());
 			}

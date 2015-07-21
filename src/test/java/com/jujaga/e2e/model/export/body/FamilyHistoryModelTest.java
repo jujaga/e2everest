@@ -6,8 +6,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.ED;
@@ -22,28 +25,37 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
+import com.jujaga.emr.PatientExport.FamilyHistoryEntry;
 import com.jujaga.emr.dao.CaseManagementNoteDao;
+import com.jujaga.emr.dao.CaseManagementNoteExtDao;
 import com.jujaga.emr.model.CaseManagementNote;
+import com.jujaga.emr.model.CaseManagementNoteExt;
 
 public class FamilyHistoryModelTest {
 	private static ApplicationContext context;
-	private static CaseManagementNoteDao dao;
+	private static CaseManagementNoteDao caseManagementNoteDao;
+	private static CaseManagementNoteExtDao caseManagementNoteExtDao;
+	private static List<CaseManagementNoteExt> noteExts;
 	private static CaseManagementNote familyHistory;
+	private static FamilyHistoryEntry familyHistoryEntry;
 	private static FamilyHistoryModel familyHistoryModel;
-
-	private static CaseManagementNote nullFamilyHistory;
 	private static FamilyHistoryModel nullFamilyHistoryModel;
 
 	@BeforeClass
 	public static void beforeClass() {
 		Logger.getRootLogger().setLevel(Level.FATAL);
 		context = new ClassPathXmlApplicationContext(Constants.Runtime.SPRING_APPLICATION_CONTEXT);
-		dao = context.getBean(CaseManagementNoteDao.class);
-		familyHistory = dao.getNotesByDemographic(Constants.Runtime.VALID_DEMOGRAPHIC.toString()).get(2);
-		familyHistoryModel = new FamilyHistoryModel(familyHistory);
+		caseManagementNoteDao = context.getBean(CaseManagementNoteDao.class);
+		caseManagementNoteExtDao = context.getBean(CaseManagementNoteExtDao.class);
+		familyHistory = caseManagementNoteDao.getNotesByDemographic(Constants.Runtime.VALID_DEMOGRAPHIC.toString()).get(2);
+		noteExts = caseManagementNoteExtDao.getExtByNote(Constants.Runtime.VALID_FAMILY_HISTORY);
+	}
 
-		nullFamilyHistory = new CaseManagementNote();
-		nullFamilyHistoryModel = new FamilyHistoryModel(nullFamilyHistory);
+	@Before
+	public void before() {
+		familyHistoryEntry = new FamilyHistoryEntry(familyHistory, noteExts);
+		familyHistoryModel = new FamilyHistoryModel(familyHistoryEntry);
+		nullFamilyHistoryModel = new FamilyHistoryModel(new FamilyHistoryEntry(null, null));
 	}
 
 	@Test
@@ -74,7 +86,7 @@ public class FamilyHistoryModelTest {
 		assertEquals(Constants.EMR.EMR_VERSION, id.getAssigningAuthorityName());
 		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
 		assertTrue(id.getExtension().contains(Constants.IdPrefixes.FamilyHistory.toString()));
-		assertTrue(id.getExtension().contains(familyHistory.getId().toString()));
+		assertTrue(id.getExtension().contains(familyHistoryEntry.getFamilyHistory().getId().toString()));
 	}
 
 	@Test
@@ -103,7 +115,7 @@ public class FamilyHistoryModelTest {
 	public void textTest() {
 		ED text = familyHistoryModel.getText();
 		assertNotNull(text);
-		assertEquals(familyHistory.getNote(), new String(text.getData()));
+		assertEquals(familyHistoryEntry.getFamilyHistory().getNote(), new String(text.getData()));
 	}
 
 	@Test
@@ -116,7 +128,7 @@ public class FamilyHistoryModelTest {
 	public void effectiveTimeTest() {
 		IVL<TS> ivl = familyHistoryModel.getEffectiveTime();
 		assertNotNull(ivl);
-		assertEquals(EverestUtils.buildTSFromDate(familyHistory.getObservation_date()), ivl.getLow());
+		assertEquals(EverestUtils.buildTSFromDate(familyHistoryEntry.getFamilyHistory().getObservation_date()), ivl.getLow());
 	}
 
 	@Test

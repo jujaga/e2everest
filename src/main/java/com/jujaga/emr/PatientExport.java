@@ -16,6 +16,7 @@ import com.jujaga.emr.dao.AllergyDao;
 import com.jujaga.emr.dao.CaseManagementIssueDao;
 import com.jujaga.emr.dao.CaseManagementIssueNotesDao;
 import com.jujaga.emr.dao.CaseManagementNoteDao;
+import com.jujaga.emr.dao.CaseManagementNoteExtDao;
 import com.jujaga.emr.dao.DemographicDao;
 import com.jujaga.emr.dao.DrugDao;
 import com.jujaga.emr.dao.DxresearchDao;
@@ -28,6 +29,7 @@ import com.jujaga.emr.dao.PreventionExtDao;
 import com.jujaga.emr.model.Allergy;
 import com.jujaga.emr.model.CaseManagementIssue;
 import com.jujaga.emr.model.CaseManagementNote;
+import com.jujaga.emr.model.CaseManagementNoteExt;
 import com.jujaga.emr.model.Demographic;
 import com.jujaga.emr.model.Drug;
 import com.jujaga.emr.model.Dxresearch;
@@ -49,6 +51,7 @@ public class PatientExport {
 	private CaseManagementIssueDao caseManagementIssueDao = null;
 	private CaseManagementIssueNotesDao caseManagementIssueNotesDao = null;
 	private CaseManagementNoteDao caseManagementNoteDao = null;
+	private CaseManagementNoteExtDao caseManagementNoteExtDao = null;
 	private PreventionDao preventionDao = null;
 	private PreventionExtDao preventionExtDao = null;
 	private PatientLabRoutingDao patientLabRoutingDao = null;
@@ -65,8 +68,8 @@ public class PatientExport {
 	private List<Measurement> measurements = null;
 	private List<CaseManagementNote> alerts = null;
 	private List<CaseManagementNote> encounters = null;
-	private List<CaseManagementNote> familyHistory = null;
 	private List<CaseManagementNote> riskFactors = null;
+	private List<FamilyHistoryEntry> familyHistory = null;
 	private List<Immunization> immunizations = null;
 	private List<Lab> labs = null;
 	private List<Drug> drugs = null;
@@ -90,6 +93,7 @@ public class PatientExport {
 		caseManagementIssueDao = context.getBean(CaseManagementIssueDao.class);
 		caseManagementIssueNotesDao = context.getBean(CaseManagementIssueNotesDao.class);
 		caseManagementNoteDao = context.getBean(CaseManagementNoteDao.class);
+		caseManagementNoteExtDao = context.getBean(CaseManagementNoteExtDao.class);
 		preventionDao = context.getBean(PreventionDao.class);
 		preventionExtDao = context.getBean(PreventionExtDao.class);
 		patientLabRoutingDao = context.getBean(PatientLabRoutingDao.class);
@@ -212,7 +216,7 @@ public class PatientExport {
 				List<Integer> cmFamilyHistoryNotes = caseManagementIssueNotesDao.getNoteIdsWhichHaveIssues(cmFamilyHistoryIssues.toArray(new String[cmFamilyHistoryIssues.size()]));
 				List<Long> cmFamilyHistoryNotesLong = new ArrayList<Long>();
 				if(cmFamilyHistoryNotes != null) {
-					familyHistory = new ArrayList<CaseManagementNote>();
+					familyHistory = new ArrayList<FamilyHistoryEntry>();
 					for(Integer i : cmFamilyHistoryNotes) {
 						cmFamilyHistoryNotesLong.add(Long.parseLong(String.valueOf(i)));
 					}
@@ -220,9 +224,11 @@ public class PatientExport {
 
 				for(CaseManagementNote entry : encounters) {
 					if(cmFamilyHistoryNotesLong.contains(entry.getId())) {
-						familyHistory.add(entry);
+						List<CaseManagementNoteExt> noteExts = caseManagementNoteExtDao.getExtByNote(entry.getId());
+						familyHistory.add(new FamilyHistoryEntry(entry, noteExts));
 					}
 				}
+
 			} catch (Exception e) {
 				log.error("loadPatient - Failed to load Family History", e);
 				familyHistory = null;
@@ -402,7 +408,7 @@ public class PatientExport {
 		return encounters;
 	}
 
-	public List<CaseManagementNote> getFamilyHistory() {
+	public List<FamilyHistoryEntry> getFamilyHistory() {
 		return familyHistory;
 	}
 
@@ -424,6 +430,31 @@ public class PatientExport {
 
 	public List<Dxresearch> getProblems() {
 		return problems;
+	}
+
+	// Supporting Family History Subclass
+	public static class FamilyHistoryEntry {
+		private CaseManagementNote familyHistory = new CaseManagementNote();
+		private Map<String, String> extMap = new HashMap<String, String>();
+
+		public FamilyHistoryEntry(CaseManagementNote familyHistory, List<CaseManagementNoteExt> extMap) {
+			if(familyHistory != null) {
+				this.familyHistory = familyHistory;
+			}
+			if(extMap != null) {
+				for(CaseManagementNoteExt extElement : extMap) {
+					this.extMap.put(extElement.getKeyVal(), extElement.getValue());
+				}
+			}
+		}
+
+		public CaseManagementNote getFamilyHistory() {
+			return familyHistory;
+		}
+
+		public Map<String, String> getExtMap() {
+			return extMap;
+		}
 	}
 
 	// Supporting Immunization Subclass

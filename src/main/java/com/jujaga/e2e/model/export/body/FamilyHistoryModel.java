@@ -10,10 +10,10 @@ import org.marc.everest.datatypes.generic.SET;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.util.EverestUtils;
-import com.jujaga.emr.model.CaseManagementNote;
+import com.jujaga.emr.PatientExport.FamilyHistoryEntry;
 
 public class FamilyHistoryModel {
-	private CaseManagementNote familyHistory;
+	private FamilyHistoryEntry familyHistory;
 
 	private SET<II> ids;
 	private CD<String> code;
@@ -21,11 +21,11 @@ public class FamilyHistoryModel {
 	private IVL<TS> effectiveTime;
 	private CD<String> value;
 
-	public FamilyHistoryModel(CaseManagementNote familyHistory) {
-		if(familyHistory == null) {
-			this.familyHistory = new CaseManagementNote();
+	public FamilyHistoryModel(FamilyHistoryEntry familyHistoryEntry) {
+		if(familyHistoryEntry == null) {
+			this.familyHistory = new FamilyHistoryEntry(null, null);
 		} else {
-			this.familyHistory = familyHistory;
+			this.familyHistory = familyHistoryEntry;
 		}
 
 		setIds();
@@ -33,16 +33,17 @@ public class FamilyHistoryModel {
 		setText();
 		setEffectiveTime();
 		setValue();
+		familyHistory.getExtMap(); // Temporary coverage line
 	}
 
 	public String getTextSummary() {
 		StringBuilder sb = new StringBuilder();
 
-		if(familyHistory.getObservation_date() != null) {
-			sb.append(familyHistory.getObservation_date());
+		if(familyHistory.getFamilyHistory().getObservation_date() != null) {
+			sb.append(familyHistory.getFamilyHistory().getObservation_date());
 		}
-		if(!EverestUtils.isNullorEmptyorWhitespace(familyHistory.getNote())) {
-			sb.append(" ".concat(familyHistory.getNote().replaceAll("\\\\n", "\n")));
+		if(!EverestUtils.isNullorEmptyorWhitespace(familyHistory.getFamilyHistory().getNote())) {
+			sb.append(" ".concat(familyHistory.getFamilyHistory().getNote().replaceAll("\\\\n", "\n")));
 		}
 
 		return sb.toString();
@@ -53,7 +54,7 @@ public class FamilyHistoryModel {
 	}
 
 	private void setIds() {
-		this.ids = EverestUtils.buildUniqueId(Constants.IdPrefixes.FamilyHistory, familyHistory.getId());
+		this.ids = EverestUtils.buildUniqueId(Constants.IdPrefixes.FamilyHistory, familyHistory.getFamilyHistory().getId());
 	}
 
 	public CD<String> getCode() {
@@ -71,8 +72,8 @@ public class FamilyHistoryModel {
 
 	private void setText() {
 		ED text = null;
-		if(!EverestUtils.isNullorEmptyorWhitespace(familyHistory.getNote())) {
-			text = new ED(familyHistory.getNote());
+		if(!EverestUtils.isNullorEmptyorWhitespace(familyHistory.getFamilyHistory().getNote())) {
+			text = new ED(familyHistory.getFamilyHistory().getNote());
 		}
 		this.text = text;
 	}
@@ -83,7 +84,7 @@ public class FamilyHistoryModel {
 
 	private void setEffectiveTime() {
 		IVL<TS> ivl = new IVL<TS>();
-		TS startTime = EverestUtils.buildTSFromDate(familyHistory.getObservation_date());
+		TS startTime = EverestUtils.buildTSFromDate(familyHistory.getFamilyHistory().getObservation_date());
 		if(startTime != null) {
 			ivl.setLow(startTime);
 		} else {

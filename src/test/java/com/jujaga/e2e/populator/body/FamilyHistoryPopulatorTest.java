@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
@@ -16,6 +18,7 @@ import com.jujaga.e2e.constant.BodyConstants.FamilyHistory;
 public class FamilyHistoryPopulatorTest extends AbstractBodyPopulatorTest {
 	@BeforeClass
 	public static void beforeClass() {
+		Logger.getRootLogger().setLevel(Level.FATAL);
 		setupClass(FamilyHistory.getConstants());
 	}
 
