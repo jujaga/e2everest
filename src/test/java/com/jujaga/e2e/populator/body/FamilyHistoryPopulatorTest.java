@@ -50,7 +50,7 @@ public class FamilyHistoryPopulatorTest extends AbstractBodyPopulatorTest {
 		assertNotNull(observation.getCode());
 		assertNotNull(observation.getEffectiveTime());
 		assertNotNull(observation.getValue());
-		//assertNotNull(observation.getSubject());
-		//assertNotNull(observation.getEntryRelationship());
+		assertNotNull(observation.getSubject());
+		assertNotNull(observation.getEntryRelationship());
 	}
 }

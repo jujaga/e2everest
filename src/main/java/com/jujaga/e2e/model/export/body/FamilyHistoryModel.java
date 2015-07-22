@@ -5,12 +5,19 @@ import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RelatedSubject;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Subject;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubject;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.FamilyHistoryEntry;
+import com.jujaga.emr.model.CaseManagementNoteExt;
 
 public class FamilyHistoryModel {
 	private FamilyHistoryEntry familyHistory;
@@ -20,6 +27,7 @@ public class FamilyHistoryModel {
 	private ED text;
 	private IVL<TS> effectiveTime;
 	private CD<String> value;
+	private Subject subject;
 
 	public FamilyHistoryModel(FamilyHistoryEntry familyHistoryEntry) {
 		if(familyHistoryEntry == null) {
@@ -33,7 +41,7 @@ public class FamilyHistoryModel {
 		setText();
 		setEffectiveTime();
 		setValue();
-		familyHistory.getExtMap(); // Temporary coverage line
+		setSubject();
 	}
 
 	public String getTextSummary() {
@@ -101,5 +109,32 @@ public class FamilyHistoryModel {
 	private void setValue() {
 		this.value = new CD<String>();
 		this.value.setNullFlavor(NullFlavor.Unknown);
+	}
+
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public void setSubject() {
+		RelatedSubject relatedSubject = new RelatedSubject(x_DocumentSubject.PersonalRelationship);
+		Subject subject = new Subject(ContextControl.OverridingPropagating, relatedSubject);
+
+		String relationship = familyHistory.getExtMap().get(CaseManagementNoteExt.RELATIONSHIP);
+		CE<String> code = new CE<String>();
+		if(!EverestUtils.isNullorEmptyorWhitespace(relationship)) {
+			code.setCodeSystem(Constants.CodeSystems.ROLE_CODE_OID);
+			code.setCodeSystemName(Constants.CodeSystems.ROLE_CODE_NAME);
+			code.setDisplayName(relationship);
+			if(Mappings.personalRelationshipRole.containsKey(relationship.toLowerCase())) {
+				code.setCodeEx(Mappings.personalRelationshipRole.get(relationship.toLowerCase()));
+			} else {
+				code.setCodeEx("OTH");
+			}
+		} else {
+			code.setNullFlavor(NullFlavor.NoInformation);
+		}
+		relatedSubject.setCode(code);
+
+		this.subject = subject;
 	}
 }

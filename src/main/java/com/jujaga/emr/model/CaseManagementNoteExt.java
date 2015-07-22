@@ -21,6 +21,18 @@ import javax.persistence.TemporalType;
 public class CaseManagementNoteExt implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static String STARTDATE = "Start Date";
+	public static String RESOLUTIONDATE = "Resolution Date";
+	public static String PROCEDUREDATE = "Procedure Date";
+	public static String AGEATONSET = "Age at Onset";
+	public static String TREATMENT = "Treatment";
+	public static String PROBLEMSTATUS = "Problem Status";
+	public static String EXPOSUREDETAIL = "Exposure Details";
+	public static String RELATIONSHIP = "Relationship";
+	public static String LIFESTAGE = "Life Stage";
+	public static String HIDECPP = "Hide Cpp";
+	public static String PROBLEMDESC = "Problem Description";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

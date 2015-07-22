@@ -18,12 +18,19 @@ import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RelatedSubject;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Subject;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationTargetSubject;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.constant.Mappings;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.FamilyHistoryEntry;
 import com.jujaga.emr.dao.CaseManagementNoteDao;
@@ -153,5 +160,64 @@ public class FamilyHistoryModelTest {
 		assertNotNull(value);
 		assertTrue(value.isNull());
 		assertEquals(NullFlavor.Unknown, value.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void subjectNormalCodeTest() {
+		Subject subject = familyHistoryModel.getSubject();
+		assertNotNull(subject);
+		assertEquals(ParticipationTargetSubject.SBJ, subject.getTypeCode().getCode());
+		assertEquals(ContextControl.OverridingPropagating, subject.getContextControlCode().getCode());
+
+		RelatedSubject relatedSubject = subject.getRelatedSubject();
+		assertNotNull(relatedSubject);
+		assertEquals(x_DocumentSubject.PersonalRelationship, relatedSubject.getClassCode().getCode());
+
+		CE<String> code = relatedSubject.getCode();
+		assertNotNull(code);
+		assertEquals(Mappings.personalRelationshipRole.get(familyHistoryEntry.getExtMap().get(CaseManagementNoteExt.RELATIONSHIP).toLowerCase()), code.getCode());
+		assertEquals(Constants.CodeSystems.ROLE_CODE_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.ROLE_CODE_NAME, code.getCodeSystemName());
+		assertEquals(familyHistoryEntry.getExtMap().get(CaseManagementNoteExt.RELATIONSHIP), code.getDisplayName());
+	}
+
+	@Test
+	public void subjectOtherCodeTest() {
+		String test = "test";
+		familyHistoryEntry.getExtMap().replace(CaseManagementNoteExt.RELATIONSHIP, test);
+		familyHistoryModel = new FamilyHistoryModel(familyHistoryEntry);
+
+		Subject subject = familyHistoryModel.getSubject();
+		assertNotNull(subject);
+		assertEquals(ParticipationTargetSubject.SBJ, subject.getTypeCode().getCode());
+		assertEquals(ContextControl.OverridingPropagating, subject.getContextControlCode().getCode());
+
+		RelatedSubject relatedSubject = subject.getRelatedSubject();
+		assertNotNull(relatedSubject);
+		assertEquals(x_DocumentSubject.PersonalRelationship, relatedSubject.getClassCode().getCode());
+
+		CE<String> code = relatedSubject.getCode();
+		assertNotNull(code);
+		assertEquals("OTH", code.getCode());
+		assertEquals(Constants.CodeSystems.ROLE_CODE_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.ROLE_CODE_NAME, code.getCodeSystemName());
+		assertEquals(test, code.getDisplayName());
+	}
+
+	@Test
+	public void subjectNullTest() {
+		Subject subject = nullFamilyHistoryModel.getSubject();
+		assertNotNull(subject);
+		assertEquals(ParticipationTargetSubject.SBJ, subject.getTypeCode().getCode());
+		assertEquals(ContextControl.OverridingPropagating, subject.getContextControlCode().getCode());
+
+		RelatedSubject relatedSubject = subject.getRelatedSubject();
+		assertNotNull(relatedSubject);
+		assertEquals(x_DocumentSubject.PersonalRelationship, relatedSubject.getClassCode().getCode());
+
+		CE<String> code = relatedSubject.getCode();
+		assertNotNull(code);
+		assertTrue(code.isNull());
+		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
 	}
 }

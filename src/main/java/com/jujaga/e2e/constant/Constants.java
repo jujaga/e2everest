@@ -141,6 +141,8 @@ public class Constants {
 		public static final String OBSERVATION_VALUE_NAME = "ObservationValue";
 		public static final String PCLOCD_OID = "2.16.840.1.113883.2.20.5.1";
 		public static final String PCLOCD_NAME = "pCLOCD";
+		public static final String ROLE_CODE_OID = "2.16.840.1.113883.5.111";
+		public static final String ROLE_CODE_NAME = "RoleCode";
 		public static final String ROLE_CLASS_OID = "2.16.840.1.113883.3.3068.10.8.30";
 		public static final String ROLE_CLASS_NAME = "RoleClass";
 		public static final String ROUTE_OF_ADMINISTRATION_OID = "2.16.840.1.113883.5.112";

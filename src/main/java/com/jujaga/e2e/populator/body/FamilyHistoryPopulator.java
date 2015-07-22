@@ -8,6 +8,7 @@ import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
@@ -45,13 +46,16 @@ public class FamilyHistoryPopulator extends AbstractBodyPopulator<FamilyHistoryE
 	public ClinicalStatement populateClinicalStatement(List<FamilyHistoryEntry> list) {
 		FamilyHistoryModel familyHistoryModel = new FamilyHistoryModel(list.get(0));
 		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
 
 		observation.setId(familyHistoryModel.getIds());
 		observation.setCode(familyHistoryModel.getCode());
 		observation.setText(familyHistoryModel.getText());
 		observation.setEffectiveTime(familyHistoryModel.getEffectiveTime());
 		observation.setValue(familyHistoryModel.getValue());
+		observation.setSubject(familyHistoryModel.getSubject());
 
+		observation.setEntryRelationship(entryRelationships);
 		return observation;
 	}
 
