@@ -8,6 +8,7 @@ import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RelatedSubject;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Subject;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
@@ -15,6 +16,8 @@ import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubject;
 
 import com.jujaga.e2e.constant.Constants;
 import com.jujaga.e2e.constant.Mappings;
+import com.jujaga.e2e.model.export.template.observation.LifestageObservationModel;
+import com.jujaga.e2e.model.export.template.observation.SecondaryCodeICD9ObservationModel;
 import com.jujaga.e2e.util.EverestUtils;
 import com.jujaga.emr.PatientExport.FamilyHistoryEntry;
 import com.jujaga.emr.model.CaseManagementNoteExt;
@@ -28,6 +31,8 @@ public class FamilyHistoryModel {
 	private IVL<TS> effectiveTime;
 	private CD<String> value;
 	private Subject subject;
+	private EntryRelationship billingCode;
+	private EntryRelationship lifestageOnset;
 
 	public FamilyHistoryModel(FamilyHistoryEntry familyHistoryEntry) {
 		if(familyHistoryEntry == null) {
@@ -42,6 +47,8 @@ public class FamilyHistoryModel {
 		setEffectiveTime();
 		setValue();
 		setSubject();
+		setBillingCode();
+		setLifestageOnset();
 	}
 
 	public String getTextSummary() {
@@ -136,5 +143,21 @@ public class FamilyHistoryModel {
 		relatedSubject.setCode(code);
 
 		this.subject = subject;
+	}
+
+	public EntryRelationship getBillingCode() {
+		return billingCode;
+	}
+
+	public void setBillingCode() {
+		this.billingCode = new SecondaryCodeICD9ObservationModel().getEntryRelationship(familyHistory.getFamilyHistory().getBilling_code());
+	}
+
+	public EntryRelationship getLifestageOnset() {
+		return lifestageOnset;
+	}
+
+	public void setLifestageOnset() {
+		this.lifestageOnset = new LifestageObservationModel().getEntryRelationship(familyHistory.getExtMap().get(CaseManagementNoteExt.LIFESTAGE));
 	}
 }

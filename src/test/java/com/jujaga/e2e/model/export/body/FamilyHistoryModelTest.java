@@ -21,6 +21,7 @@ import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RelatedSubject;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Subject;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
@@ -219,5 +220,29 @@ public class FamilyHistoryModelTest {
 		assertNotNull(code);
 		assertTrue(code.isNull());
 		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void billingCodeTest() {
+		EntryRelationship entryRelationship = familyHistoryModel.getBillingCode();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void billingCodeNullTest() {
+		EntryRelationship entryRelationship = nullFamilyHistoryModel.getBillingCode();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void lifestageObservationTest() {
+		EntryRelationship entryRelationship = familyHistoryModel.getLifestageOnset();
+		assertNotNull(entryRelationship);
+	}
+
+	@Test
+	public void lifestageObservationNullTest() {
+		EntryRelationship entryRelationship = nullFamilyHistoryModel.getLifestageOnset();
+		assertNull(entryRelationship);
 	}
 }
