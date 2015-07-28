@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.INT;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
@@ -22,10 +23,14 @@ import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RelatedSubject;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Subject;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActClassObservation;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ParticipationTargetSubject;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -243,6 +248,39 @@ public class FamilyHistoryModelTest {
 	@Test
 	public void lifestageObservationNullTest() {
 		EntryRelationship entryRelationship = nullFamilyHistoryModel.getLifestageOnset();
+		assertNull(entryRelationship);
+	}
+
+	@Test
+	public void ageAtOnsetTest() {
+		Integer age = Integer.parseInt(familyHistoryEntry.getExtMap().get(CaseManagementNoteExt.AGEATONSET));
+
+		EntryRelationship entryRelationship = familyHistoryModel.getAgeAtOnset();
+		assertNotNull(entryRelationship);
+		assertEquals(x_ActRelationshipEntryRelationship.HasComponent, entryRelationship.getTypeCode().getCode());
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+
+		Observation observation = entryRelationship.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(ActClassObservation.OBS, observation.getClassCode().getCode());
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+
+		CD<String> code = observation.getCode();
+		assertNotNull(code);
+		assertEquals("30972-4", code.getCode());
+		assertEquals(Constants.CodeSystems.LOINC_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.LOINC_NAME, code.getCodeSystemName());
+		assertEquals("Age at onset", code.getDisplayName());
+
+		assertEquals(INT.class, observation.getValue().getDataType());
+		INT value = (INT) observation.getValue();
+		assertNotNull(value);
+		assertEquals(age, value.getValue());
+	}
+
+	@Test
+	public void ageAtOnsetNullTest() {
+		EntryRelationship entryRelationship = nullFamilyHistoryModel.getAgeAtOnset();
 		assertNull(entryRelationship);
 	}
 }

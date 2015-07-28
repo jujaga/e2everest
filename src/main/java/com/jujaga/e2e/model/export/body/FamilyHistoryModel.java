@@ -1,7 +1,9 @@
 package com.jujaga.e2e.model.export.body;
 
+import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.INT;
 import org.marc.everest.datatypes.NullFlavor;
 import org.marc.everest.datatypes.TS;
 import org.marc.everest.datatypes.generic.CD;
@@ -9,9 +11,12 @@ import org.marc.everest.datatypes.generic.CE;
 import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.datatypes.generic.SET;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.RelatedSubject;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Subject;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ContextControl;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_DocumentSubject;
 
 import com.jujaga.e2e.constant.Constants;
@@ -33,6 +38,7 @@ public class FamilyHistoryModel {
 	private Subject subject;
 	private EntryRelationship billingCode;
 	private EntryRelationship lifestageOnset;
+	private EntryRelationship ageAtOnset;
 
 	public FamilyHistoryModel(FamilyHistoryEntry familyHistoryEntry) {
 		if(familyHistoryEntry == null) {
@@ -49,6 +55,7 @@ public class FamilyHistoryModel {
 		setSubject();
 		setBillingCode();
 		setLifestageOnset();
+		setAgeAtOnset();
 	}
 
 	public String getTextSummary() {
@@ -159,5 +166,32 @@ public class FamilyHistoryModel {
 
 	public void setLifestageOnset() {
 		this.lifestageOnset = new LifestageObservationModel().getEntryRelationship(familyHistory.getExtMap().get(CaseManagementNoteExt.LIFESTAGE));
+	}
+
+	public EntryRelationship getAgeAtOnset() {
+		return ageAtOnset;
+	}
+
+	public void setAgeAtOnset() {
+		EntryRelationship entryRelationship = null;
+
+		try {
+			Integer age = Integer.parseInt(familyHistory.getExtMap().get(CaseManagementNoteExt.AGEATONSET));
+			INT value = new INT(age);
+
+			CD<String> code = new CD<String>("30972-4", Constants.CodeSystems.LOINC_OID);
+			code.setCodeSystemName(Constants.CodeSystems.LOINC_NAME);
+			code.setDisplayName("Age at onset");
+
+			Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+			entryRelationship = new EntryRelationship(x_ActRelationshipEntryRelationship.HasComponent, new BL(true), observation);
+
+			observation.setCode(code);
+			observation.setValue(value);
+		} catch (Exception e) {
+			entryRelationship = null;
+		}
+
+		this.ageAtOnset = entryRelationship;
 	}
 }
