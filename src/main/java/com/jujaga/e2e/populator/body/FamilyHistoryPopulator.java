@@ -55,6 +55,7 @@ public class FamilyHistoryPopulator extends AbstractBodyPopulator<FamilyHistoryE
 		observation.setValue(familyHistoryModel.getValue());
 		observation.setSubject(familyHistoryModel.getSubject());
 
+		entryRelationships.add(familyHistoryModel.getTreatmentComment());
 		entryRelationships.add(familyHistoryModel.getBillingCode());
 		entryRelationships.add(familyHistoryModel.getLifestageOnset());
 		entryRelationships.add(familyHistoryModel.getAgeAtOnset());

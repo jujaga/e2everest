@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.marc.everest.datatypes.ANY;
 import org.marc.everest.datatypes.ED;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.INT;
@@ -225,6 +226,41 @@ public class FamilyHistoryModelTest {
 		assertNotNull(code);
 		assertTrue(code.isNull());
 		assertEquals(NullFlavor.NoInformation, code.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void treatmentCommentTest() {
+		EntryRelationship entryRelationship = familyHistoryModel.getTreatmentComment();
+		assertNotNull(entryRelationship);
+		assertEquals(x_ActRelationshipEntryRelationship.SUBJ, entryRelationship.getTypeCode().getCode());
+		assertTrue(entryRelationship.getContextConductionInd().toBoolean());
+
+		Observation observation = entryRelationship.getClinicalStatementIfObservation();
+		assertNotNull(observation);
+		assertEquals(ActClassObservation.OBS, observation.getClassCode().getCode());
+		assertEquals(x_ActMoodDocumentObservation.Eventoccurrence, observation.getMoodCode().getCode());
+
+		CD<String> code = observation.getCode();
+		assertNotNull(code);
+		assertEquals(Constants.ObservationType.TRTNOTE.toString(), code.getCode());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID, code.getCodeSystem());
+		assertEquals(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME, code.getCodeSystemName());
+
+		ED text = observation.getText();
+		assertNotNull(text);
+		assertEquals(familyHistoryEntry.getExtMap().get(CaseManagementNoteExt.TREATMENT), new String(text.getData()));
+
+		assertEquals(CD.class, observation.getValue().getDataType());
+		ANY value = observation.getValue();
+		assertNotNull(value);
+		assertTrue(value.isNull());
+		assertEquals(NullFlavor.NoInformation, value.getNullFlavor().getCode());
+	}
+
+	@Test
+	public void treatmenteCommentNullTest() {
+		EntryRelationship entryRelationship = nullFamilyHistoryModel.getTreatmentComment();
+		assertNull(entryRelationship);
 	}
 
 	@Test

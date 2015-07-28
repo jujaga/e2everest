@@ -36,6 +36,7 @@ public class FamilyHistoryModel {
 	private IVL<TS> effectiveTime;
 	private CD<String> value;
 	private Subject subject;
+	private EntryRelationship treatmentComment;
 	private EntryRelationship billingCode;
 	private EntryRelationship lifestageOnset;
 	private EntryRelationship ageAtOnset;
@@ -53,6 +54,7 @@ public class FamilyHistoryModel {
 		setEffectiveTime();
 		setValue();
 		setSubject();
+		setTreatmentComment();
 		setBillingCode();
 		setLifestageOnset();
 		setAgeAtOnset();
@@ -83,7 +85,7 @@ public class FamilyHistoryModel {
 		return code;
 	}
 
-	public void setCode() {
+	private void setCode() {
 		this.code = new CD<String>();
 		this.code.setNullFlavor(NullFlavor.NoInformation);
 	}
@@ -129,7 +131,7 @@ public class FamilyHistoryModel {
 		return subject;
 	}
 
-	public void setSubject() {
+	private void setSubject() {
 		RelatedSubject relatedSubject = new RelatedSubject(x_DocumentSubject.PersonalRelationship);
 		Subject subject = new Subject(ContextControl.OverridingPropagating, relatedSubject);
 
@@ -152,11 +154,36 @@ public class FamilyHistoryModel {
 		this.subject = subject;
 	}
 
+	public EntryRelationship getTreatmentComment() {
+		return treatmentComment;
+	}
+
+	private void setTreatmentComment() {
+		EntryRelationship entryRelationship = null;
+
+		if(!EverestUtils.isNullorEmptyorWhitespace(familyHistory.getExtMap().get(CaseManagementNoteExt.TREATMENT))) {
+			Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+			entryRelationship = new EntryRelationship(x_ActRelationshipEntryRelationship.SUBJ, new BL(true), observation);
+
+			CD<String> code = new CD<String>(Constants.ObservationType.TRTNOTE.toString(), Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_OID);
+			code.setCodeSystemName(Constants.CodeSystems.OBSERVATIONTYPE_CA_PENDING_NAME);
+
+			CD<String> value = new CD<String>();
+			value.setNullFlavor(NullFlavor.NoInformation);
+
+			observation.setCode(code);
+			observation.setText(new ED(familyHistory.getExtMap().get(CaseManagementNoteExt.TREATMENT)));
+			observation.setValue(value);
+		}
+
+		this.treatmentComment = entryRelationship;
+	}
+
 	public EntryRelationship getBillingCode() {
 		return billingCode;
 	}
 
-	public void setBillingCode() {
+	private void setBillingCode() {
 		this.billingCode = new SecondaryCodeICD9ObservationModel().getEntryRelationship(familyHistory.getFamilyHistory().getBilling_code());
 	}
 
@@ -164,7 +191,7 @@ public class FamilyHistoryModel {
 		return lifestageOnset;
 	}
 
-	public void setLifestageOnset() {
+	private void setLifestageOnset() {
 		this.lifestageOnset = new LifestageObservationModel().getEntryRelationship(familyHistory.getExtMap().get(CaseManagementNoteExt.LIFESTAGE));
 	}
 
@@ -172,7 +199,7 @@ public class FamilyHistoryModel {
 		return ageAtOnset;
 	}
 
-	public void setAgeAtOnset() {
+	private void setAgeAtOnset() {
 		EntryRelationship entryRelationship = null;
 
 		try {
