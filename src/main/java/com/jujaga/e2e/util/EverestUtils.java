@@ -278,7 +278,7 @@ public class EverestUtils {
 				providerNo = demographic.getProviderNo();
 			}
 		} catch (Exception e) {
-			log.error("Demographic " + demographicNo + " not found");
+			log.warn("Demographic " + demographicNo + " not found");
 		}
 
 		return providerNo;
@@ -297,7 +297,7 @@ public class EverestUtils {
 				providerCache.put(providerId, provider);
 			}
 		} catch (NumberFormatException e) {
-			log.error("Provider " + providerNo + " not found");
+			log.warn("Provider " + providerNo + " not found");
 		}
 
 		return provider;

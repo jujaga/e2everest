@@ -63,7 +63,20 @@ public class EncountersPopulator extends AbstractBodyPopulator<CaseManagementNot
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		return null;
+		EncountersModel encountersModel = new EncountersModel(null);
+		Encounter encounter = new Encounter(x_DocumentEncounterMood.Eventoccurrence);
+		ArrayList<Participant2> participants = new ArrayList<Participant2>();
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
+
+		encounter.setId(encountersModel.getIds());
+		encounter.setEffectiveTime(encountersModel.getEffectiveTime());
+		participants.add(encountersModel.getEncounterLocation());
+		participants.add(encountersModel.getEncounterProvider());
+		entryRelationships.add(encountersModel.getEncounterNote());
+
+		encounter.setParticipant(participants);
+		encounter.setEntryRelationship(entryRelationships);
+		return encounter;
 	}
 
 	@Override

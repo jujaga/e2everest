@@ -66,7 +66,24 @@ public class FamilyHistoryPopulator extends AbstractBodyPopulator<FamilyHistoryE
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		return null;
+		FamilyHistoryModel familyHistoryModel = new FamilyHistoryModel(null);
+		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
+
+		observation.setId(familyHistoryModel.getIds());
+		observation.setCode(familyHistoryModel.getCode());
+		observation.setText(familyHistoryModel.getText());
+		observation.setEffectiveTime(familyHistoryModel.getEffectiveTime());
+		observation.setValue(familyHistoryModel.getValue());
+		observation.setSubject(familyHistoryModel.getSubject());
+
+		entryRelationships.add(familyHistoryModel.getTreatmentComment());
+		entryRelationships.add(familyHistoryModel.getBillingCode());
+		entryRelationships.add(familyHistoryModel.getLifestageOnset());
+		entryRelationships.add(familyHistoryModel.getAgeAtOnset());
+
+		observation.setEntryRelationship(entryRelationships);
+		return observation;
 	}
 
 	@Override

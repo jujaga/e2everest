@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.SD;
 import org.marc.everest.datatypes.doc.StructDocElementNode;
@@ -14,6 +15,7 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Component3;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Section;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActRelationshipHasComponent;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_BasicConfidentialityKind;
 
 import com.jujaga.e2e.constant.BodyConstants.AbstractBodyConstants;
@@ -28,26 +30,21 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 	public void populate() {
 		Component3 component = makeSectionComponent();
 
-		if(entries.isEmpty()) { // HL7 Level 2
-			if(bodyConstants.SECTION_PRIORITY == SectionPriority.SHALL) {
-				// TODO [E2E] Handle nullFlavor cascade for Conversion document conformance
-				/*Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true));
-				entry.setClinicalStatement(populateNullFlavorClinicalStatement());
-
-				ArrayList<Entry> nullEntries = new ArrayList<Entry>();
-				nullEntries.add(entry);
-
-				component.getSection().setEntry(nullEntries);*/
-				populateNullFlavorClinicalStatement();
-				clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
+		//entries = new ArrayList<Entry>(); // Null Cascade test line
+		if(entries.isEmpty() && bodyConstants.SECTION_PRIORITY == SectionPriority.SHALL) {
+			ClinicalStatement clinicalStatement = populateNullFlavorClinicalStatement();
+			if(clinicalStatement != null) {
+				Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true), clinicalStatement);
+				entries.add(entry);
 			}
-		} else { // HL7 Level 3
-			component.getSection().setEntry(entries);
-			clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
 		}
+
+		component.getSection().setEntry(entries);
+		clinicalDocument.getComponent().getBodyChoiceIfStructuredBody().getComponent().add(component);
 	}
 
 	abstract public ClinicalStatement populateClinicalStatement(List<T> list);
+	// TODO [MARC-HI] Wait for Null Cascade support refactor
 	abstract public ClinicalStatement populateNullFlavorClinicalStatement();
 	abstract public List<String> populateText();
 

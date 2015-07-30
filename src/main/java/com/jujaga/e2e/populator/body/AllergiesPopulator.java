@@ -62,7 +62,19 @@ public class AllergiesPopulator extends AbstractBodyPopulator<Allergy> {
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		return null;
+		AllergiesModel allergiesModel = new AllergiesModel(null);
+		Act act = new Act(x_ActClassDocumentEntryAct.Act, x_DocumentActMood.Eventoccurrence);
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
+
+		act.setId(allergiesModel.getIds());
+		act.setCode(allergiesModel.getCode());
+		act.setStatusCode(allergiesModel.getStatusCode());
+		act.setEffectiveTime(allergiesModel.getEffectiveTime());
+
+		entryRelationships.add(allergiesModel.getAllergyObservation());
+
+		act.setEntryRelationship(entryRelationships);
+		return act;
 	}
 
 	@Override

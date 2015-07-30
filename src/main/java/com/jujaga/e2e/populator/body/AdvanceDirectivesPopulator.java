@@ -3,9 +3,19 @@ package com.jujaga.e2e.populator.body;
 import java.util.Arrays;
 import java.util.List;
 
+import org.marc.everest.datatypes.ED;
+import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.TS;
+import org.marc.everest.datatypes.generic.CD;
+import org.marc.everest.datatypes.generic.IVL;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
+import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Observation;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActMoodDocumentObservation;
 
 import com.jujaga.e2e.constant.BodyConstants.AdvanceDirectives;
+import com.jujaga.e2e.constant.Constants;
+import com.jujaga.e2e.util.EverestUtils;
 
 public class AdvanceDirectivesPopulator extends AbstractBodyPopulator<AdvanceDirectivesPopulator> {
 	AdvanceDirectivesPopulator() {
@@ -20,7 +30,15 @@ public class AdvanceDirectivesPopulator extends AbstractBodyPopulator<AdvanceDir
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		return null;
+		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+
+		observation.setId(EverestUtils.buildUniqueId(Constants.IdPrefixes.AdvanceDirectives, 0));
+		observation.setCode(new CD<String>() {{setNullFlavor(NullFlavor.NoInformation);}});
+		observation.setText(new ED() {{setNullFlavor(NullFlavor.NoInformation);}});
+		observation.setStatusCode(ActStatus.Completed);
+		observation.setEffectiveTime(new IVL<TS>() {{setNullFlavor(NullFlavor.NoInformation);}});
+
+		return observation;
 	}
 
 	@Override

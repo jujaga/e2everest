@@ -18,6 +18,6 @@ public class AdvanceDirectivesPopulatorTest extends AbstractBodyPopulatorTest {
 
 	@Test
 	public void advanceDirectivesEntryCountTest() {
-		entryCountTest(0);
+		entryCountTest(1);
 	}
 }
