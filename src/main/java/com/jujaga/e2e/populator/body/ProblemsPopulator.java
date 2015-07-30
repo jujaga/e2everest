@@ -76,7 +76,14 @@ public class ProblemsPopulator extends AbstractBodyPopulator<Dxresearch> {
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		return null;
+		ProblemsModel problemsModel = new ProblemsModel(null);
+		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+
+		observation.setId(problemsModel.getIds());
+		observation.setCode(problemsModel.getCode());
+		observation.setAuthor(problemsModel.getAuthor());
+
+		return observation;
 	}
 
 	@Override

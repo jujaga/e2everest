@@ -57,7 +57,16 @@ public class LabsPopulator extends AbstractBodyPopulator<Lab> {
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		return null;
+		LabsModel labsModel = new LabsModel(null);
+		Observation observation = new Observation(x_ActMoodDocumentObservation.Eventoccurrence);
+
+		observation.setId(labsModel.getIds());
+		observation.setCode(labsModel.getCode());
+		observation.setText(labsModel.getText());
+		observation.setAuthor(labsModel.getAuthor());
+		observation.setEntryRelationship(labsModel.getResultOrganizers());
+
+		return observation;
 	}
 
 	@Override

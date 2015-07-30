@@ -68,7 +68,26 @@ public class ImmunizationsPopulator extends AbstractBodyPopulator<Immunization> 
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		return null;
+		ImmunizationsModel immunizationsModel = new ImmunizationsModel(null);
+		SubstanceAdministration substanceAdministration = new SubstanceAdministration(x_DocumentSubstanceMood.Eventoccurrence);
+		ArrayList<EntryRelationship> entryRelationships = new ArrayList<EntryRelationship>();
+
+		substanceAdministration.setNegationInd(immunizationsModel.getNegationInd());
+		substanceAdministration.setId(immunizationsModel.getIds());
+		substanceAdministration.setCode(immunizationsModel.getCode());
+		substanceAdministration.setEffectiveTime(immunizationsModel.getEffectiveTime());
+		substanceAdministration.setRouteCode(immunizationsModel.getRoute());
+		substanceAdministration.setConsumable(immunizationsModel.getConsumable());
+		substanceAdministration.setAuthor(immunizationsModel.getAuthor());
+		substanceAdministration.setParticipant(immunizationsModel.getParticipant());
+
+		entryRelationships.add(immunizationsModel.getAntigenType());
+		entryRelationships.add(immunizationsModel.getRefusalReason());
+		entryRelationships.add(immunizationsModel.getNextDate());
+		entryRelationships.add(immunizationsModel.getComment());
+
+		substanceAdministration.setEntryRelationship(entryRelationships);
+		return substanceAdministration;
 	}
 
 	@Override

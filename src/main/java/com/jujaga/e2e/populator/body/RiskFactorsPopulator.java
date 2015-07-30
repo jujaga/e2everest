@@ -6,9 +6,12 @@ import java.util.List;
 
 import org.marc.everest.datatypes.BL;
 import org.marc.everest.datatypes.II;
+import org.marc.everest.datatypes.NullFlavor;
+import org.marc.everest.datatypes.generic.CS;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalStatement;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Entry;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.Organizer;
+import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActClassDocumentEntryOrganizer;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.x_ActRelationshipEntry;
 
@@ -57,7 +60,15 @@ public class RiskFactorsPopulator extends AbstractBodyPopulator<CaseManagementNo
 
 	@Override
 	public ClinicalStatement populateNullFlavorClinicalStatement() {
-		return null;
+		RiskFactorsModel riskFactorsModel = new RiskFactorsModel(null);
+		Organizer organizer = new Organizer(x_ActClassDocumentEntryOrganizer.CLUSTER);
+
+		organizer.setId(riskFactorsModel.getIds());
+		organizer.setCode(riskFactorsModel.getCode());
+		organizer.setStatusCode(new CS<ActStatus>() {{setNullFlavor(NullFlavor.NoInformation);}});
+		organizer.setComponent(riskFactorsModel.getComponentObservation());
+
+		return organizer;
 	}
 
 	@Override

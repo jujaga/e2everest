@@ -18,6 +18,6 @@ public class OrdersAndRequestsPopulatorTest extends AbstractBodyPopulatorTest {
 
 	@Test
 	public void ordersAndRequestsEntryCountTest() {
-		entryCountTest(0);
+		entryCountTest(1);
 	}
 }

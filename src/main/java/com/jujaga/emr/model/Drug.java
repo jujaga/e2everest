@@ -31,7 +31,7 @@ public class Drug implements Serializable {
 	private Integer demographicId = null;
 	@Column(name = "rx_date")
 	@Temporal(TemporalType.DATE)
-	private Date rxDate = new Date();
+	private Date rxDate = null;
 	@Column(name = "end_date")
 	@Temporal(TemporalType.DATE)
 	private Date endDate = null;

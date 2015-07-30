@@ -30,11 +30,12 @@ public abstract class AbstractBodyPopulator<T> extends AbstractPopulator {
 	public void populate() {
 		Component3 component = makeSectionComponent();
 
-		//entries = new ArrayList<Entry>(); // Null Cascade test line
+		//entries = new ArrayList<Entry>(); // Null Entry Cascade test line override
 		if(entries.isEmpty() && bodyConstants.SECTION_PRIORITY == SectionPriority.SHALL) {
 			ClinicalStatement clinicalStatement = populateNullFlavorClinicalStatement();
 			if(clinicalStatement != null) {
 				Entry entry = new Entry(x_ActRelationshipEntry.DRIV, new BL(true), clinicalStatement);
+				entry.setTemplateId(Arrays.asList(new II(bodyConstants.ENTRY_TEMPLATE_ID)));
 				entries.add(entry);
 			}
 		}
