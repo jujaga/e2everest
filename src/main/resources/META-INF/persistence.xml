@@ -4,8 +4,8 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="e2everestDB">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-		<class>com.jujaga.emr.model.Demographic</class>
-		<class>com.jujaga.emr.model.Provider</class>
-		<class>com.jujaga.emr.model.Clinic</class>
+		<class>org.oscarehr.common.model.Demographic</class>
+		<class>org.oscarehr.common.model.Provider</class>
+		<class>org.oscarehr.common.model.Clinic</class>
 	</persistence-unit>
 </persistence>
