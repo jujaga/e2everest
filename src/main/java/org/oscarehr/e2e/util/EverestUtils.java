@@ -41,7 +41,6 @@ import org.marc.everest.formatters.interfaces.IFormatterGraphResult;
 import org.marc.everest.formatters.xml.datatypes.r1.DatatypeFormatter;
 import org.marc.everest.formatters.xml.datatypes.r1.R1FormatterCompatibilityMode;
 import org.marc.everest.formatters.xml.its1.XmlIts1Formatter;
-import org.marc.everest.formatters.xml.its1.XmlIts1FormatterExtension;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.ClinicalDocument;
 import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.LanguageCommunication;
 import org.marc.everest.xml.XMLStateStreamWriter;
@@ -50,9 +49,9 @@ import org.oscarehr.common.dao.ProviderDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.e2e.constant.Constants;
-import org.oscarehr.e2e.constant.Mappings;
 import org.oscarehr.e2e.constant.Constants.IdPrefixes;
 import org.oscarehr.e2e.constant.Constants.TelecomType;
+import org.oscarehr.e2e.constant.Mappings;
 import org.oscarehr.e2e.extension.ObservationWithConfidentialityCode;
 import org.oscarehr.e2e.model.PatientExport;
 
@@ -83,7 +82,7 @@ public class EverestUtils {
 		}
 
 		StringWriter sw = new StringWriter();
-		XmlIts1Formatter fmtr = new XmlIts1FormatterExtension();
+		XmlIts1Formatter fmtr = new XmlIts1Formatter();
 		fmtr.setValidateConformance(validation);
 		fmtr.getGraphAides().add(new DatatypeFormatter(R1FormatterCompatibilityMode.ClinicalDocumentArchitecture));
 		fmtr.addCachedClass(ClinicalDocument.class);
@@ -128,7 +127,8 @@ public class EverestUtils {
 
 	// Temporary Everest Bugfixes
 	private static String everestBugFixes(String output) {
-		return output.replaceAll("delimeter", "delimiter");
+		String result = output.replaceAll("xsi:nil=\"true\" ", "");
+		return result.replaceAll("delimeter", "delimiter");
 	}
 
 	// Pretty Print XML
