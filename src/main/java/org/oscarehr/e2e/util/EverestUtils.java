@@ -257,7 +257,6 @@ public class EverestUtils {
 			}
 		}
 
-		log.warn("stringToDate - Can't parse dateString");
 		return null;
 	}
 
@@ -296,7 +295,7 @@ public class EverestUtils {
 				providerCache.put(providerId, provider);
 			}
 		} catch (NumberFormatException e) {
-			log.warn("Provider " + providerNo + " not found");
+			provider = null;
 		}
 
 		return provider;

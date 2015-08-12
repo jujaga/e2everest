@@ -3,7 +3,6 @@ package org.oscarehr.e2e.model.export.body;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
 import org.marc.everest.datatypes.II;
 import org.marc.everest.datatypes.generic.CD;
 import org.marc.everest.datatypes.generic.SET;
@@ -12,8 +11,8 @@ import org.marc.everest.rmim.uv.cdar2.pocd_mt000040uv.EntryRelationship;
 import org.marc.everest.rmim.uv.cdar2.vocabulary.ActStatus;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.e2e.constant.BodyConstants;
-import org.oscarehr.e2e.constant.Constants;
 import org.oscarehr.e2e.constant.BodyConstants.Medications;
+import org.oscarehr.e2e.constant.Constants;
 import org.oscarehr.e2e.model.export.template.ConsumableModel;
 import org.oscarehr.e2e.model.export.template.MedicationPrescriptionEventModel;
 import org.oscarehr.e2e.model.export.template.observation.DateObservationModel;
@@ -21,7 +20,6 @@ import org.oscarehr.e2e.model.export.template.observation.UnboundObservationMode
 import org.oscarehr.e2e.util.EverestUtils;
 
 public class MedicationsModel {
-	private static Logger log = Logger.getLogger(MedicationsModel.class.getName());
 	private Drug drug;
 
 	private SET<II> ids;
@@ -59,7 +57,7 @@ public class MedicationsModel {
 				return true;
 			}
 		} catch (NullPointerException e) {
-			log.warn("Date is null");
+			return false;
 		}
 		return false;
 	}
