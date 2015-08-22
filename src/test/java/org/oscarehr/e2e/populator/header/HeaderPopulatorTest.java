@@ -55,8 +55,8 @@ public class HeaderPopulatorTest extends AbstractPopulatorTest {
 	public void idTest() {
 		II id = clinicalDocument.getId();
 		assertNotNull(id);
-		assertEquals(Constants.Runtime.VALID_DEMOGRAPHIC.toString(), id.getRoot());
-		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getExtension()));
+		assertEquals(Constants.Runtime.VALID_DEMOGRAPHIC.toString(), id.getExtension());
+		assertFalse(EverestUtils.isNullorEmptyorWhitespace(id.getRoot()));
 	}
 
 	@Test

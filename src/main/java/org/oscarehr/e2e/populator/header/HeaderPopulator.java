@@ -51,7 +51,7 @@ public class HeaderPopulator extends AbstractPopulator {
 		clinicalDocument.setTemplateId(templateIds);
 
 		// id
-		clinicalDocument.setId(demographic.getDemographicNo().toString(), UUID.randomUUID().toString().toUpperCase());
+		clinicalDocument.setId(UUID.randomUUID().toString().toUpperCase(), demographic.getDemographicNo().toString());
 
 		// code
 		clinicalDocument.setCode(code);
