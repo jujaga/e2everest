@@ -12,7 +12,7 @@ Since this framework was written in Java, at the bare minimum, the user should b
 
 Many Java applications utilize the Java Persistence API and its related ecosystem in order to interface with a database such as MySQL. As a consequence of this, E2Everest users are expected to know how to use the JPA framework and have a working understanding of common JPA frameworks such as Spring and Hibernate.
 
-Lastly, E2Everest is only effective if the user has at least a conceptural level of understanding of HL7v3 and CDA. Users should be somewhat familiar with the RIM (Reference Information Model),  R-MIM (Refined Message Information Model), ITS (Implementable Technology Specification), and HL7 Data Types. Knowledge of HL7 and CDA is crucial for understanding the E2E specification since E2E is a specific implementation of the CDA.
+Lastly, E2Everest is only effective if the user has at least a conceptual level of understanding of HL7v3 and CDA. Users should be somewhat familiar with the RIM (Reference Information Model),  R-MIM (Refined Message Information Model), ITS (Implementable Technology Specification), and HL7 Data Types. Knowledge of HL7 and CDA is crucial for understanding the E2E specification since E2E is a specific implementation of the CDA.
 
 ## Resources ##
 

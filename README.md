@@ -4,7 +4,7 @@ A working Proof of Concept E2E Everest Implementation
 Data model emulates an [OSCAR EMR](https://github.com/scoophealth/oscar "OSCAR EMR") database  
 Exported content should be E2E-DTC 1.4 compliant
 
-Refer to **Manual.md** if you wish to use this framework in your own EMR environment.
+Refer to **MANUAL.md** if you wish to use this framework in your own EMR environment.
 
 Environment
 -----------
