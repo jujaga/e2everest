@@ -29,7 +29,6 @@ import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.e2e.constant.Constants;
 import org.oscarehr.e2e.constant.Mappings;
-import org.oscarehr.e2e.model.export.template.observation.DoseObservationModel;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -167,26 +166,30 @@ public class DoseObservationModelTest {
 	public void doseQuantityTest() {
 		IVL<PQ> ivl = substanceAdministrationHelper(drug).getDoseQuantity();
 		assertNotNull(ivl);
-		assertEquals(new PQ(new BigDecimal(drug.getTakeMin().toString()), null), ivl.getLow());
-		assertEquals(new PQ(new BigDecimal(drug.getTakeMax().toString()), null), ivl.getHigh());
 
-		drug.setUnitName("te st");
+		String unit = drug.getUnit().replaceAll("\\s", "_");
+		PQ value = new PQ(new BigDecimal(drug.getDosage().trim().replaceAll(" .*", "")), unit);
+		assertEquals(value, ivl.getLow());
+		assertEquals(value, ivl.getHigh());
+
+		drug.setUnit("te st");
 
 		ivl = substanceAdministrationHelper(drug).getDoseQuantity();
 		assertNotNull(ivl);
-		assertEquals(new PQ(new BigDecimal(drug.getTakeMin().toString()), "te_st"), ivl.getLow());
-		assertEquals(new PQ(new BigDecimal(drug.getTakeMax().toString()), "te_st"), ivl.getHigh());
+		String unit2 = drug.getUnit().replaceAll("\\s", "_");
+		PQ value2 = new PQ(new BigDecimal(drug.getDosage().trim().replaceAll(" .*", "")), unit2);
+		assertEquals(value2, ivl.getLow());
+		assertEquals(value2, ivl.getHigh());
 	}
 
 	@Test
 	public void doseQuantityNullTest() {
-		nullDrug.setTakeMin(null);
-		nullDrug.setTakeMax(null);
+		nullDrug.setDosage(null);
 
 		IVL<PQ> ivl = substanceAdministrationHelper(nullDrug).getDoseQuantity();
 		assertNotNull(ivl);
 		assertTrue(ivl.isNull());
-		assertEquals(NullFlavor.NoInformation, ivl.getNullFlavor().getCode());
+		assertEquals(NullFlavor.Unknown, ivl.getNullFlavor().getCode());
 	}
 
 	@Test

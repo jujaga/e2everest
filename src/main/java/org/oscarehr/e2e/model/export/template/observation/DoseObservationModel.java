@@ -133,25 +133,21 @@ public class DoseObservationModel {
 
 	private IVL<PQ> getDoseQuantity() {
 		IVL<PQ> dose = new IVL<PQ>();
-		PQ low = null;
-		PQ high = null;
+		PQ value = null;
 		String unit = null;
 
-		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getUnitName())) {
-			unit = drug.getUnitName().replaceAll("\\s", "_");
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getUnit())) {
+			unit = drug.getUnit().replaceAll("\\s", "_");
 		}
-		if(drug.getTakeMin() != null) {
-			low = new PQ(new BigDecimal(drug.getTakeMin().toString()), unit);
-		}
-		if(drug.getTakeMax() != null) {
-			high = new PQ(new BigDecimal(drug.getTakeMax().toString()), unit);
+		if(!EverestUtils.isNullorEmptyorWhitespace(drug.getDosage())) {
+			value = new PQ(new BigDecimal(drug.getDosage().trim().replaceAll(" .*", "")), unit);
 		}
 
-		if(low != null || high != null) {
-			dose.setLow(low);
-			dose.setHigh(high);
+		if(value != null) {
+			dose.setLow(value);
+			dose.setHigh(value);
 		} else {
-			dose.setNullFlavor(NullFlavor.NoInformation);
+			dose.setNullFlavor(NullFlavor.Unknown);
 		}
 
 		return dose;
