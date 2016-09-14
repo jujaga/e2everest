@@ -11,15 +11,19 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		Integer demographicNo = Constants.Runtime.VALID_DEMOGRAPHIC;
+		for(int i = 0; i < 10000; i++) {
+			Integer demographicNo = Constants.Runtime.VALID_DEMOGRAPHIC;
 
-		// Populate Clinical Document
-		ClinicalDocument clinicalDocument = E2ECreator.createEmrConversionDocument(demographicNo);
+			// Populate Clinical Document
+			ClinicalDocument clinicalDocument = E2ECreator.createEmrConversionDocument(demographicNo);
 
-		// Output Clinical Document as String
-		String output = EverestUtils.generateDocumentToString(clinicalDocument, true);
+			// Output Clinical Document as String
+			String output = EverestUtils.generateDocumentToString(clinicalDocument, true);
+		}
+		/*
 		if(!EverestUtils.isNullorEmptyorWhitespace(output)) {
 			System.out.println(output);
 		}
+		 */
 	}
 }
