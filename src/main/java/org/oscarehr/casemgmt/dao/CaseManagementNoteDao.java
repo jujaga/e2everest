@@ -1,5 +1,6 @@
 package org.oscarehr.casemgmt.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -19,6 +20,18 @@ public class CaseManagementNoteDao extends AbstractDao<CaseManagementNote> {
 		String sqlCommand = "SELECT x FROM " + modelClass.getName() + " x WHERE x.demographic_no=?1 AND x.id = (SELECT MAX(y.id) FROM " + modelClass.getName() + " y WHERE y.uuid = x.uuid) ORDER BY x.observation_date";
 		Query query = entityManager.createQuery(sqlCommand);
 		query.setParameter(1, demographic_no);
+		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<CaseManagementNote> getNotes(List<Long> ids) {
+		if(ids.size() == 0) {
+			return new ArrayList<CaseManagementNote>();
+		}
+
+		String sqlCommand = "SELECT x FROM " + modelClass.getName() + " x WHERE x.id IN (:ids)";
+		Query query = entityManager.createQuery(sqlCommand);
+		query.setParameter("ids", ids);
 		return query.getResultList();
 	}
 }
